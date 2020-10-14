@@ -1,4 +1,4 @@
-function onChangeEvent(e, data, setData, onChangeCB, isValidCB: ((data: any) => boolean) | undefined, props) {
+function onChangeEvent(e, data, setData, onChangeCB, isValidCB, props) {
     if (isValidCB && !isValidCB(e.target.value)) {
         e.target.value = data || '';
         return;
@@ -8,8 +8,16 @@ function onChangeEvent(e, data, setData, onChangeCB, isValidCB: ((data: any) => 
     onChangeCB && onChangeCB(e);
 }
 
-function onBlurEvent(e, data, setData, onBlurCB, isValidCB: ((data: any) => boolean) | undefined, props) {
+function onBlurEvent(e, data, setData, onBlurCB, isValidCB, props) {
 
+    if (isValidCB && !isValidCB(data)) {
+        // Fill detail object.
+        console.log(`${data} Invalid`);
+    } else {
+        console.log(`${data} Valid`);
+    }
+
+    onBlurCB && onBlurCB(e);
 }
 
 function onKeyPressEvent(e, isValidCB, onKeyPressCB) {

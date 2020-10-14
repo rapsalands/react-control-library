@@ -1,16 +1,16 @@
 import React from 'react';
 import { ICustomInputProps } from '../formProps';
 import { ValidationIns } from '../formPropsIns';
-import { isNumber } from '../formValidations';
+import { isEmail } from '../formValidations';
 import CustomInput from './customInput';
 
-const NumberInput: React.FC<ICustomInputProps> = ({ ...props }) => {
+const Email: React.FC<ICustomInputProps> = ({ ...props }) => {
 
-    const validation = new ValidationIns(isNumber);
+    const validation = new ValidationIns(null, isEmail);
 
     return (
         <CustomInput validation={validation} {...props} />
     );
 };
 
-export default NumberInput;
+export default Email;
