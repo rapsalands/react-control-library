@@ -1,10 +1,10 @@
 import React from 'react';
-import AlphaNumeric from '../form/controls/alphaNumeric';
-import CustomInput from '../form/controls/customInput';
-import DecimalInput from '../form/controls/decimalInput';
-import Email from '../form/controls/email';
-import NumberInput from '../form/controls/numberInput';
-import TextInput from '../form/controls/textInput';
+import AlphaNumeric from '../components/form/controls/alphaNumeric';
+import CustomInput from '../components/form/controls/customInput';
+import DecimalInput from '../components/form/controls/decimalInput';
+import Email from '../components/form/controls/email';
+import NumberInput from '../components/form/controls/numberInput';
+import TextInput from '../components/form/controls/textInput';
 
 const Dashboard = () => {
     return (
