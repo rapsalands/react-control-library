@@ -1,9 +1,10 @@
-interface IBaseInput extends React.HTMLProps<HTMLInputElement> {
+import { DetailMode } from "../detailMode";
 
-}
-
-export interface ICustomInputProps extends IBaseInput {
-    validation?: IValidationProps
+export interface ICustomInputProps extends React.HTMLProps<HTMLInputElement> {
+    exactLength?: number;
+    validation?: IValidationProps;
+    inputTag?: any;
+    detailModes?: DetailMode[]
 }
 
 export interface IValidationProps {
@@ -27,4 +28,11 @@ export interface IAllowSymbolsProps extends ICustomInputProps {
 
 export interface IRestrictSymbolsProps extends ICustomInputProps {
     restrictSymbols?: string;
+}
+
+export interface IDetail {
+    detail: any,
+    value: any,
+    isValid: boolean,
+    attribute: string | null,
 }

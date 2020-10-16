@@ -1,4 +1,4 @@
-import { IValidationProps } from './formProps';
+import { IDetail, IValidationProps } from './formProps';
 
 export class ValidationIns implements IValidationProps {
     isValid: ((data: any) => boolean) | null | undefined;
@@ -12,5 +12,17 @@ export class ValidationIns implements IValidationProps {
         this.isValidChange = isValidChange;
         this.isValidKeypress = isValidKeyPress;
     }
+}
 
+export class DetailIns implements IDetail {
+    constructor(detail: any, value: any, isValid: boolean, attribute: string | null) {
+        this.detail = detail;
+        this.value = value;
+        this.isValid = isValid;
+        this.attribute = attribute;
+    }
+    detail: any;
+    value: any;
+    isValid: boolean;
+    attribute: string | null;
 }
