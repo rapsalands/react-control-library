@@ -8,14 +8,10 @@ export interface ICustomInputProps extends React.HTMLProps<HTMLInputElement> {
 }
 
 export interface IValidationProps {
-    /** Overrides isValidChange/isValidBlur/isValidKeypress validation functions */
-    isValid: ((data: any) => boolean) | undefined | null;
-    /** Validates on onChange event of control */
-    isValidChange: ((data: any) => boolean) | undefined | null;
-    /** Validates on onBlur event of control */
-    isValidBlur: ((data: any) => boolean) | undefined | null;
-    /** Validates on onKeyPress event of control */
-    isValidKeypress: ((data: any) => boolean) | undefined | null;
+    isValid: ((data: any) => IDetail) | undefined | null;
+    /** Prevent user Inputs once following when vlidation fails. Defaults to onChange and onKeyPress */
+    preventInput: DetailMode[];
+    runOn: DetailMode[]
 }
 
 export interface IDecimalInputProps extends ICustomInputProps {
@@ -30,9 +26,34 @@ export interface IRestrictSymbolsProps extends ICustomInputProps {
     restrictSymbols?: string;
 }
 
+export interface IPasswordProps {
+    passwordCriteria?: IPasswordCriteria
+}
+
 export interface IDetail {
     detail: any,
     value: any,
     isValid: boolean,
     attribute: string | null,
+    metadata?: any
+}
+
+export interface IPasswordCriteria {
+    capital?: number,
+    minLength?: number,
+    maxLength?: number,
+    numberCount?: number,
+    symbols?: number,
+    restrictSymbols?: string
+    sequence?: {
+        number?: number,
+        characters?: number,
+    },
+}
+
+export interface IPasswordFailure {
+    attribute: string,
+    value: any,
+    message: string | null,
+    metadata: any,
 }

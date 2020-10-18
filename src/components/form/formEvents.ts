@@ -1,41 +1,45 @@
 import { DetailMode } from "../detailMode";
-import { DetailIns } from "./formPropsIns";
 import { validate } from "./formValidations";
-import Constants from '../../shared/constants';
+import { IDetail, IValidationProps } from "./formProps";
 
-function populateDetail(e, detailModes, detailMode, isValidCB, data, props): boolean {
-    const invalid = isValidCB && !isValidCB(data);
+function populateDetail(e, detailModes, detailMode, validation: IValidationProps, data, props): IDetail | undefined {
+    const detail: IDetail | null | undefined = validation.isValid && validation.isValid(data);
+    if (!detail) return undefined;
 
     if (detailModes.includes(detailMode)) {
-        e.detail = invalid ? new DetailIns(e.detail, data, false, Constants.userInput) : validate(e, data, props);
+        e.detail = !detail.isValid ? detail : validate(e, data, props);
     }
-    return invalid;
+    return detail;
 }
 
-function onChangeEvent(e, data, setData, onChangeCB, isValidCB, detailModes: DetailMode[], props) {
+function onChangeEvent(e, data, setData, onChangeCB, validation: IValidationProps, detailModes: DetailMode[], props) {
 
-    const invalid = populateDetail(e, detailModes, DetailMode.onChange, isValidCB, e.target.value, props);
-
-    if (invalid) {
-        e.target.value = data || '';
-        return;
+    if (validation.runOn.includes(DetailMode.onChange)) {
+        const detail = populateDetail(e, detailModes, DetailMode.onChange, validation, e.target.value, props);
+        if (detail && !detail.isValid && validation.preventInput.includes(DetailMode.onChange)) {
+            e.target.value = data || '';
+            return;
+        }
     }
 
     setData && setData(e.target.value);
     onChangeCB && onChangeCB(e);
 }
 
-function onBlurEvent(e, data, setData, onBlurCB, isValidCB, detailModes: DetailMode[], props) {
-
-    populateDetail(e, detailModes, DetailMode.onBlur, isValidCB, data, props);
-
+function onBlurEvent(e, data, setData, onBlurCB, validation: IValidationProps, detailModes: DetailMode[], props) {
+    if (validation.runOn.includes(DetailMode.onBlur)) {
+        populateDetail(e, detailModes, DetailMode.onBlur, validation, data, props);
+    }
     onBlurCB && onBlurCB(e);
 }
 
-function onKeyPressEvent(e, isValidCB, onKeyPressCB, props) {
-    if (isValidCB && !isValidCB(e.key)) {
-        e.preventDefault();
-        return;
+function onKeyPressEvent(e, validation: IValidationProps, onKeyPressCB, props) {
+    if (validation.runOn.includes(DetailMode.onKeyPress)) {
+        const detail = validation.isValid && validation.isValid(e.key);
+        if (detail && !detail.isValid && validation.preventInput.includes(DetailMode.onKeyPress)) {
+            e.preventDefault();
+            return;
+        }
     }
     onKeyPressCB && onKeyPressCB(e);
 }

@@ -7,7 +7,9 @@ import CustomInput from './customInput';
 const TextInput: React.FC<IRestrictSymbolsProps> = ({ restrictSymbols, validation, ...props }) => {
 
     function validationFunc(data) {
-        return isNotPatternMatch(data, restrictSymbols || '') && isPatternMatch(data, props.pattern || '');
+        const notPattern = isNotPatternMatch(data, restrictSymbols || '');
+        const pattern = isPatternMatch(data, props.pattern || '');
+        return !notPattern.isValid ? notPattern : pattern;
     }
 
     const valid = new ValidationIns((data) => validationFunc(data));

@@ -2,22 +2,24 @@ import React from 'react';
 import { DetailMode } from '../../detailMode';
 import FormEvents from '../formEvents';
 import { ICustomInputProps } from '../formProps';
+import { ValidationIns } from '../formPropsIns';
 
-const CustomInput: React.FC<ICustomInputProps> = ({ inputTag, validation: vd, type, value, className, onKeyPress, onChange, onBlur, detailModes = [DetailMode.onBlur, DetailMode.onChange], ...props }) => {
+const CustomInput: React.FC<ICustomInputProps> = ({ inputTag, validation, type, value, className, onKeyPress, onChange, onBlur, detailModes = [DetailMode.onBlur, DetailMode.onChange], ...props }) => {
 
     const [data, setData] = React.useState(value);
     const InputTag = inputTag;
 
     const { onBlurEvent, onChangeEvent, onKeyPressEvent } = FormEvents;
 
+    const validationParam = validation || new ValidationIns();
     const params = {
         type: type || 'text',
         className: className,
         onChange: (e) => {
-            onChangeEvent(e, data, setData, onChange, vd?.isValid || vd?.isValidChange, detailModes, props)
+            onChangeEvent(e, data, setData, onChange, validationParam, detailModes, props)
         },
-        onBlur: (e) => onBlurEvent(e, data, setData, onBlur, vd?.isValid || vd?.isValidBlur, detailModes, props),
-        onKeyPress: (e) => onKeyPressEvent(e, vd?.isValid || vd?.isValidKeypress, onKeyPress, props),
+        onBlur: (e) => onBlurEvent(e, data, setData, onBlur, validationParam, detailModes, props),
+        onKeyPress: (e) => onKeyPressEvent(e, validationParam, onKeyPress, props),
         value: value,
         ...props
     };
