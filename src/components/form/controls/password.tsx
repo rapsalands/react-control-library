@@ -13,7 +13,7 @@ const Password: React.FC<ICustomInputProps & IPasswordProps> = ({ passwordCriter
     const validation = new ValidationIns((data) => isPasswordValid(data, pc), [DetailMode.none]);
 
     return (
-        <CustomInput type='password' validation={validation} />
+        <CustomInput type='password' validation={validation} {...props} />
     );
 };
 

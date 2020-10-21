@@ -8,15 +8,20 @@ import Password from '../components/form/controls/password';
 import TextInput from '../components/form/controls/textInput';
 
 const Dashboard = () => {
+
+    function changeEvent(e) {
+        console.log(e.detail);
+    }
+
     return (
         <React.Fragment>
 
             Text Field <TextInput restrictSymbols='~!@#$%' label='Person Name' />
-            Number <NumberInput max={2000} min={500} minLength={3} inputTag={TextField} onChange={(e: any) => console.log(e.detail)} />
+            Number <NumberInput max={2000} min={500} minLength={3} inputTag={TextField} onChange={changeEvent} />
             Decimal <DecimalInput decimalLimit={5} />
             AlphaNumeric <AlphaNumeric />
             Email <Email required onBlur={(e: any) => console.log(e.detail)} />
-            Password <Password />
+            Password <Password onChange={changeEvent} />
         </React.Fragment>
     );
 };
