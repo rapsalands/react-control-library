@@ -14,27 +14,23 @@ function populateDetail(e, detailModes, detailMode, validation: IValidationProps
 
 function onChangeEvent(e, data, setData, onChangeCB, validation: IValidationProps, detailModes: DetailMode[], props) {
 
-    if (validation.runOn.includes(DetailMode.onChange)) {
-        const detail = populateDetail(e, detailModes, DetailMode.onChange, validation, e.target.value, props);
-        if (detail && !detail.isValid && validation.preventInput.includes(DetailMode.onChange)) {
-            e.target.value = data || '';
-            return;
-        }
+    const detail = populateDetail(e, detailModes, DetailMode.onChange, validation, e.target.value, props);
+    if (detail && !detail.isValid && validation.preventInput.includes(DetailMode.onChange)) {
+        e.target.value = data || '';
+        return;
     }
-
+    console.log(detail);
     setData && setData(e.target.value);
     onChangeCB && onChangeCB(e);
 }
 
 function onBlurEvent(e, data, setData, onBlurCB, validation: IValidationProps, detailModes: DetailMode[], props) {
-    if (validation.runOn.includes(DetailMode.onBlur)) {
-        populateDetail(e, detailModes, DetailMode.onBlur, validation, data, props);
-    }
+    populateDetail(e, detailModes, DetailMode.onBlur, validation, data, props);
     onBlurCB && onBlurCB(e);
 }
 
 function onKeyPressEvent(e, validation: IValidationProps, onKeyPressCB, props) {
-    if (validation.runOn.includes(DetailMode.onKeyPress)) {
+    if (validation.preventInput.includes(DetailMode.onKeyPress)) {
         const detail = validation.isValid && validation.isValid(e.key);
         if (detail && !detail.isValid && validation.preventInput.includes(DetailMode.onKeyPress)) {
             e.preventDefault();

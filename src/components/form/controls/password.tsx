@@ -10,7 +10,7 @@ const Password: React.FC<ICustomInputProps & IPasswordProps> = ({ passwordCriter
 
     const pc = passwordCriteria || AppSettings.defaultPasswordCriteria();
 
-    const validation = new ValidationIns((data) => isPasswordValid(data, pc), [DetailMode.none], [DetailMode.onChange, DetailMode.onBlur]);
+    const validation = new ValidationIns((data) => isPasswordValid(data, pc), [DetailMode.none]);
 
     return (
         <CustomInput type='password' validation={validation} />

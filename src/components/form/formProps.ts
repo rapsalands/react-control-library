@@ -11,7 +11,6 @@ export interface IValidationProps {
     isValid: ((data: any) => IDetail) | undefined | null;
     /** Prevent user Inputs once following when vlidation fails. Defaults to onChange and onKeyPress */
     preventInput: DetailMode[];
-    runOn: DetailMode[]
 }
 
 export interface IDecimalInputProps extends ICustomInputProps {

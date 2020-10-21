@@ -5,12 +5,10 @@ import { IDetail, IPasswordCriteria, IPasswordFailure as IPasswordFail, IValidat
 export class ValidationIns implements IValidationProps {
     isValid: ((data: any) => IDetail) | null | undefined;
     preventInput: DetailMode[];
-    runOn: DetailMode[];
 
-    constructor(isValid?: ((data: any) => IDetail) | null, preventInput = [DetailMode.onChange, DetailMode.onKeyPress], runOn: DetailMode[] = [DetailMode.onChange, DetailMode.onBlur, DetailMode.onKeyPress]) {
+    constructor(isValid?: ((data: any) => IDetail) | null, preventInput = [DetailMode.onChange, DetailMode.onKeyPress]) {
         this.isValid = isValid;
         this.preventInput = preventInput;
-        this.runOn = runOn;
     }
 }
 

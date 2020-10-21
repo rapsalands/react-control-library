@@ -12,7 +12,7 @@ const Dashboard = () => {
         <React.Fragment>
 
             Text Field <TextInput restrictSymbols='~!@#$%' label='Person Name' />
-            Number <NumberInput min={500} minLength={3} inputTag={TextField} onChange={(e: any) => console.log(e.detail)} />
+            Number <NumberInput max={2000} min={500} minLength={3} inputTag={TextField} onChange={(e: any) => console.log(e.detail)} />
             Decimal <DecimalInput decimalLimit={5} />
             AlphaNumeric <AlphaNumeric />
             Email <Email required onBlur={(e: any) => console.log(e.detail)} />
