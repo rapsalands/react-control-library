@@ -56,3 +56,7 @@ export interface IPasswordFailure {
     message: string | null,
     metadata: any,
 }
+
+export interface IMaskedInputProps {
+    mask: any[]
+}

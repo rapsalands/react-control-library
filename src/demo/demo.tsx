@@ -3,9 +3,11 @@ import React from 'react';
 import AlphaNumeric from '../components/form/controls/alphaNumeric';
 import DecimalInput from '../components/form/controls/decimalInput';
 import Email from '../components/form/controls/email';
+import MaskedInput from '../components/form/controls/maskedInput';
 import NumberInput from '../components/form/controls/numberInput';
 import Password from '../components/form/controls/password';
 import TextInput from '../components/form/controls/textInput';
+import Regex from '../components/form/regex';
 
 const Dashboard = () => {
 
@@ -22,6 +24,7 @@ const Dashboard = () => {
             AlphaNumeric <AlphaNumeric />
             Email <Email required onBlur={(e: any) => console.log(e.detail)} />
             Password <Password onChange={changeEvent} />
+            Masked Input <MaskedInput mask={Regex.phone()} onChange={changeEvent} />
         </React.Fragment>
     );
 };

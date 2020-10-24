@@ -1,8 +1,26 @@
+import typeUtility from "../../shared/typeUtility";
+
 function modRegex(originalRegex, symbols: string | number = '', temp = 'SPECIAL') {
     let regex = originalRegex.source || originalRegex;
     regex = regex.replace(temp, symbols);
     return regex;
 }
+
+function extractValue(data: string, mask: any[]): string {
+    const symbols: string[] = mask.filter(n => !typeUtility.isRegex(n));
+    let result = '';
+    for (let i = 0; i < data.length; i++) {
+        const el = data[i];
+        if (symbols.includes(el)) {
+            continue;
+        }
+        result += el;
+    }
+
+    return result;
+}
+
+const num = /^[0-9]*$/;
 
 const Regex = {
     number: () => /^\d+$/,
@@ -25,7 +43,9 @@ const Regex = {
         // eslint-disable-next-line
         const regex = /(?:[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*|"(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21\x23-\x5b\x5d-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])*")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\x01-\x08\x0b\x0c\x0e-\x1f\x21-\x5a\x53-\x7f]|\\[\x01-\x09\x0b\x0c\x0e-\x7f])+)\])/;
         return regex;
-    }
+    },
+    phone: () => ['(', num, num, num, ')', ' ', num, num, num, '-', num, num, num, num],
+    extractValue: extractValue,
 };
 
 export default Regex;
