@@ -6,7 +6,7 @@ function modRegex(originalRegex, symbols: string | number = '', temp = 'SPECIAL'
     return regex;
 }
 
-function extractValue(data: string, mask: any[]): string {
+function pureValueObsolete(data: string, mask: any[]): string {
     const symbols: string[] = mask.filter(n => !typeUtility.isRegex(n));
     let result = '';
     for (let i = 0; i < data.length; i++) {
@@ -15,6 +15,26 @@ function extractValue(data: string, mask: any[]): string {
             continue;
         }
         result += el;
+    }
+
+    return result;
+}
+
+function pureValue(data: string, mask: any[]): string {
+    const regexes: any[] = mask.filter(n => typeUtility.isRegex(n));
+    let result = '';
+
+    let di = 0;
+    for (let ri = 0; (ri < regexes.length && di < data.length); ri++) {
+        const regex = regexes[ri] as RegExp;
+        const val = data[di];
+
+        if (regex.test(val)) {
+            result += val;
+        } else {
+            ri--;
+        }
+        di++;
     }
 
     return result;
@@ -45,7 +65,8 @@ const Regex = {
         return regex;
     },
     phone: () => ['(', num, num, num, ')', ' ', num, num, num, '-', num, num, num, num],
-    extractValue: extractValue,
+    zipcode: () => [num, num, num, num, num],
+    pureValue: pureValue
 };
 
 export default Regex;

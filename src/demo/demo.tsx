@@ -24,7 +24,8 @@ const Dashboard = () => {
             AlphaNumeric <AlphaNumeric />
             Email <Email required onBlur={(e: any) => console.log(e.detail)} />
             Password <Password onChange={changeEvent} />
-            Masked Input <MaskedInput mask={Regex.phone()} onChange={changeEvent} />
+            Phone Input <MaskedInput mask={Regex.phone()} onChange={changeEvent} />
+            ZipCode Input <MaskedInput mask={Regex.zipcode()} onChange={changeEvent} />
         </React.Fragment>
     );
 };
