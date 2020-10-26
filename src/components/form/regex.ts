@@ -6,19 +6,19 @@ function modRegex(originalRegex, symbols: string | number = '', temp = 'SPECIAL'
     return regex;
 }
 
-function pureValueObsolete(data: string, mask: any[]): string {
-    const symbols: string[] = mask.filter(n => !typeUtility.isRegex(n));
-    let result = '';
-    for (let i = 0; i < data.length; i++) {
-        const el = data[i];
-        if (symbols.includes(el)) {
-            continue;
-        }
-        result += el;
-    }
+// function pureValueObsolete(data: string, mask: any[]): string {
+//     const symbols: string[] = mask.filter(n => !typeUtility.isRegex(n));
+//     let result = '';
+//     for (let i = 0; i < data.length; i++) {
+//         const el = data[i];
+//         if (symbols.includes(el)) {
+//             continue;
+//         }
+//         result += el;
+//     }
 
-    return result;
-}
+//     return result;
+// }
 
 function pureValue(data: string, mask: any[]): string {
     const regexes: any[] = mask.filter(n => typeUtility.isRegex(n));
