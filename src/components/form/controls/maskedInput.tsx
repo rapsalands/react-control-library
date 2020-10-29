@@ -1,47 +1,17 @@
 import React from 'react';
+import maskUtility from '../../../shared/maskUtility';
 import typeUtility from '../../../shared/typeUtility';
 import utility from '../../../shared/utility';
 import { ICustomInputProps, IMaskedInputProps } from '../formProps';
-import Regex from '../regex';
 
 const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask, ...props }) => {
 
     function changeEvent(e) {
 
-        const { cursorStart, cursorEnd } = utility.cursor(e);
-        let cursorJump = 0; // Chars Added Before Cursor Position
-
-        const currentValue = e.target.value;
-        const pureValue = Regex.pureValue(currentValue, mask);
-        let result = pureValue;
-
-        for (let i = 0; i < result.length; i++) {
-            const m = mask[i];
-            if (m === undefined) break;
-            if (!typeUtility.isRegex(m) && m !== result[i]) {
-                result = utility.insertAt(result, m, i);
-                cursorJump = calculateCursorJump(i, m, cursorJump);
-            }
-        }
-
-        e.target.value = result;
-
-        updateCursorPosition();
+        const toMaskResult = maskUtility.toMaskWithCursor(e, mask);
+        maskUtility.updateEventArgs(e, toMaskResult);
 
         props.onChange && props.onChange(e);
-
-        function updateCursorPosition() {
-            e.target.selectionStart = cursorStart + cursorJump;
-            e.target.selectionEnd = cursorEnd + cursorJump;
-        }
-
-        function calculateCursorJump(charIndex: number, currentmask: any, currentCursorJump: number): number {
-            // Calculating the extra symbols that are added because of masking requirement.
-            if (currentValue[charIndex] !== currentmask && charIndex <= cursorStart)
-                return (currentCursorJump + 1);
-            return currentCursorJump
-        }
-
     }
 
     function keyPressEvent(e) {

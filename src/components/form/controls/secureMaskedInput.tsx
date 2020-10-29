@@ -1,16 +1,35 @@
 import React from 'react';
+import maskUtility from '../../../shared/maskUtility';
+import typeUtility from '../../../shared/typeUtility';
 import { ICustomInputProps, ISecureInputProps } from '../formProps';
 import MaskedInput from './maskedInput';
 
 const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ mask, secure, ...props }) => {
 
-    const [real, setReal] = React.useState<string>(`${props.value || ''}`);
-    const [secureValue, setSecureValue] = React.useState<string>(getSecure(props.value));
+    function getReal(value) {
+        if (typeUtility.isDefined(value)) {
+            const toMaskResult = maskUtility.toMask(value, mask);
+            return toMaskResult.value;
+        }
+        return '';
+    }
 
     function getSecure(value) {
         if (!secure) return value;
         return secure.getValue(value);
     }
+
+    const [real, setReal] = React.useState<any>(getReal(props.value));
+    const [secureValue, setSecureValue] = React.useState<string>(getSecure(props.value));
+
+    React.useEffect(() => {
+        if (props.value === secureValue) return;
+
+        // Convert to masked format
+        const realValue = getReal(props.value);
+        setReal(realValue);
+        setSecureValue(getSecure(realValue));
+    }, [props.value]);
 
     function blurEvent(e) {
         setReal(secureValue);
