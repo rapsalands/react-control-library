@@ -60,3 +60,9 @@ export interface IPasswordFailure {
 export interface IMaskedInputProps {
     mask: any[]
 }
+
+export interface ISecureInputProps extends IMaskedInputProps {
+    secure: {
+        getValue: (data: string) => string
+    }
+}

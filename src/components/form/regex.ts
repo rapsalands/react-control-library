@@ -6,20 +6,6 @@ function modRegex(originalRegex, symbols: string | number = '', temp = 'SPECIAL'
     return regex;
 }
 
-function pureValueObsolete(data: string, mask: any[]): string {
-    const symbols: string[] = mask.filter(n => !typeUtility.isRegex(n));
-    let result = '';
-    for (let i = 0; i < data.length; i++) {
-        const el = data[i];
-        if (symbols.includes(el)) {
-            continue;
-        }
-        result += el;
-    }
-
-    return result;
-}
-
 function pureValue(data: string, mask: any[]): string {
     const regexes: any[] = mask.filter(n => typeUtility.isRegex(n));
     let result = '';
@@ -66,6 +52,7 @@ const Regex = {
     },
     phone: () => ['(', num, num, num, ')', ' ', num, num, num, '-', num, num, num, num],
     zipcode: () => [num, num, num, num, num],
+    ssn: () => [num, num, num, '-', num, num, '-', num, num, num, num],
     pureValue: pureValue
 };
 

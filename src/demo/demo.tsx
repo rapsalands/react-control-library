@@ -6,6 +6,7 @@ import Email from '../components/form/controls/email';
 import MaskedInput from '../components/form/controls/maskedInput';
 import NumberInput from '../components/form/controls/numberInput';
 import Password from '../components/form/controls/password';
+import SecureMaskedInput from '../components/form/controls/secureMaskedInput';
 import TextInput from '../components/form/controls/textInput';
 import Regex from '../components/form/regex';
 
@@ -26,6 +27,7 @@ const Dashboard = () => {
             Password <Password onChange={changeEvent} />
             Phone Input <MaskedInput mask={Regex.phone()} onChange={changeEvent} />
             ZipCode Input <MaskedInput mask={Regex.zipcode()} onChange={changeEvent} />
+            SSN Input <SecureMaskedInput secure={{ getValue: (data) => '****' }} mask={Regex.ssn()} onChange={changeEvent} />
         </React.Fragment>
     );
 };
