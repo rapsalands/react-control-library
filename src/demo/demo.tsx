@@ -6,10 +6,14 @@ import Email from '../components/form/controls/email';
 import MaskedInput from '../components/form/controls/maskedInput';
 import NumberInput from '../components/form/controls/numberInput';
 import Password from '../components/form/controls/password';
+import SecureMaskedInput from '../components/form/controls/secureMaskedInput';
 import TextInput from '../components/form/controls/textInput';
 import Regex from '../components/form/regex';
 
 const Dashboard = () => {
+
+    const [ssn, setSsn] = React.useState('8767867576565');
+    const [temp, setTemp] = React.useState(98798);
 
     function changeEvent(e) {
         console.log(e.detail);
@@ -18,14 +22,15 @@ const Dashboard = () => {
     return (
         <React.Fragment>
 
-            Text Field <TextInput restrictSymbols='~!@#$%' label='Person Name' />
+            Text Field <TextInput restrictSymbols='~!@#$%' value={ssn} onChange={(e: any) => setSsn(e.target.value)} label='Person Name' />
             Number <NumberInput max={2000} min={500} minLength={3} inputTag={TextField} onChange={changeEvent} />
-            Decimal <DecimalInput decimalLimit={5} />
-            AlphaNumeric <AlphaNumeric />
+            Decimal <DecimalInput decimalLimit={5} value={temp} onChange={(e: any) => setTemp(e.target.value)} />
+            AlphaNumeric <AlphaNumeric onBlur={(e: any) => { setSsn(e.target.value); setTemp(e.target.value) }} />
             Email <Email required onBlur={(e: any) => console.log(e.detail)} />
             Password <Password onChange={changeEvent} />
             Phone Input <MaskedInput mask={Regex.phone()} onChange={changeEvent} />
             ZipCode Input <MaskedInput mask={Regex.zipcode()} onChange={changeEvent} />
+            SSN Input <SecureMaskedInput secure={{ getValue: (data) => `***${data}` }} value={ssn} mask={Regex.ssn()} onChange={(e: any) => setSsn(e.target.value)} />
         </React.Fragment>
     );
 };
