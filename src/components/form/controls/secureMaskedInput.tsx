@@ -29,6 +29,7 @@ const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ ma
         const realValue = getReal(props.value);
         setReal(realValue);
         setSecureValue(getSecure(realValue));
+        // eslint-disable-next-line
     }, [props.value]);
 
     function blurEvent(e) {
