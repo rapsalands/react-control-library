@@ -1,7 +1,12 @@
 {
-  "name": "reactforms",
+  "name": "@rapsy/reactforms",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "babel": {
+    "presets": [
+      "@babel/preset-react"
+    ]
+  },
   "dependencies": {
     "@material-ui/core": "^4.11.0",
     "@testing-library/jest-dom": "^4.2.4",
@@ -20,7 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "publish:npm": "--access public del -rf dist && mkdir dist &&  babel src/components -d dist --copy-files"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -36,5 +42,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }
