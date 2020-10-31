@@ -1,5 +1,5 @@
 import Regex from "../components/form/regex";
-import typeUtility from "./typeUtility";
+import { isRegex } from "type-check-utility";
 import utility from "./utility";
 
 function toMaskWithCursor(e: any, mask: any[]): IToMaskWithCursor {
@@ -13,7 +13,7 @@ function toMaskWithCursor(e: any, mask: any[]): IToMaskWithCursor {
     for (let i = 0; i < result.length; i++) {
         const m = mask[i];
         if (m === undefined) break;
-        if (!typeUtility.isRegex(m) && m !== result[i]) {
+        if (!isRegex(m) && m !== result[i]) {
             result = utility.insertAt(result, m, i);
 
             if (currentValue[i] !== m && i <= cursorStart)
@@ -32,7 +32,7 @@ function toMask(value: any, mask: any[]): IToMask {
     for (let i = 0; i < result.length; i++) {
         const m = mask[i];
         if (m === undefined) break;
-        if (!typeUtility.isRegex(m) && m !== result[i]) {
+        if (!isRegex(m) && m !== result[i]) {
             result = utility.insertAt(result, m, i);
         }
     }

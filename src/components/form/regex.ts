@@ -1,4 +1,4 @@
-import typeUtility from "../../shared/typeUtility";
+import { isRegex } from 'type-check-utility';
 
 function modRegex(originalRegex, symbols: string | number = '', temp = 'SPECIAL') {
     let regex = originalRegex.source || originalRegex;
@@ -21,7 +21,7 @@ function modRegex(originalRegex, symbols: string | number = '', temp = 'SPECIAL'
 // }
 
 function pureValue(data: string, mask: any[]): string {
-    const regexes: any[] = mask.filter(n => typeUtility.isRegex(n));
+    const regexes: any[] = mask.filter(n => isRegex(n));
     let result = '';
 
     let di = 0;

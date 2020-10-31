@@ -1,13 +1,13 @@
 import React from 'react';
 import maskUtility from '../../../shared/maskUtility';
-import typeUtility from '../../../shared/typeUtility';
+import { isDefined } from 'type-check-utility';
 import { ICustomInputProps, ISecureInputProps } from '../formProps';
 import MaskedInput from './maskedInput';
 
 const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ mask, secure, ...props }) => {
 
     function getReal(value) {
-        if (typeUtility.isDefined(value)) {
+        if (isDefined(value)) {
             const toMaskResult = maskUtility.toMask(value, mask);
             return toMaskResult.value;
         }
