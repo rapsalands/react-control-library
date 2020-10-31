@@ -1,5 +1,5 @@
-import Constants from "../../shared/constants";
-import Messages from "../../shared/messages";
+import Constants from "../shared/constants";
+import Messages from "../shared/messages";
 import { IDetail, IPasswordCriteria, IPasswordFailure } from "./formProps";
 import { DetailIns, PasswordFailIns } from "./formPropsIns";
 import Regex from "./regex";

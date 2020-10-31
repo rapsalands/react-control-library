@@ -1,4 +1,4 @@
-import Regex from "../components/form/regex";
+import Regex from "../form/regex";
 import { isRegex } from "type-check-utility";
 import utility from "./utility";
 

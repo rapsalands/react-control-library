@@ -1,5 +1,5 @@
-import Constants from '../../shared/constants';
-import { DetailMode } from '../detailMode';
+import Constants from '../shared/constants';
+import { DetailMode } from './detailMode';
 import { IDetail, IPasswordCriteria, IPasswordFailure as IPasswordFail, IValidationProps } from './formProps';
 
 export class ValidationIns implements IValidationProps {

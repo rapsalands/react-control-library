@@ -1,5 +1,5 @@
 import React from 'react';
-import { DetailMode } from '../../detailMode';
+import { DetailMode } from '../detailMode';
 import { ICustomInputProps } from '../formProps';
 import { ValidationIns } from '../formPropsIns';
 import { isEmail } from '../formValidations';

@@ -1,4 +1,4 @@
-import { DetailMode } from "../detailMode";
+import { DetailMode } from "./detailMode";
 import { validate, validateForRestriction } from "./formValidations";
 import { IDetail, IValidationProps } from "./formProps";
 

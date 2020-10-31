@@ -1,4 +1,4 @@
-import { PasswordCriteriaIns } from "../components/form/formPropsIns";
+import { PasswordCriteriaIns } from "../form/formPropsIns";
 
 const AppSettings = {
     defaultPasswordCriteria: () => {

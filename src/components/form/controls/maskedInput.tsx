@@ -1,7 +1,7 @@
 import React from 'react';
-import maskUtility from '../../../shared/maskUtility';
+import maskUtility from '../../shared/maskUtility';
 import { isRegex } from 'type-check-utility';
-import utility from '../../../shared/utility';
+import utility from '../../shared/utility';
 import { ICustomInputProps, IMaskedInputProps } from '../formProps';
 
 const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask, ...props }) => {

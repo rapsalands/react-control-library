@@ -1,6 +1,6 @@
 import React from 'react';
-import AppSettings from '../../../shared/appSettings';
-import { DetailMode } from '../../detailMode';
+import AppSettings from '../../shared/appSettings';
+import { DetailMode } from '../detailMode';
 import { ICustomInputProps, IPasswordProps } from '../formProps';
 import { ValidationIns } from '../formPropsIns';
 import { isPasswordValid } from '../formValidations';
