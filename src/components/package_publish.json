@@ -1,0 +1,36 @@
+{
+  "name": "react-control-library",
+  "version": "1.0.5",
+  "description": "React based control library with features for every application.",
+  "main": "index.js",
+  "dependencies": {
+    "type-check-utility": "^1.0.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "controls",
+    "library",
+    "decimal",
+    "password",
+    "number",
+    "alphanumeric",
+    "email",
+    "masked",
+    "secure",
+    "masked"
+  ],
+  "author": "Rapsy Tree",
+  "license": "ISC",
+  "peerDependencies": {
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "type-check-utility": "^1.0.2",
+    "browserify": "latest",
+    "@types/browserify": "latest",
+    "typescript": "next",
+    "rimraf": "^3.0.2"
+  }
+}
