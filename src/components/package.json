@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "rimraf ./react-control-library && tsc",
+    "delete": "rimraf ./react-control-library",
+    "build": "npm run delete && tsc",
     "copy": "copy package_publish.json react-control-library\\package.json",
     "dist": "npm run build && npm run copy",
     "prepare": "npm run dist && npm publish",
