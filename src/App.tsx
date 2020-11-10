@@ -6,6 +6,7 @@ import Email from './components/form/controls/email';
 import MaskedInput from './components/form/controls/maskedInput';
 import NumberInput from './components/form/controls/numberInput';
 import Password from './components/form/controls/password';
+import RadioButton from './components/form/controls/radioButton';
 import SecureMaskedInput from './components/form/controls/secureMaskedInput';
 import TextInput from './components/form/controls/textInput';
 import Regex from './components/form/regex';
@@ -14,6 +15,7 @@ function App() {
 
   const [ssn, setSsn] = React.useState('8767867576565');
   const [temp, setTemp] = React.useState(98798);
+  const [gender, setGender] = React.useState('male');
 
   function changeEvent(e) {
     console.log(e.detail);
@@ -47,6 +49,11 @@ function App() {
       </div>
       <div>
         SSN Input <SecureMaskedInput secure={{ getValue: (data) => `***${data}` }} value={ssn} mask={Regex.ssn()} onChange={(e: any) => setSsn(e.target.value)} />
+      </div>
+      <div>
+        Gender
+        <RadioButton name='gender' placeholder='One' checked={gender === 'male'} onChange={_ => setGender('male')} />
+        <RadioButton name='gender' placeholder='Two' checked={gender === 'female'} onChange={_ => setGender('female')} />
       </div>
     </React.Fragment>
   );
