@@ -3,16 +3,16 @@ import { ICustomInputProps } from '../formProps';
 import formUtility from '../formUtility';
 import CustomInput from './customInput';
 
-const RadioButton: React.FC<ICustomInputProps> = ({ type, ...props }) => {
+const Checkbox: React.FC<ICustomInputProps> = ({ type, ...props }) => {
 
     const [data, setData] = React.useState<boolean | undefined>(props.checked || false);
     React.useEffect(() => setData(props.checked), [props.checked]);
 
-    const cn = formUtility.getBooleanControlClassName(data, props.className, 'radio', props.name);
+    const cn = formUtility.getBooleanControlClassName(data, props.className, 'checkbox', props.id);
 
     return (
-        <CustomInput type='radio' checked={data} className={cn} {...props} />
+        <CustomInput type='checkbox' checked={data} className={cn} {...props} />
     );
 };
 
-export default RadioButton;
+export default Checkbox;

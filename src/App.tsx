@@ -1,3 +1,4 @@
+import Checkbox1 from './components/form/controls/checkbox';
 import React from 'react';
 import './App.css';
 import AlphaNumeric from './components/form/controls/alphaNumeric';
@@ -16,6 +17,7 @@ function App() {
   const [ssn, setSsn] = React.useState('8767867576565');
   const [temp, setTemp] = React.useState(98798);
   const [gender, setGender] = React.useState('male');
+  const [yesNo, setYesNo] = React.useState(false);
 
   function changeEvent(e) {
     console.log(e.detail);
@@ -54,6 +56,10 @@ function App() {
         Gender
         <RadioButton name='gender' placeholder='One' checked={gender === 'male'} onChange={_ => setGender('male')} />
         <RadioButton name='gender' placeholder='Two' checked={gender === 'female'} onChange={_ => setGender('female')} />
+      </div>
+      <div>
+        Yes/No
+        <Checkbox1 />
       </div>
     </React.Fragment>
   );
