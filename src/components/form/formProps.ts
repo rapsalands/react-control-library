@@ -4,7 +4,8 @@ export interface ICustomInputProps extends React.HTMLProps<HTMLInputElement> {
     exactLength?: number;
     validation?: IValidationProps;
     inputTag?: any;
-    detailModes?: DetailMode[]
+    detailModes?: DetailMode[],
+    setReference?: (refSetter: ((ref: React.MutableRefObject<HTMLInputElement | undefined>) => void)) => void
 }
 
 export interface IValidationProps {
@@ -65,4 +66,8 @@ export interface ISecureInputProps extends IMaskedInputProps {
     secure: {
         getValue: (data: string) => string
     }
+}
+
+export interface ICheckboxProps {
+    indeterminate?: boolean
 }

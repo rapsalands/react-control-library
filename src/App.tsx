@@ -59,7 +59,7 @@ function App() {
       </div>
       <div>
         Yes/No
-        <Checkbox1 />
+        <Checkbox1 indeterminate={gender === 'male'} />
       </div>
     </React.Fragment>
   );

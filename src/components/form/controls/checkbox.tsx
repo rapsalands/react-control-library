@@ -1,14 +1,24 @@
 import React from 'react';
-import { ICustomInputProps } from '../formProps';
+import { ICheckboxProps, ICustomInputProps } from '../formProps';
 import formUtility from '../formUtility';
 import CustomInput from './customInput';
+import { isDefined } from 'type-check-utility';
 
-const Checkbox: React.FC<ICustomInputProps> = ({ type, ...props }) => {
+const Checkbox: React.FC<ICustomInputProps & ICheckboxProps> = ({ type, indeterminate, ...props }) => {
 
     const [data, setData] = React.useState<boolean | undefined>(props.checked || false);
+    const [reference, setReference] = React.useState<any>();
     React.useEffect(() => setData(props.checked || false), [props.checked]);
 
     const cn = formUtility.getBooleanControlClassName(data, props.className, 'checkbox', props.id);
+
+    React.useEffect(() => {
+        if (!reference || !reference.current) return;
+
+        if (isDefined(indeterminate)) {
+            reference.current.indeterminate = indeterminate;
+        }
+    }, [indeterminate]);
 
     function onChange(e: any) {
         setData(e.target.checked);
@@ -16,7 +26,7 @@ const Checkbox: React.FC<ICustomInputProps> = ({ type, ...props }) => {
     }
 
     return (
-        <CustomInput type='checkbox' checked={data} onChange={onChange} className={cn} {...props} />
+        <CustomInput type='checkbox' setReference={setReference} checked={data} onChange={onChange} className={cn} {...props} />
     );
 };
 

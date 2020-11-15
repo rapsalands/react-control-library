@@ -4,12 +4,19 @@ import FormEvents from '../formEvents';
 import { ICustomInputProps } from '../formProps';
 import { ValidationIns } from '../formPropsIns';
 
-const CustomInput: React.FC<ICustomInputProps> = ({ inputTag, validation, type, value, className, onKeyPress, onChange, onBlur, detailModes = [DetailMode.onBlur, DetailMode.onChange], ...props }) => {
+const CustomInput: React.FC<ICustomInputProps> = ({ setReference: refGetter, inputTag, validation, type, value, className, onKeyPress, onChange, onBlur, detailModes = [DetailMode.onBlur, DetailMode.onChange], ...props }) => {
 
+    const inputRef = React.useRef();
     const [data, setData] = React.useState(value);
     const InputTag = inputTag;
 
     const { onBlurEvent, onChangeEvent, onKeyPressEvent } = FormEvents;
+
+    React.useEffect(() => {
+        refGetter && refGetter(getInputRef);
+    }, []);
+
+    const getInputRef = () => inputRef;
 
     const validationParam = validation || new ValidationIns();
     const params = {
@@ -26,9 +33,10 @@ const CustomInput: React.FC<ICustomInputProps> = ({ inputTag, validation, type, 
     };
 
     if (InputTag) {
-        return <InputTag {...params} />;
+        return <InputTag ref={inputRef} {...params} />;
     }
-    return <input {...params} />;
+    // @ts-ignore
+    return <input ref={inputRef} {...params} />;
 };
 
 export default CustomInput;
