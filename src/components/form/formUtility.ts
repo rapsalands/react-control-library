@@ -1,3 +1,6 @@
+import { ICustomInputProps } from "./formProps";
+import { isDefined } from 'type-check-utility';
+
 function getBooleanControlClassName(data: any, originalClassName: string | undefined, prefix: string, baseKey: string | undefined) {
     const id = baseKey ? `${baseKey}_` : '';
     const checkedCn = data ? `${id}${prefix}_checked` : '';
@@ -5,8 +8,14 @@ function getBooleanControlClassName(data: any, originalClassName: string | undef
     return cn;
 }
 
+function getDefaultValue(props: ICustomInputProps) {
+    if (isDefined(props.value)) return props.value;
+    if (isDefined(props.checked)) return props.checked;
+    return '';
+}
+
 const formUtility = {
-    getBooleanControlClassName
+    getBooleanControlClassName, getDefaultValue
 };
 
 export default formUtility;

@@ -21,6 +21,7 @@ const CustomInput: React.FC<ICustomInputProps> = ({ inputTag, validation, type, 
         onBlur: (e) => onBlurEvent(e, data, setData, onBlur, validationParam, detailModes, props),
         onKeyPress: (e) => onKeyPressEvent(e, validationParam, onKeyPress, props),
         value: value,
+        checked: !!value,
         ...props
     };
 
