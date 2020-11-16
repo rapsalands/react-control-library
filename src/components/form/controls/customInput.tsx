@@ -14,6 +14,7 @@ const CustomInput: React.FC<ICustomInputProps> = ({ setReference: refGetter, inp
 
     React.useEffect(() => {
         refGetter && refGetter(getInputRef);
+    // eslint-disable-next-line
     }, []);
 
     const getInputRef = () => inputRef;

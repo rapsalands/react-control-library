@@ -18,6 +18,7 @@ const Checkbox: React.FC<ICustomInputProps & ICheckboxProps> = ({ type, indeterm
         if (isDefined(indeterminate)) {
             reference.current.indeterminate = indeterminate;
         }
+        // eslint-disable-next-line
     }, [indeterminate]);
 
     function onChange(e: any) {
