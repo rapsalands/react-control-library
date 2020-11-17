@@ -4,7 +4,7 @@ import FormEvents from '../formEvents';
 import { ICustomInputProps } from '../formProps';
 import { ValidationIns } from '../formPropsIns';
 
-const CustomInput: React.FC<ICustomInputProps> = ({ setReference, inputTag, validation, type, value, className, onKeyPress, onChange, onBlur, detailModes = [DetailMode.onBlur, DetailMode.onChange], exactLength, ...props }) => {
+const CustomInput: React.FC<ICustomInputProps> = ({ setReference, inputTag, validation, type, value, className, onKeyPress, onChange, onBlur, detailModes = [DetailMode.onBlur, DetailMode.onChange], exactLength, extractValueToValidate, ...props }) => {
 
     const inputRef = React.useRef();
     const [data, setData] = React.useState(value);
@@ -26,10 +26,10 @@ const CustomInput: React.FC<ICustomInputProps> = ({ setReference, inputTag, vali
         type: type || 'text',
         className: className,
         onChange: (e) => {
-            onChangeEvent(e, data, setData, onChange, validationParam, detailModes, consolidatedProps)
+            onChangeEvent(e, data, setData, onChange, validationParam, detailModes, consolidatedProps, extractValueToValidate)
         },
-        onBlur: (e) => onBlurEvent(e, data, setData, onBlur, validationParam, detailModes, consolidatedProps),
-        onKeyPress: (e) => onKeyPressEvent(e, validationParam, onKeyPress, consolidatedProps),
+        onBlur: (e) => onBlurEvent(e, data, setData, onBlur, validationParam, detailModes, consolidatedProps, extractValueToValidate),
+        onKeyPress: (e) => onKeyPressEvent(e, validationParam, onKeyPress, consolidatedProps, extractValueToValidate),
         value: value,
         checked: !!value,
         ...props

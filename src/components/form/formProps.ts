@@ -5,7 +5,8 @@ export interface ICustomInputProps extends React.HTMLProps<HTMLInputElement> {
     validation?: IValidationProps;
     inputTag?: any;
     detailModes?: DetailMode[],
-    setReference?: (refSetter: ((ref: React.MutableRefObject<HTMLInputElement | undefined>) => void)) => void
+    setReference?: (refSetter: ((ref: React.MutableRefObject<HTMLInputElement | undefined>) => void)) => void,
+    extractValueToValidate?: (value) => any
 }
 
 export interface IValidationProps {

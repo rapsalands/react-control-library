@@ -44,53 +44,53 @@ export function isNotPatternMatch(data: any, restrictSymbols: string): IDetail {
     return new DetailIns(null, data, isValid);
 }
 
-export function validate(e: any, data: any, props: any): IDetail {
+export function validate(detail: IDetail | null, data: any, props: any): IDetail {
     props = props || {};
     data = data || '';
 
     if (!data) {
         if (props.required) {
-            return new DetailIns(e.target.detail, data, false, 'required');
+            return new DetailIns(detail, data, false, 'required');
         }
-        return new DetailIns(e.target.detail, data, true, null);
+        return new DetailIns(detail, data, true, null);
     }
 
     if (props.minLength && data && props.minLength > data.length) {
-        return new DetailIns(e.target.detail, data, false, 'minLength');
+        return new DetailIns(detail, data, false, 'minLength');
     }
 
     if (props.exactLength && data && props.exactLength > data.length) {
-        return new DetailIns(e.target.detail, data, false, 'exactLength');
+        return new DetailIns(detail, data, false, 'exactLength');
     }
 
     if (props.min && +props.min > +data) {
-        return new DetailIns(e.target.detail, data, false, 'min');
+        return new DetailIns(detail, data, false, 'min');
     }
 
-    return new DetailIns(e.target.detail, data, true, null);
+    return new DetailIns(detail, data, true, null);
 }
 
-export function validateForRestriction(e: any, data: any, props: any): IDetail {
+export function validateForRestriction(detail: IDetail | null, value: any, props: any): IDetail {
     props = props || {};
-    data = data || '';
+    value = value || '';
 
-    if (!data) {
-        return new DetailIns(e.target.detail, data, true, null);
+    if (!value) {
+        return new DetailIns(detail, value, true, null);
     }
 
-    if (props.maxLength && data && props.maxLength > data.length) {
-        return new DetailIns(e.target.detail, data, false, 'maxLength');
+    if (props.maxLength && value && props.maxLength > value.length) {
+        return new DetailIns(detail, value, false, 'maxLength');
     }
 
-    if (props.max && +props.max < +data) {
-        return new DetailIns(e.target.detail, data, false, 'max');
+    if (props.max && +props.max < +value) {
+        return new DetailIns(detail, value, false, 'max');
     }
 
-    if (props.pattern && !(new RegExp(props.pattern).test(data))) {
-        return new DetailIns(e.target.detail, data, false, 'pattern');
+    if (props.pattern && !(new RegExp(props.pattern).test(value))) {
+        return new DetailIns(detail, value, false, 'pattern');
     }
 
-    return new DetailIns(e.target.detail, data, true, null);
+    return new DetailIns(detail, value, true, null);
 }
 
 export function isPasswordValid(data: any, passwordCriteria: IPasswordCriteria): IDetail {

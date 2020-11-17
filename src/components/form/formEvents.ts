@@ -2,45 +2,50 @@ import { DetailMode } from "./detailMode";
 import { validate, validateForRestriction } from "./formValidations";
 import { IDetail, IValidationProps } from "./formProps";
 
-const eHasError = (e) => !!(e.detail && !e.detail.isValid);
+const detailHasError = (detail) => !!(detail && !detail.isValid);
 
-function populateDetail(e, detailModes, detailMode, validation: IValidationProps, data, props, restrict: boolean = false): void {
-    const detail: IDetail | null | undefined = validation.isValid && validation.isValid(data);
+function populateDetail(value, detailModes, detailMode, validation: IValidationProps, props, restrict: boolean = false): (IDetail | null) {
+    const detail: IDetail | null | undefined = validation.isValid && validation.isValid(value);
     // If isValid not passed, below condition will be true.
-    if (!detail) return undefined;
+    if (!detail) return null;
 
     if (detailModes.includes(detailMode)) {
         const validateFunc = restrict ? validateForRestriction : validate;
-        e.detail = !detail.isValid ? detail : validateFunc(e, data, props);
+        return !detail.isValid ? detail : validateFunc(null, value, props);
     }
+    return null;
 }
 
-function popDetail4Restrict(e, detailModes, detailMode, validation: IValidationProps, data, props): void {
-    populateDetail(e, detailModes, DetailMode.onChange, validation, e.target.value, props, true);
+function popDetail4Restrict(value, detailModes, detailMode, validation: IValidationProps, props): (IDetail | null) {
+    return populateDetail(value, detailModes, DetailMode.onChange, validation, props, true);
 }
 
-function onChangeEvent(e, data, setData, onChangeCB, validation: IValidationProps, detailModes: DetailMode[], props) {
+function onChangeEvent(e, data, setData, onChangeCB, validation: IValidationProps, detailModes: DetailMode[], props, extractValueToValidate) {
+    const value = extractValueToValidate && extractValueToValidate(e.target.value);
     e.detail = null;
-    popDetail4Restrict(e, detailModes, DetailMode.onChange, validation, e.target.value, props);
-    if (eHasError(e) && validation.preventInput.includes(DetailMode.onChange)) {
+    let detail = popDetail4Restrict(value, detailModes, DetailMode.onChange, validation, props);
+    if (detailHasError(detail) && validation.preventInput.includes(DetailMode.onChange)) {
         e.target.value = data || '';
+        e.detail = detail;
         return;
     }
 
-    populateDetail(e, detailModes, DetailMode.onChange, validation, e.target.value, props);
+    detail = populateDetail(value, detailModes, DetailMode.onChange, validation, props);
+    e.detail = detail;
     setData && setData(e.target.value);
     onChangeCB && onChangeCB(e);
 }
 
-function onBlurEvent(e, data, setData, onBlurCB, validation: IValidationProps, detailModes: DetailMode[], props) {
+function onBlurEvent(e, data, setData, onBlurCB, validation: IValidationProps, detailModes: DetailMode[], props, extractValueToValidate) {
+    const value = extractValueToValidate && extractValueToValidate(e.target.value);
     e.detail = null;
-    populateDetail(e, detailModes, DetailMode.onBlur, validation, data, props);
-    if (!eHasError(e))
-        popDetail4Restrict(e, detailModes, DetailMode.onBlur, validation, data, props);
+    let detail = populateDetail(value, detailModes, DetailMode.onBlur, validation, data, props);
+    if (!detailHasError(detail))
+        popDetail4Restrict(value, detailModes, DetailMode.onBlur, validation, props);
     onBlurCB && onBlurCB(e);
 }
 
-function onKeyPressEvent(e, validation: IValidationProps, onKeyPressCB, props) {
+function onKeyPressEvent(e, validation: IValidationProps, onKeyPressCB, props, extractValueToValidate) {
     e.detail = null;
     if (validation.preventInput.includes(DetailMode.onKeyPress)) {
         const detail = validation.isValid && validation.isValid(e.key);
