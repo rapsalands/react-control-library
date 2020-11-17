@@ -1,13 +1,32 @@
-import Regex from "../form/regex";
 import { isRegex } from "type-check-utility";
 import utility from "./utility";
 
-function toMaskWithCursor(e: any, mask: any[]): IToMaskWithCursor {
+function extractPureValue(data: string, mask: any[] = []): string {
+    const regexes: any[] = mask.filter(n => isRegex(n));
+    let result = '';
+
+    let di = 0;
+    for (let ri = 0; (ri < regexes.length && di < data.length); ri++) {
+        const regex = regexes[ri] as RegExp;
+        const val = data[di];
+
+        if (regex.test(val)) {
+            result += val;
+        } else {
+            ri--;
+        }
+        di++;
+    }
+
+    return result;
+}
+
+function toMaskWithCursor(e: any, mask: any[] = []): IToMaskWithCursor {
     const { cursorStart, cursorEnd } = utility.cursor(e);
     let cursorJump = 0; // Chars Added Before Cursor Position
 
     const currentValue = e.target.value;
-    const pureValue = Regex.pureValue(currentValue, mask);
+    const pureValue = extractPureValue(currentValue, mask);
     let result = pureValue;
 
     for (let i = 0; i < result.length; i++) {
@@ -24,9 +43,9 @@ function toMaskWithCursor(e: any, mask: any[]): IToMaskWithCursor {
     return { value: result, cursorStart: cursorStart + cursorJump, cursorEnd: cursorEnd + cursorJump };
 }
 
-function toMask(value: any, mask: any[]): IToMask {
+function toMask(value: any, mask: any[] = []): IToMask {
     const currentValue = value;
-    const pureValue = Regex.pureValue(currentValue, mask);
+    const pureValue = extractPureValue(currentValue, mask);
     let result = pureValue;
 
     for (let i = 0; i < result.length; i++) {
@@ -46,7 +65,15 @@ function updateEventArgs(e: any, toMaskResult: IToMaskWithCursor) {
     e.target.selectionEnd = toMaskResult.cursorEnd;
 }
 
-const maskUtility = { toMaskWithCursor, updateEventArgs, toMask };
+function updateDetail(e: any, mask: any[] = []) {
+    const value = e?.detail?.value;
+    if (!value) return;
+
+    const pureValue = extractPureValue(value, mask);
+    e.detail.value = pureValue;
+}
+
+const maskUtility = { toMaskWithCursor, updateEventArgs, toMask, updateDetail, extractPureValue };
 
 export default maskUtility;
 

@@ -2,29 +2,33 @@ import Constants from "../shared/constants";
 import Messages from "../shared/messages";
 import { IDetail, IPasswordCriteria, IPasswordFailure } from "./formProps";
 import { DetailIns, PasswordFailIns } from "./formPropsIns";
-import Regex from "./regex";
+import FormRegex from "./formRegex";
 
 function regexValidate(regex, data) {
     if (!data) return true;
     return new RegExp(regex).test(data);
 }
 
+export function alwaysValid(data: any): IDetail {
+    return new DetailIns(null, data, true, null, null);
+}
+
 export function isNumber(data: any): IDetail {
-    return new DetailIns(null, data, regexValidate(Regex.number(), data));
+    return new DetailIns(null, data, regexValidate(FormRegex.number(), data));
 }
 
 export function isDecimal(data: any, decimalLimit: number, maxLength: number): IDetail {
-    const isValid = regexValidate(Regex.decimal(decimalLimit, maxLength), data);
+    const isValid = regexValidate(FormRegex.decimal(decimalLimit, maxLength), data);
     return new DetailIns(null, data, isValid);
 }
 
 export function isAlphaNumeric(data: any, allowSymbols: string): IDetail {
-    const isValid = regexValidate(Regex.alphaNumeric(allowSymbols), data);
+    const isValid = regexValidate(FormRegex.alphaNumeric(allowSymbols), data);
     return new DetailIns(null, data, isValid);
 }
 
 export function isEmail(data: any): IDetail {
-    const isValid = regexValidate(Regex.email(), data);
+    const isValid = regexValidate(FormRegex.email(), data);
     return new DetailIns(null, data, isValid);
 }
 
@@ -36,7 +40,7 @@ export function isPatternMatch(data: any, pattern): IDetail {
 
 export function isNotPatternMatch(data: any, restrictSymbols: string): IDetail {
     if (!data) return new DetailIns(null, data, true, null);
-    const isValid = !regexValidate(Regex.custom(restrictSymbols), data);
+    const isValid = !regexValidate(FormRegex.custom(restrictSymbols), data);
     return new DetailIns(null, data, isValid);
 }
 

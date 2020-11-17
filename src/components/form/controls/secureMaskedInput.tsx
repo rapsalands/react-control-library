@@ -4,7 +4,7 @@ import { isDefined } from 'type-check-utility';
 import { ICustomInputProps, ISecureInputProps } from '../formProps';
 import MaskedInput from './maskedInput';
 
-const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ mask, secure, ...props }) => {
+const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ mask = [], secure, ...props }) => {
 
     function getReal(value) {
         if (isDefined(value)) {

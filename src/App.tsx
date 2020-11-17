@@ -10,7 +10,7 @@ import Password from './components/form/controls/password';
 import RadioButton from './components/form/controls/radioButton';
 import SecureMaskedInput from './components/form/controls/secureMaskedInput';
 import TextInput from './components/form/controls/textInput';
-import Regex from './components/form/regex';
+import Regex from './regex';
 
 function App() {
 
@@ -44,13 +44,17 @@ function App() {
         Password <Password onChange={changeEvent} />
       </div>
       <div>
-        Phone Input <MaskedInput mask={Regex.phone()} onChange={changeEvent} />
+        Phone Input
+        {
+          // @ts-ignore
+          <MaskedInput mask={Regex.phone()} onChange={changeEvent} exactLength={9} />
+        }
       </div>
       <div>
         ZipCode Input <MaskedInput mask={Regex.zipcode()} onChange={changeEvent} />
       </div>
       <div>
-        SSN Input <SecureMaskedInput secure={{ getValue: (data) => `***${data}` }} value={ssn} mask={Regex.ssn()} onChange={(e: any) => setSsn(e.target.value)} />
+        SSN Input <SecureMaskedInput secure={{ getValue: (data) => `***${data}` }} value={ssn} mask={Regex.ssn()} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e) }} onBlur={changeEvent} />
       </div>
       <div>
         Gender

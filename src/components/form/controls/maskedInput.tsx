@@ -3,15 +3,24 @@ import maskUtility from '../../shared/maskUtility';
 import { isRegex } from 'type-check-utility';
 import utility from '../../shared/utility';
 import { ICustomInputProps, IMaskedInputProps } from '../formProps';
+import CustomInput from './customInput';
+import { ValidationIns } from '../formPropsIns';
+import { alwaysValid } from '../formValidations';
 
-const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask, ...props }) => {
+const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [], ...props }) => {
 
     function changeEvent(e) {
 
         const toMaskResult = maskUtility.toMaskWithCursor(e, mask);
         maskUtility.updateEventArgs(e, toMaskResult);
+        maskUtility.updateDetail(e, mask);
 
         props.onChange && props.onChange(e);
+    }
+
+    function onBlur(e) {
+        maskUtility.updateDetail(e, mask);
+        props.onBlur && props.onBlur(e);
     }
 
     function keyPressEvent(e) {
@@ -44,7 +53,7 @@ const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask, ..
     }
 
     return (
-        <input {...props} onChange={changeEvent} onKeyPress={keyPressEvent} />
+        <CustomInput {...props} validation={new ValidationIns(alwaysValid)} onBlur={onBlur} onChange={changeEvent} onKeyPress={keyPressEvent} />
     );
 };
 
