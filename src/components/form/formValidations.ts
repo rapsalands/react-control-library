@@ -104,7 +104,7 @@ function checkPassStrength(password): { score: number, strength: PasswordStrengt
 
         // award every unique letter until 5 repetitions
         const letters = new Object();
-        for (var i = 0; i < password.length; i++) {
+        for (let i = 0; i < password.length; i++) {
             letters[password[i]] = (letters[password[i]] || 0) + 1;
             score += 5.0 / letters[password[i]];
         }
