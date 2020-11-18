@@ -1,4 +1,5 @@
 import Constants from "../shared/constants";
+import { PasswordStrength } from "../shared/enums";
 import Messages from "../shared/messages";
 import { IDetail, IPasswordCriteria, IPasswordFailure } from "./formProps";
 import { DetailIns, PasswordFailIns } from "./formPropsIns";
@@ -93,6 +94,50 @@ export function validateForRestriction(detail: IDetail | null, value: any, props
     return new DetailIns(detail, value, true, null);
 }
 
+function scorePassword(password): number {
+    let score = 0;
+    if (!password)
+        return score;
+
+    // award every unique letter until 5 repetitions
+    const letters = new Object();
+    for (var i = 0; i < password.length; i++) {
+        letters[password[i]] = (letters[password[i]] || 0) + 1;
+        score += 5.0 / letters[password[i]];
+    }
+
+    // bonus points for mixing it up
+    const variations = {
+        digits: /\d/.test(password),
+        lower: /[a-z]/.test(password),
+        upper: /[A-Z]/.test(password),
+        nonWords: /\W/.test(password),
+    }
+
+    let variationCount = 0;
+    for (let check in variations) {
+        variationCount += (variations[check] == true) ? 1 : 0;
+    }
+    score += (variationCount - 1) * 10;
+
+    return score;
+}
+
+function checkPassStrength(password): { score: number, strength: PasswordStrength } {
+    const score = scorePassword(password);
+    let strength = PasswordStrength.VeryWeak;
+    if (score > 90)
+        strength = PasswordStrength.VeryStrong;
+    else if (score > 75)
+        strength = PasswordStrength.Strong;
+    else if (score > 60)
+        strength = PasswordStrength.Strong;
+    else if (score >= 30)
+        strength = PasswordStrength.Weak;
+
+    return { score, strength };
+}
+
 export function isPasswordValid(data: any, passwordCriteria: IPasswordCriteria): IDetail {
 
     data = data || '';
@@ -161,8 +206,11 @@ export function isPasswordValid(data: any, passwordCriteria: IPasswordCriteria):
     validate(pc.numberCount, 'numberCount', passMess.numberCount, ascii.zero, ascii.nine);
     validate(pc.symbols, 'symbols', passMess.symbols, 0, 0, false);
 
-    checkSequence(Constants.attributes.numberSeq, ascii.zero, ascii.nine, pc.sequence?.number, passMess.numberSeq(pc.sequence?.number))
-    checkSequence(Constants.attributes.characterSeq, ascii.a, ascii.z, pc.sequence?.characters, passMess.characterSeq(pc.sequence?.characters))
+    checkSequence(Constants.attributes.numberSeq, ascii.zero, ascii.nine, pc.sequence?.number, passMess.numberSeq(pc.sequence?.number));
+    checkSequence(Constants.attributes.characterSeq, ascii.a, ascii.z, pc.sequence?.characters, passMess.characterSeq(pc.sequence?.characters));
+
+    const passwordStrength = checkPassStrength(data);
+    result.push(new PasswordFailIns('strength', data, '', passwordStrength));
 
     return new DetailIns(null, data, !result.length, null, result);
 }

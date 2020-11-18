@@ -21,7 +21,7 @@ function popDetail4Restrict(value, detailModes, detailMode, validation: IValidat
 }
 
 function onChangeEvent(e, data, setData, onChangeCB, validation: IValidationProps, detailModes: DetailMode[], props, extractValueToValidate) {
-    const value = extractValueToValidate && extractValueToValidate(e.target.value);
+    const value = extractValueToValidate ? extractValueToValidate(e.target.value) : e.target.value;
     e.detail = null;
     let detail = popDetail4Restrict(value, detailModes, DetailMode.onChange, validation, props);
     if (detailHasError(detail) && validation.preventInput.includes(DetailMode.onChange)) {
