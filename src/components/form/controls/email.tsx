@@ -7,7 +7,7 @@ import CustomInput from './customInput';
 
 const Email: React.FC<ICustomInputProps> = ({ ...props }) => {
 
-    const validation = new ValidationIns(isEmail, [DetailMode.none]);
+    const validation = new ValidationIns((data) => isEmail(data, props.pattern), [DetailMode.none]);
 
     return (
         <CustomInput validation={validation} {...props} />

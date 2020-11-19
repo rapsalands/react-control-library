@@ -28,8 +28,9 @@ export function isAlphaNumeric(data: any, allowSymbols: string): IDetail {
     return new DetailIns(null, data, isValid);
 }
 
-export function isEmail(data: any): IDetail {
-    const isValid = regexValidate(FormRegex.email(), data);
+export function isEmail(data: any, pattern: any = null): IDetail {
+    const regex = pattern ? new RegExp(pattern) : FormRegex.email();
+    const isValid = regexValidate(regex, data);
     return new DetailIns(null, data, isValid);
 }
 

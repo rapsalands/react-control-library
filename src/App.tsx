@@ -38,7 +38,7 @@ function App() {
         AlphaNumeric <AlphaNumeric onBlur={(e: any) => { setSsn(e.target.value); setTemp(e.target.value) }} />
       </div>
       <div>
-        Email <Email required onBlur={(e: any) => console.log(e.detail)} />
+        Email <Email required onBlur={(e: any) => console.log(e.detail)} onChange={changeEvent} />
       </div>
       <div>
         Password <Password onChange={changeEvent} />
