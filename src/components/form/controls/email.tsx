@@ -1,6 +1,6 @@
 import React from 'react';
 import { DetailMode } from '../detailMode';
-import { ICustomInputProps } from '../formProps';
+import { ICustomInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import { ValidationIns } from '../formPropsIns';
 import { isEmail } from '../formValidations';
 import CustomInput from './customInput';

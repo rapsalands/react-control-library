@@ -1,7 +1,7 @@
 import React from 'react';
 import AppSettings from '../../shared/appSettings';
 import { DetailMode } from '../detailMode';
-import { ICustomInputProps, IPasswordProps } from '../formProps';
+import { ICustomInputProps, IPasswordProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import { ValidationIns } from '../formPropsIns';
 import { isPasswordValid } from '../formValidations';
 import CustomInput from './customInput';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICustomInputProps } from '../formProps';
+import { ICustomInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import formUtility from '../formUtility';
 import CustomInput from './customInput';
 

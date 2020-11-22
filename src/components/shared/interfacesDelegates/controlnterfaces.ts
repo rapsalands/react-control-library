@@ -1,4 +1,6 @@
-import { DetailMode } from "./detailMode";
+import { DetailMode } from "../../form/detailMode";
+import { ICustomEventDelegate } from "./delegates";
+import { IDetail } from "./eventInterfaces";
 
 export interface ICustomInputProps extends React.HTMLProps<HTMLInputElement> {
     exactLength?: number;
@@ -10,7 +12,7 @@ export interface ICustomInputProps extends React.HTMLProps<HTMLInputElement> {
 }
 
 export interface IValidationProps {
-    isValid: ((data: any) => IDetail) | undefined | null;
+    isValid: ((e: ICustomEventDelegate, data: any) => IDetail) | undefined | null;
     /** Prevent user Inputs once following when validation fails. Defaults to onChange and onKeyPress */
     preventInput: DetailMode[];
 }
@@ -29,14 +31,6 @@ export interface IRestrictSymbolsProps extends ICustomInputProps {
 
 export interface IPasswordProps {
     passwordCriteria?: IPasswordCriteria
-}
-
-export interface IDetail {
-    detail: any,
-    value: any,
-    isValid: boolean,
-    attribute: string | null,
-    metadata?: any
 }
 
 export interface IPasswordCriteria {
@@ -71,4 +65,11 @@ export interface ISecureInputProps extends IMaskedInputProps {
 
 export interface ICheckboxProps {
     indeterminate?: boolean
+}
+
+export interface ICursor {
+    cursorStart: number,
+    cursorEnd: number,
+    selectLength: number,
+    newLengthIsPermitted: number
 }

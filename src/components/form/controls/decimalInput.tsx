@@ -1,5 +1,5 @@
 import React from 'react';
-import { IDecimalInputProps } from '../formProps';
+import { IDecimalInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import { ValidationIns } from '../formPropsIns';
 import { isDecimal } from '../formValidations';
 import CustomInput from './customInput';

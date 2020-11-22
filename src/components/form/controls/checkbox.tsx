@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICheckboxProps, ICustomInputProps } from '../formProps';
+import { ICheckboxProps, ICustomInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import formUtility from '../formUtility';
 import CustomInput from './customInput';
 import { isDefined } from 'type-check-utility';

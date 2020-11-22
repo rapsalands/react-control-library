@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICustomInputProps } from '../formProps';
+import { ICustomInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import { ValidationIns } from '../formPropsIns';
 import { isNumber } from '../formValidations';
 import CustomInput from './customInput';

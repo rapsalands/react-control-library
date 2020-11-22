@@ -1,7 +1,7 @@
 import React from 'react';
 import maskUtility from '../../shared/maskUtility';
 import { isDefined } from 'type-check-utility';
-import { ICustomInputProps, ISecureInputProps } from '../formProps';
+import { ICustomInputProps, ISecureInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import MaskedInput from './maskedInput';
 
 const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ mask = [], secure, ...props }) => {

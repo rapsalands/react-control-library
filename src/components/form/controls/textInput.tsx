@@ -1,5 +1,5 @@
 import React from 'react';
-import { IRestrictSymbolsProps } from '../formProps';
+import { IRestrictSymbolsProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import { ValidationIns } from '../formPropsIns';
 import { isNotPatternMatch, isPatternMatch } from '../formValidations';
 import CustomInput from './customInput';

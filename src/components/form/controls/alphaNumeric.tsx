@@ -1,5 +1,5 @@
 import React from 'react';
-import { IAllowSymbolsProps } from '../formProps';
+import { IAllowSymbolsProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import { ValidationIns } from '../formPropsIns';
 import { isAlphaNumeric } from '../formValidations';
 import CustomInput from './customInput';

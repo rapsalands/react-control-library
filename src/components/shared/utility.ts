@@ -1,5 +1,5 @@
 import { ChangeEvent } from "react";
-import { ICursor } from "./types";
+import { ICursor } from "./interfacesDelegates/controlnterfaces";
 
 const insertAt = (data, sub, pos): string => `${data.slice(0, pos)}${sub}${data.slice(pos)}`;
 

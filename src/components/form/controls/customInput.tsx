@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { } from 'react';
 import { DetailMode } from '../detailMode';
 import FormEvents from '../formEvents';
-import { ICustomInputProps } from '../formProps';
+import { ICustomInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import { ValidationIns } from '../formPropsIns';
+import { IChangeInputEvent, IFocusInputEvent, IKeyboardInputEvent } from '../../shared/interfacesDelegates/eventInterfaces';
 
 const CustomInput: React.FC<ICustomInputProps> = ({ setReference, inputTag, validation, type, value, className, onKeyPress, onChange, onBlur, detailModes = [DetailMode.onBlur, DetailMode.onChange], exactLength, extractValueToValidate, ...props }) => {
 
@@ -17,6 +18,8 @@ const CustomInput: React.FC<ICustomInputProps> = ({ setReference, inputTag, vali
         // eslint-disable-next-line
     }, []);
 
+    const changeEvent = (e: IChangeInputEvent) => onChange && onChange(e);
+
     const getInputRef = () => inputRef;
 
     const consolidatedProps = { type, exactLength, ...props };
@@ -25,11 +28,11 @@ const CustomInput: React.FC<ICustomInputProps> = ({ setReference, inputTag, vali
     const params = {
         type: type || 'text',
         className: className,
-        onChange: (e) => {
-            onChangeEvent(e, data, setData, onChange, validationParam, detailModes, consolidatedProps, extractValueToValidate)
+        onChange: (e: IChangeInputEvent) => {
+            onChangeEvent(e, data, setData, changeEvent, validationParam, detailModes, consolidatedProps, extractValueToValidate)
         },
-        onBlur: (e) => onBlurEvent(e, data, setData, onBlur, validationParam, detailModes, consolidatedProps, extractValueToValidate),
-        onKeyPress: (e) => onKeyPressEvent(e, validationParam, onKeyPress, consolidatedProps, extractValueToValidate),
+        onBlur: (e: IFocusInputEvent) => onBlurEvent(e, data, setData, onBlur, validationParam, detailModes, consolidatedProps, extractValueToValidate),
+        onKeyPress: (e: IKeyboardInputEvent) => onKeyPressEvent(e, validationParam, onKeyPress, consolidatedProps, extractValueToValidate),
         value: value,
         checked: !!value,
         ...props

@@ -1,9 +1,10 @@
 import Constants from "../shared/constants";
 import { PasswordStrength } from "../shared/enums";
 import Messages from "../shared/messages";
-import { IDetail, IPasswordCriteria, IPasswordFailure } from "./formProps";
+import { IPasswordCriteria, IPasswordFailure } from "../shared/interfacesDelegates/controlnterfaces";
 import { DetailIns, PasswordFailIns } from "./formPropsIns";
 import FormRegex from "./formRegex";
+import { IDetail } from "../shared/interfacesDelegates/eventInterfaces";
 
 function regexValidate(regex, data) {
     if (!data) return true;
@@ -104,7 +105,7 @@ function checkPassStrength(password): { score: number, strength: PasswordStrengt
             return score;
 
         // award every unique letter until 5 repetitions
-        const letters = new Object();
+        const letters = {};
         for (let i = 0; i < password.length; i++) {
             letters[password[i]] = (letters[password[i]] || 0) + 1;
             score += 5.0 / letters[password[i]];
@@ -120,7 +121,7 @@ function checkPassStrength(password): { score: number, strength: PasswordStrengt
 
         let variationCount = 0;
         for (let check in variations) {
-            variationCount += (variations[check] == true) ? 1 : 0;
+            variationCount += (variations[check] === true) ? 1 : 0;
         }
         score += (variationCount - 1) * 10;
 

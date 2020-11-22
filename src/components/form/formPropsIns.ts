@@ -1,12 +1,14 @@
 import Constants from '../shared/constants';
 import { DetailMode } from './detailMode';
-import { IDetail, IPasswordCriteria, IPasswordFailure as IPasswordFail, IValidationProps } from './formProps';
+import { IPasswordCriteria, IPasswordFailure as IPasswordFail, IValidationProps } from '../shared/interfacesDelegates/controlnterfaces';
+import { IDetail } from '../shared/interfacesDelegates/eventInterfaces';
+import { ICustomEventDelegate } from '../shared/interfacesDelegates/delegates';
 
 export class ValidationIns implements IValidationProps {
-    isValid: ((data: any) => IDetail) | null | undefined;
+    isValid: ((e: ICustomEventDelegate, data: any) => IDetail) | null | undefined;
     preventInput: DetailMode[];
 
-    constructor(isValid?: ((data: any) => IDetail) | null, preventInput = [DetailMode.onChange, DetailMode.onKeyPress]) {
+    constructor(isValid?: ((e: ICustomEventDelegate, data: any) => IDetail) | null, preventInput = [DetailMode.onChange, DetailMode.onKeyPress]) {
         this.isValid = isValid;
         this.preventInput = preventInput;
     }
