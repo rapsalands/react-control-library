@@ -13,7 +13,7 @@
     "copy": "copy package_publish.json react-control-library\\package.json",
     "dist": "npm run build && npm run copy",
     "prepare": "npm run dist && npm publish",
-    "final": "npm run dist && npm publish react-control-library"
+    "final": "npm run dist && npm publish react-control-library && npm run delete"
   },
   "keywords": [
     "react",
