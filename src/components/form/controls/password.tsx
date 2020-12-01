@@ -3,14 +3,14 @@ import AppSettings from '../../shared/appSettings';
 import { DetailMode } from '../detailMode';
 import { ICustomInputProps, IPasswordProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import { ValidationIns } from '../formPropsIns';
-import { isPasswordValid } from '../formValidations';
 import CustomInput from './customInput';
+import passwordVal from '../validation/passwordVal';
 
 const Password: React.FC<ICustomInputProps & IPasswordProps> = ({ passwordCriteria = null, ...props }) => {
 
     const pc = passwordCriteria || AppSettings.defaultPasswordCriteria();
 
-    const validation = new ValidationIns((data) => isPasswordValid(data, pc), [DetailMode.none]);
+    const validation = new ValidationIns((data) => passwordVal.isPasswordValid(data, pc), [DetailMode.none]);
 
     return (
         <CustomInput type='password' validation={validation} {...props} />

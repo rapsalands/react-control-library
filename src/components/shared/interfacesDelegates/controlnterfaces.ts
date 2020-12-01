@@ -12,7 +12,7 @@ export interface ICustomInputProps extends React.HTMLProps<HTMLInputElement> {
 }
 
 export interface IValidationProps {
-    isValid: ((e: ICustomEventDelegate, data: any) => IDetail) | undefined | null;
+    controlSpecific: ((e: ICustomEventDelegate, data: any) => IDetail) | undefined | null;
     /** Prevent user Inputs once following when validation fails. Defaults to onChange and onKeyPress */
     preventInput: DetailMode[];
 }

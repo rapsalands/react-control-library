@@ -1,17 +1,17 @@
 import { DetailMode } from "./detailMode";
-import { validate, validateForRestriction } from "./formValidations";
+import fv from "./validation/formVal";
 import { IDetail } from "../shared/interfacesDelegates/eventInterfaces";
 import { blurDelegate, changeDelegate, keyPressDelegate, populateDetailDelegate } from "../shared/interfacesDelegates/delegates";
 
 const detailHasError = (detail) => !!(detail && !detail.isValid);
 
 const populateDetail: populateDetailDelegate = (e, value, detailModes, detailMode, validation, props, restrict: boolean = false) => {
-    const detail: IDetail | null | undefined = validation.isValid && validation.isValid(e, value);
+    const detail: IDetail | null | undefined = validation.controlSpecific && validation.controlSpecific(e, value);
     // If isValid not passed, below condition will be true.
     if (!detail) return null;
 
     if (detailModes.includes(detailMode)) {
-        const validateFunc = restrict ? validateForRestriction : validate;
+        const validateFunc = restrict ? fv.forRestriction : fv.general;
         return !detail.isValid ? detail : validateFunc(null, value, props);
     }
     return null;
@@ -49,8 +49,8 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
 const onKeyPressEvent: keyPressDelegate = (e, validation, onKeyPressCB, props, extractValueToValidate) => {
     e.detail = null;
     if (validation.preventInput.includes(DetailMode.onKeyPress)) {
-        const detail = validation.isValid && validation.isValid(e, e.key);
-        if (detail && !detail.isValid && validation.preventInput.includes(DetailMode.onKeyPress)) {
+        const detail = validation.controlSpecific && validation.controlSpecific(e, e.key);
+        if (detail && !detail.isValid) {
             e.preventDefault();
             return;
         }

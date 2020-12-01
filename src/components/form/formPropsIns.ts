@@ -5,11 +5,11 @@ import { IDetail } from '../shared/interfacesDelegates/eventInterfaces';
 import { ICustomEventDelegate } from '../shared/interfacesDelegates/delegates';
 
 export class ValidationIns implements IValidationProps {
-    isValid: ((e: ICustomEventDelegate, data: any) => IDetail) | null | undefined;
+    controlSpecific: ((e: ICustomEventDelegate, data: any) => IDetail) | null | undefined;
     preventInput: DetailMode[];
 
-    constructor(isValid?: ((e: ICustomEventDelegate, data: any) => IDetail) | null, preventInput = [DetailMode.onChange, DetailMode.onKeyPress]) {
-        this.isValid = isValid;
+    constructor(controlSpecific?: ((e: ICustomEventDelegate, data: any) => IDetail) | null, preventInput = [DetailMode.onChange, DetailMode.onKeyPress]) {
+        this.controlSpecific = controlSpecific;
         this.preventInput = preventInput;
     }
 }

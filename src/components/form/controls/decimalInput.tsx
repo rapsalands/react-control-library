@@ -1,12 +1,15 @@
 import React from 'react';
+import AppSettings from '../../shared/appSettings';
 import { IDecimalInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import { ValidationIns } from '../formPropsIns';
-import { isDecimal } from '../formValidations';
+import regexVal from '../validation/regexVal';
 import CustomInput from './customInput';
 
 const DecimalInput: React.FC<IDecimalInputProps> = ({ decimalLimit = 2, ...props }) => {
 
-    const validation = new ValidationIns((data) => isDecimal(data, decimalLimit, props.maxLength || 20));
+    const validation = new ValidationIns((data) => {
+        return regexVal.decimal(data, decimalLimit, props.maxLength || AppSettings.decimal.maxLength)
+    });
 
     return (
         <CustomInput validation={validation} {...props} />
