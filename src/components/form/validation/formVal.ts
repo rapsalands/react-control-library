@@ -31,7 +31,7 @@ function general(detail: IDetail | null, data: any, props: any): IDetail {
     return new DetailIns(detail, data, true, null);
 }
 
-function forRestriction(detail: IDetail | null, value: any, props: any): IDetail {
+function forRestriction(detail: IDetail | null | undefined, value: any, props: any): IDetail {
     props = props || {};
     value = value || '';
 
