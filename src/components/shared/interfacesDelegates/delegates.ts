@@ -12,7 +12,8 @@ export type changeDelegate = (
     validation: IValidationProps,
     detailModes: DetailMode[],
     props,
-    extractValueToValidate: undefined | ((value: any) => string)
+    extractValueToValidate: undefined | ((value: any) => string),
+    extractValueToSet?: (value: string) => string
 ) => void;
 
 export type keyPressDelegate = (
@@ -31,7 +32,8 @@ export type blurDelegate = (
     validation: IValidationProps,
     detailModes: DetailMode[],
     props,
-    extractValueToValidate
+    extractValueToValidate,
+    extractValueToSet?: (value: string) => string
 ) => void;
 
 export type populateDetailDelegate = (
