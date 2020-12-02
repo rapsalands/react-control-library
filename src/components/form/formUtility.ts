@@ -14,7 +14,13 @@ function getDefaultValue(props: ICustomInputProps) {
     return '';
 }
 
-function getEachValidCharacter(data: string, validateFunc: ((data: string) => boolean)): string {
+/**
+ * 
+ * @param data 
+ * @param validateFunc Validates each character. If true, character is included.
+ * @param isInvalidFunction When true, we will take characters which fails (returns false) for validateFunc.
+ */
+function getEachValidCharacter(data: string, validateFunc: ((data: string) => boolean), isValidateFuncValid: boolean = true): string {
 
     if (!isDefined(data)) return data;
 
@@ -22,8 +28,16 @@ function getEachValidCharacter(data: string, validateFunc: ((data: string) => bo
 
     for (let i = 0; i < data.length; i++) {
         const el = data[i];
-        if (validateFunc(el)) {
-            result += el;
+        const isCharValid = validateFunc(el);
+
+        if (isValidateFuncValid) {
+            if (isCharValid) {
+                result += el;
+            }
+        } else {
+            if (!isCharValid) {
+                result += el;
+            }
         }
     }
 
