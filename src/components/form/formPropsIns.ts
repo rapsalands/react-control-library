@@ -2,7 +2,6 @@ import Constants from '../shared/constants';
 import { DetailMode } from './detailMode';
 import { IPasswordCriteria, IPasswordFailure as IPasswordFail, IValidationProps } from '../shared/interfacesDelegates/controlnterfaces';
 import { IDetail } from '../shared/interfacesDelegates/eventInterfaces';
-import { ICustomEventDelegate } from '../shared/interfacesDelegates/delegates';
 
 export class ValidationIns implements IValidationProps {
     controlSpecific: ((data: any) => IDetail) | null | undefined;

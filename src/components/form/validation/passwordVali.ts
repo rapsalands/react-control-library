@@ -1,4 +1,5 @@
 import Constants from "../../shared/constants";
+import { PasswordStrength } from "../../shared/enumerations";
 import { IPasswordCriteria, IPasswordFailure } from "../../shared/interfacesDelegates/controlnterfaces";
 import { IDetail } from "../../shared/interfacesDelegates/eventInterfaces";
 import Messages from "../../shared/messages";
@@ -125,14 +126,6 @@ function checkPassStrength(password): { score: number, strength: PasswordStrengt
         strength = PasswordStrength.Weak;
 
     return { score, strength };
-}
-
-enum PasswordStrength {
-    VeryStrong = 'VeryStrong',
-    Strong = 'Strong',
-    Good = 'Good',
-    Weak = 'Weak',
-    VeryWeak = 'VeryWeak',
 }
 
 const passwordVali = { PasswordStrength, isPasswordValid };
