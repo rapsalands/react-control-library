@@ -135,6 +135,6 @@ enum PasswordStrength {
     VeryWeak = 'VeryWeak',
 }
 
-const passwordVal = { PasswordStrength, isPasswordValid };
+const passwordVali = { PasswordStrength, isPasswordValid };
 
-export default passwordVal;
+export default passwordVali;

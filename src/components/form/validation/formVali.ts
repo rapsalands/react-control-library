@@ -54,6 +54,6 @@ function forRestriction(detail: IDetail | null | undefined, value: any, props: a
     return new DetailIns(detail, value, true, null);
 }
 
-const formVal = { alwaysValid, forRestriction, general };
+const formVali = { alwaysValid, forRestriction, general };
 
-export default formVal;
+export default formVali;

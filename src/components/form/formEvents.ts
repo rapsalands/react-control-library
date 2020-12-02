@@ -1,6 +1,6 @@
 import { DetailMode } from "./detailMode";
 import { blurDelegate, changeDelegate, keyPressDelegate } from "../shared/interfacesDelegates/delegates";
-import formVal from "./validation/formVal";
+import formVali from "./validation/formVali";
 
 const detailHasError = (detail) => !!(detail && !detail.isValid);
 
@@ -29,14 +29,14 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
         return;
     }
 
-    detail = formVal.forRestriction(detail, value, props);
+    detail = formVali.forRestriction(detail, value, props);
     if (detailHasError(detail)) {
         e.target.value = data || '';
         e.detail = detail;
         return;
     }
 
-    detail = formVal.general(detail, value, props);
+    detail = formVali.general(detail, value, props);
     e.detail = detail;
     setData && setData(e.target.value);
     onChangeCB && onChangeCB(e);
@@ -59,10 +59,10 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
     const value = extractValueToValidate && extractValueToValidate(e.target.value);
     e.detail = null;
 
-    let detail = formVal.general(null, value, props);
+    let detail = formVali.general(null, value, props);
 
     if (!detailHasError(detail)) {
-        detail = formVal.forRestriction(detail, value, props);
+        detail = formVali.forRestriction(detail, value, props);
         e.detail = detail;
     }
 

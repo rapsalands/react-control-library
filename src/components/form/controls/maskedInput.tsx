@@ -5,7 +5,7 @@ import utility from '../../shared/utility';
 import { ICustomInputProps, IMaskedInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import CustomInput from './customInput';
 import { ValidationIns } from '../formPropsIns';
-import formVal from '../validation/formVal';
+import formVali from '../validation/formVali';
 
 const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [], ...props }) => {
 
@@ -53,7 +53,7 @@ const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [
     }
 
     return (
-        <CustomInput {...props} validation={new ValidationIns(formVal.alwaysValid)} onBlur={onBlur} onChange={changeEvent} extractValueToValidate={(value) => maskUtility.extractPureValue(value, mask)} onKeyPress={keyPressEvent} />
+        <CustomInput {...props} validation={new ValidationIns(formVali.alwaysValid)} onBlur={onBlur} onChange={changeEvent} extractValueToValidate={(value) => maskUtility.extractPureValue(value, mask)} onKeyPress={keyPressEvent} />
     );
 };
 

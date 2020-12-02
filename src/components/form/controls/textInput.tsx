@@ -1,14 +1,14 @@
 import React from 'react';
 import { IRestrictSymbolsProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import { ValidationIns } from '../formPropsIns';
-import regexVal from '../validation/regexVal';
+import regexVali from '../validation/regexVali';
 import CustomInput from './customInput';
 
 const TextInput: React.FC<IRestrictSymbolsProps> = ({ restrictSymbols, validation, ...props }) => {
 
     function validationFunc(data) {
-        const notPattern = regexVal.notPatternMatch(data, restrictSymbols || '');
-        const pattern = regexVal.patternMatch(data, props.pattern || '');
+        const notPattern = regexVali.notPatternMatch(data, restrictSymbols || '');
+        const pattern = regexVali.patternMatch(data, props.pattern || '');
         return !notPattern.isValid ? notPattern : pattern;
     }
 
