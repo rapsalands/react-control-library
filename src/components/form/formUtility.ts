@@ -14,8 +14,24 @@ function getDefaultValue(props: ICustomInputProps) {
     return '';
 }
 
+function getEachValidCharacter(data: string, validateFunc: ((data: string) => boolean)): string {
+
+    if (!isDefined(data)) return data;
+
+    let result: string = '';
+
+    for (let i = 0; i < data.length; i++) {
+        const el = data[i];
+        if (validateFunc(el)) {
+            result += el;
+        }
+    }
+
+    return result;
+}
+
 const formUtility = {
-    getBooleanControlClassName, getDefaultValue
+    getBooleanControlClassName, getDefaultValue, getEachValidCharacter
 };
 
 export default formUtility;

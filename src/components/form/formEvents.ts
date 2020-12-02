@@ -17,10 +17,16 @@ const detailHasError = (detail) => !!(detail && !detail.isValid);
  * @param props all original props
  * @param extractValueToValidate few controls have decorated values like masked input. functin to extract those values for further processing
  */
-const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation, detailModes, props, extractValueToValidate) => {
+const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation, detailModes, props, extractValueToValidate, extractValueToSet) => {
 
-    const value = extractValueToValidate ? extractValueToValidate(e.target.value) : e.target.value;
+    let value = extractValueToValidate ? extractValueToValidate(e.target.value) : e.target.value;
     e.detail = null;
+
+    if (extractValueToSet) {
+        value = extractValueToSet(value);
+        e.target.value = value;
+        setData && setData(value);
+    }
 
     let detail = validation.controlSpecific && validation.controlSpecific(value);
     if (detail && !detail.isValid && validation.preventInput.includes(DetailMode.onChange)) {
@@ -55,11 +61,17 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
  * @param props all original props
  * @param extractValueToValidate few controls have decorated values like masked input. functin to extract those values for further processing
  */
-const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detailModes, props, extractValueToValidate) => {
-    const value = extractValueToValidate && extractValueToValidate(e.target.value);
+const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detailModes, props, extractValueToValidate, extractValueToSet) => {
+    let value = extractValueToValidate ? extractValueToValidate(e.target.value) : e.target.value;
     e.detail = null;
 
     let detail = formVal.general(null, value, props);
+
+    if (extractValueToSet) {
+        value = extractValueToSet(value);
+        e.target.value = value;
+        setData && setData(value);
+    }
 
     if (!detailHasError(detail)) {
         detail = formVal.forRestriction(detail, value, props);

@@ -39,6 +39,6 @@ function notPatternMatch(data: any, restrictSymbols: string): IDetail {
     return new DetailIns(null, data, isValid);
 }
 
-const regexVal = { number, decimal, notPatternMatch, patternMatch, email, alphaNumeric };
+const regexVal = { regexValidate, number, decimal, notPatternMatch, patternMatch, email, alphaNumeric };
 
 export default regexVal;
