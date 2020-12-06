@@ -18,6 +18,15 @@ const CustomInput: React.FC<ICustomInputProps> = ({ setReference, inputTag, vali
         // eslint-disable-next-line
     }, []);
 
+    React.useEffect(() => {
+        let newVal = extractValueToValidate ? extractValueToValidate(value) : value;
+
+        if (extractValueToSet) {
+            newVal = extractValueToSet(newVal);
+            setData(newVal);
+        }
+    }, [value]);
+
     const changeEvent = (e: IChangeInputEvent) => onChange && onChange(e);
 
     const getInputRef = () => inputRef;
@@ -33,8 +42,8 @@ const CustomInput: React.FC<ICustomInputProps> = ({ setReference, inputTag, vali
         },
         onBlur: (e: IFocusInputEvent) => onBlurEvent(e, data, setData, onBlur, validationParam, detailModes, consolidatedProps, extractValueToValidate, extractValueToSet),
         onKeyPress: (e: IKeyboardInputEvent) => onKeyPressEvent(e, validationParam, onKeyPress, consolidatedProps, extractValueToValidate),
-        value: value,
-        checked: !!value,
+        value: data,
+        checked: !!data,
         ...props
     };
 

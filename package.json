@@ -15,14 +15,15 @@
     "react-dom": "^16.13.1",
     "react-scripts": "3.4.3",
     "rimraf": "^3.0.2",
+    "ts-jest": "^26.4.4",
     "type-check-utility": "^2.2.0",
     "typescript": "^3.7.5"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "test": "jest"
   },
   "eslintConfig": {
     "extends": "react-app"

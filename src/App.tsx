@@ -14,6 +14,7 @@ import Regex from './regex';
 
 function App() {
 
+  const [num, setNum] = React.useState('435qwe');
   const [ssn, setSsn] = React.useState('8767867576565');
   const [temp, setTemp] = React.useState(98798);
   const [gender, setGender] = React.useState('male');
@@ -23,13 +24,18 @@ function App() {
     console.log(e.detail);
   }
 
+  function numChangeEvent(e) {
+    setNum(e.target.value);
+    console.log(e.detail);
+  }
+
   return (
     <React.Fragment>
       <div>
         Text Field <TextInput restrictSymbols='~!@#$%' value={ssn} onChange={(e: any) => setSsn(e.target.value)} label='Person Name' />
       </div>
       <div>
-        Number <NumberInput max={2000} min={500} minLength={3} onChange={changeEvent} />
+        Number <NumberInput value={num} max={2000} min={500} minLength={3} onChange={numChangeEvent} />
       </div>
       <div>
         Decimal <DecimalInput decimalLimit={5} value={temp} onChange={(e: any) => setTemp(e.target.value)} />
@@ -64,6 +70,11 @@ function App() {
       <div>
         Yes/No
         <Checkbox1 indeterminate={gender === 'male'} />
+      </div>
+      <div>
+        <button onClick={() => {
+          setNum('500');
+        }}>Click</button>
       </div>
     </React.Fragment>
   );

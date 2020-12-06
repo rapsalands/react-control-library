@@ -1,7 +1,9 @@
-import { isRegex } from "type-check-utility";
+import { isDefined, isRegex } from "type-check-utility";
 import utility from "./utility";
 
 function extractPureValue(data: string, mask: any[] = []): string {
+    if (!isDefined(data)) return data;
+    
     const regexes: any[] = mask.filter(n => isRegex(n));
     let result = '';
 
