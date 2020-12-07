@@ -39,7 +39,7 @@ function forRestriction(detail: IDetail | null | undefined, value: any, props: a
         return new DetailIns(detail, value, true, null);
     }
 
-    if (props.maxLength && value && props.maxLength > value.length) {
+    if (props.maxLength && value && props.maxLength < value.length) {
         return new DetailIns(detail, value, false, 'maxLength');
     }
 

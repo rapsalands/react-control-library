@@ -19,13 +19,9 @@ describe('Rendering', () => {
         expect(input.value).toBe('');
     });
 
-    test('Number Input is rendering with input props', async () => {
-        const { input, renderResult } = render(<NumberInput aria-label='num-input' value='750' />);
-        expect(input.value).toBe('750');
-    });
-
     test('Number Input is rerender', async () => {
         let { input, renderResult } = render(<NumberInput aria-label='num-input' value='750' />);
+        expect(input.value).toBe('750');
 
         renderResult.rerender(<NumberInput aria-label='num-input' value='890' />)
         expect(input).not.toBeNull();
@@ -95,9 +91,83 @@ describe('onChange', () => {
         expect(input.value).toBe('321897');
     });
 
+    test('Number Input on Change with invalid max', async () => {
+
+        const onChange = jest.fn((e) => {
+
+        });
+
+        const { input } = render(<NumberInput aria-label='num-input' max={100} onChange={onChange} />);
+
+        fireEvent.change(input, { target: { value: 50 } });
+        expect(input.value).toBe('50');
+        expect(onChange).toHaveBeenCalledTimes(1);
+
+        fireEvent.change(input, { target: { value: 500 } });
+        expect(input.value).toBe('50');
+        expect(onChange).toHaveBeenCalledTimes(1);
+    });
+
+    test('Number Input on Change with invalid maxlength', async () => {
+
+        const onChange = jest.fn((e) => {
+        });
+
+        const { input } = render(<NumberInput aria-label='num-input' maxLength={5} onChange={onChange} />);
+
+        fireEvent.change(input, { target: { value: 5555 } });
+        expect(input.value).toBe('5555');
+        expect(onChange).toHaveBeenCalledTimes(1);
+
+        fireEvent.change(input, { target: { value: 55555 } });
+        expect(input.value).toBe('55555');
+        expect(onChange).toHaveBeenCalledTimes(2);
+
+        fireEvent.change(input, { target: { value: 555555 } });
+        expect(input.value).toBe('55555');
+        expect(onChange).toHaveBeenCalledTimes(2);
+    });
+
+    test('Number Input on Change with invalid char', async () => {
+
+        const onChange = jest.fn((e) => {
+        });
+
+        const { input } = render(<NumberInput aria-label='num-input' onChange={onChange} />);
+
+        fireEvent.change(input, { target: { value: 'a' } });
+        expect(input.value).toBe('');
+        expect(onChange).not.toHaveBeenCalled();
+    });
+
+    test('Number Input on Change with dot for decimal', async () => {
+
+        const onChange = jest.fn((e) => {
+        });
+
+        const { input } = render(<NumberInput aria-label='num-input' onChange={onChange} />);
+
+        fireEvent.change(input, { target: { value: '.' } });
+        expect(input.value).toBe('');
+        expect(onChange).not.toHaveBeenCalled();
+    });
 });
 
 describe('onKeyPress', () => {
+
+    function getAscii(data: number | string): string {
+        if (data === 0) return '48';
+        if (data === 1) return '49';
+        if (data === 'A') return '65';
+        if (data === ' ') return '32';
+        return '';
+    }
+    const keyPressEvent = (key: number | string) => {
+        const keyText = `${key}`;
+        const charCode = getAscii(key);
+        return { key: keyText, code: keyText, keyCode: charCode, charCode }
+    };
+
     test('Number Input on typing number', async () => {
 
         const keyPressSpy = jest.fn((e) => {
@@ -107,15 +177,46 @@ describe('onKeyPress', () => {
 
         const { input } = render(<NumberInput aria-label='num-input' onKeyPress={keyPressSpy} />);
 
-        const event = {
-            key: '1',
-            code: '1',
-            keyCode: 49,
-            charCode: 49
-        };
-
-        fireEvent.keyPress(input, event);
+        fireEvent.keyPress(input, keyPressEvent(1));
 
         expect(keyPressSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('Number Input on typing A', async () => {
+
+        const keyPressSpy = jest.fn((e) => { });
+
+        const { input } = render(<NumberInput aria-label='num-input' onKeyPress={keyPressSpy} />);
+
+        fireEvent.keyPress(input, keyPressEvent('A'));
+
+        expect(keyPressSpy).not.toHaveBeenCalled();
+    });
+
+    test('Number Input on typing space', async () => {
+
+        const keyPressSpy = jest.fn((e) => { });
+
+        const { input } = render(<NumberInput aria-label='num-input' onKeyPress={keyPressSpy} />);
+
+        fireEvent.keyPress(input, keyPressEvent(' '));
+
+        expect(keyPressSpy).not.toHaveBeenCalled();
+    });
+
+    test('Keypress allowed on passing max', async () => {
+
+        const keyPressSpy = jest.fn((e) => {
+            expect(e).not.toBeNull();
+            expect(e.key).toBe('1');
+        });
+
+        const { input } = render(<NumberInput max={20} aria-label='num-input' onKeyPress={keyPressSpy} value='20' />);
+
+        expect(input.value).toBe('20');
+
+        fireEvent.keyPress(input, keyPressEvent('1'));
+
+        expect(keyPressSpy).not.toHaveBeenCalledTimes(1);
     });
 });

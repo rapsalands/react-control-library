@@ -35,7 +35,7 @@ function App() {
         Text Field <TextInput restrictSymbols='~!@#$%' value={ssn} onChange={(e: any) => setSsn(e.target.value)} label='Person Name' />
       </div>
       <div>
-        Number <NumberInput value={num} max={2000} min={500} minLength={3} onChange={numChangeEvent} />
+        Number <NumberInput value={num} maxLength={5} onChange={numChangeEvent} />
       </div>
       <div>
         Decimal <DecimalInput decimalLimit={5} value={temp} onChange={(e: any) => setTemp(e.target.value)} />

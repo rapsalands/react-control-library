@@ -21,6 +21,7 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
 
     let value = extractValueToValidate ? extractValueToValidate(e.target.value) : e.target.value;
     e.detail = null;
+    const tempData = data || '';
 
     if (extractValueToSet) {
         value = extractValueToSet(value);
@@ -30,14 +31,16 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
 
     let detail = validation.controlSpecific && validation.controlSpecific(value);
     if (detail && !detail.isValid && validation.preventInput.includes(DetailMode.onChange)) {
-        e.target.value = data || '';
+        e.target.value = tempData;
+        setData(tempData);
         e.detail = detail;
         return;
     }
 
     detail = formVali.forRestriction(detail, value, props);
     if (detailHasError(detail)) {
-        e.target.value = data || '';
+        e.target.value = tempData;
+        setData(tempData);
         e.detail = detail;
         return;
     }
