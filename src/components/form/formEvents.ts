@@ -68,13 +68,14 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
     let value = extractValueToValidate ? extractValueToValidate(e.target.value) : e.target.value;
     e.detail = null;
 
-    let detail = formVali.general(null, value, props);
-
     if (extractValueToSet) {
         value = extractValueToSet(value);
         e.target.value = value;
         setData && setData(value);
     }
+
+    let detail = formVali.general(null, value, props);
+    e.detail = detail;
 
     if (!detailHasError(detail)) {
         detail = formVali.forRestriction(detail, value, props);

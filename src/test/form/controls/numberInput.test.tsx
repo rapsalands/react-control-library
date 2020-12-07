@@ -3,6 +3,7 @@ import { fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect';
 import { NumberInput } from '../../../components';
 import { renderControl } from '../../baseTests';
+import userEvent from '@testing-library/user-event'
 
 function render(component: React.ReactElement<any> | null = null, key: string | null = null) {
 
@@ -127,30 +128,6 @@ describe('onChange', () => {
         expect(input.value).toBe('55555');
         expect(onChange).toHaveBeenCalledTimes(2);
     });
-
-    test('Number Input on Change with invalid char', async () => {
-
-        const onChange = jest.fn((e) => {
-        });
-
-        const { input } = render(<NumberInput aria-label='num-input' onChange={onChange} />);
-
-        fireEvent.change(input, { target: { value: 'a' } });
-        expect(input.value).toBe('');
-        expect(onChange).not.toHaveBeenCalled();
-    });
-
-    test('Number Input on Change with dot for decimal', async () => {
-
-        const onChange = jest.fn((e) => {
-        });
-
-        const { input } = render(<NumberInput aria-label='num-input' onChange={onChange} />);
-
-        fireEvent.change(input, { target: { value: '.' } });
-        expect(input.value).toBe('');
-        expect(onChange).not.toHaveBeenCalled();
-    });
 });
 
 describe('onKeyPress', () => {
@@ -160,6 +137,7 @@ describe('onKeyPress', () => {
         if (data === 1) return '49';
         if (data === 'A') return '65';
         if (data === ' ') return '32';
+        if (data === '.') return '250';
         return '';
     }
     const keyPressEvent = (key: number | string) => {
@@ -182,25 +160,19 @@ describe('onKeyPress', () => {
         expect(keyPressSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('Number Input on typing A', async () => {
+    test('Number Input on typing invalid char', async () => {
 
         const keyPressSpy = jest.fn((e) => { });
 
         const { input } = render(<NumberInput aria-label='num-input' onKeyPress={keyPressSpy} />);
 
         fireEvent.keyPress(input, keyPressEvent('A'));
-
         expect(keyPressSpy).not.toHaveBeenCalled();
-    });
-
-    test('Number Input on typing space', async () => {
-
-        const keyPressSpy = jest.fn((e) => { });
-
-        const { input } = render(<NumberInput aria-label='num-input' onKeyPress={keyPressSpy} />);
 
         fireEvent.keyPress(input, keyPressEvent(' '));
+        expect(keyPressSpy).not.toHaveBeenCalled();
 
+        fireEvent.keyPress(input, keyPressEvent('.'));
         expect(keyPressSpy).not.toHaveBeenCalled();
     });
 
@@ -219,4 +191,141 @@ describe('onKeyPress', () => {
 
         expect(keyPressSpy).not.toHaveBeenCalledTimes(1);
     });
+});
+
+describe('onBlur', () => {
+
+    test('Number Input on blur with valid char', async () => {
+
+        const blurSpy = jest.fn((e) => {
+            expect(e).not.toBeNull();
+            expect(e.target.value).toBe('1');
+        });
+
+        const { input } = render(<NumberInput aria-label='num-input' onBlur={blurSpy} />);
+
+        fireEvent.blur(input, { target: { value: 1 } });
+        expect(blurSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('Number Input on blur with invalid char', async () => {
+
+        const blurSpy = jest.fn((e) => {
+            expect(e).not.toBeNull();
+            expect(e.target.value).toBe('123');
+        });
+
+        const { input } = render(<NumberInput aria-label='num-input' onBlur={blurSpy} />);
+
+        fireEvent.blur(input, { target: { value: 'sferfefer1erferfe2efrferf3efrfefre' } });
+        expect(blurSpy).toHaveBeenCalledTimes(1);
+    });
+});
+
+
+describe('userEvent', () => {
+    test('Number Input on Change with invalid char', async () => {
+
+        const onChange = jest.fn((e) => { });
+        const onKeyPress = jest.fn((e) => { });
+
+        const { input } = render(<NumberInput aria-label='num-input' onChange={onChange} onKeyPress={onKeyPress} />);
+
+        userEvent.type(input, 'a');
+        expect(onKeyPress).not.toHaveBeenCalled();
+        expect(onChange).not.toHaveBeenCalled();
+
+        userEvent.type(input, '.');
+        expect(onKeyPress).not.toHaveBeenCalled();
+        expect(onChange).not.toHaveBeenCalled();
+    });
+
+});
+
+describe('detail', () => {
+
+    test('Number Input detail with valid char', async () => {
+
+        function validate(e: any) {
+            expect(e).not.toBeNull();
+            expect(e.detail.attribute).toBe(null);
+            expect(e.detail.isValid).toBe(true);
+            expect(e.target.value).toBe('1');
+        }
+
+        const blurSpy = jest.fn((e) => validate(e));
+        const changeSpy = jest.fn((e) => validate(e));
+
+        const { input } = render(<NumberInput aria-label='num-input' onBlur={blurSpy} onChange={changeSpy} />);
+
+        fireEvent.change(input, { target: { value: 1 } });
+        fireEvent.blur(input, { target: { value: 1 } });
+
+        expect(changeSpy).toHaveBeenCalledTimes(1);
+        expect(blurSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('Number Input detail with invalid input', async () => {
+
+        function validate(e: any) {
+            expect(e).not.toBeNull();
+            expect(e.detail.attribute).toBe(null);
+            expect(e.detail.isValid).toBe(true);
+            expect(e.target.value).toBe('123');
+        }
+
+        const blurSpy = jest.fn((e) => validate(e));
+        const changeSpy = jest.fn((e) => validate(e));
+
+        const { input } = render(<NumberInput aria-label='num-input' onBlur={blurSpy} onChange={changeSpy} />);
+
+        fireEvent.change(input, { target: { value: 'wewe1erwerwe2rwerwe3werwerew' } });
+        fireEvent.blur(input, { target: { value: 'wewe1erwerwe2rwerwe3werwerew' } });
+
+        expect(changeSpy).toHaveBeenCalledTimes(1);
+        expect(blurSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('Number Input detail with invalid min', async () => {
+
+        function validate(e: any) {
+            expect(e).not.toBeNull();
+            expect(e.detail.attribute).toBe('min');
+            expect(e.detail.isValid).toBe(false);
+            expect(e.target.value).toBe('10');
+        }
+
+        const blurSpy = jest.fn((e) => validate(e));
+        const changeSpy = jest.fn((e) => validate(e));
+
+        const { input } = render(<NumberInput aria-label='num-input' min={100} onBlur={blurSpy} onChange={changeSpy} />);
+
+        fireEvent.change(input, { target: { value: 10 } });
+        fireEvent.blur(input, { target: { value: 10 } });
+
+        expect(changeSpy).toHaveBeenCalledTimes(1);
+        expect(blurSpy).toHaveBeenCalledTimes(1);
+    });
+
+    test('Number Input detail with invalid minLength', async () => {
+
+        function validate(e: any) {
+            expect(e).not.toBeNull();
+            expect(e.detail.attribute).toBe('minLength');
+            expect(e.detail.isValid).toBe(false);
+            expect(e.target.value).toBe('10');
+        }
+
+        const blurSpy = jest.fn((e) => validate(e));
+        const changeSpy = jest.fn((e) => validate(e));
+
+        const { input } = render(<NumberInput aria-label='num-input' minLength={3} onBlur={blurSpy} onChange={changeSpy} />);
+
+        fireEvent.change(input, { target: { value: 10 } });
+        fireEvent.blur(input, { target: { value: 10 } });
+
+        expect(changeSpy).toHaveBeenCalledTimes(1);
+        expect(blurSpy).toHaveBeenCalledTimes(1);
+    });
+
 });
