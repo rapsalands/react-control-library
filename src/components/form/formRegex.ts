@@ -1,3 +1,5 @@
+import AppSettings from "../shared/appSettings";
+
 function modRegex(originalRegex, symbols: string | number = '', temp = 'SPECIAL') {
     let regex = originalRegex.source || originalRegex;
     regex = regex.replace(temp, symbols);
@@ -6,11 +8,10 @@ function modRegex(originalRegex, symbols: string | number = '', temp = 'SPECIAL'
 
 const FormRegex = {
     number: () => /^\d+$/,
-    decimal: (decimalLimit = 2, maxLength = 20) => {
-        const regex = /^-?[0-9]{0,10}(\.[0-9]{0,2})?$/;
-        maxLength = maxLength - decimalLimit;
-        let modified = modRegex(regex, maxLength, '10');
-        modified = modRegex(modified, decimalLimit, '2');
+    decimal: (decimalLimit, maxLength) => {
+        const regex = /^-?[0-9]{0,maxLength}(\.[0-9]{0,decimalLimit})?$/;
+        let modified = modRegex(regex, maxLength, 'maxLength'); // Replace 10 in regex with maxLength
+        modified = modRegex(modified, decimalLimit, 'decimalLimit'); // Replace 10 in regex with decimalPoint
         return new RegExp(modified);
     },
     custom: (allowSymbols) => {

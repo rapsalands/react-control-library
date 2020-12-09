@@ -37,7 +37,7 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
         return;
     }
 
-    detail = formVali.forRestriction(detail, value, props);
+    detail = formVali.forRestriction(validation, detail, value, props);
     if (detailHasError(detail)) {
         e.target.value = tempData;
         setData(tempData);
@@ -45,7 +45,7 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
         return;
     }
 
-    detail = formVali.general(detail, value, props);
+    detail = formVali.general(validation, detail, value, props);
     e.detail = detail;
     setData && setData(e.target.value);
     onChangeCB && onChangeCB(e);
@@ -74,11 +74,11 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
         setData && setData(value);
     }
 
-    let detail = formVali.general(null, value, props);
+    let detail = formVali.general(validation, null, value, props);
     e.detail = detail;
 
     if (!detailHasError(detail)) {
-        detail = formVali.forRestriction(detail, value, props);
+        detail = formVali.forRestriction(validation, detail, value, props);
         e.detail = detail;
     }
 

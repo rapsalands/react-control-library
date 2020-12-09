@@ -11,7 +11,7 @@ function number(data: any): IDetail {
     return new DetailIns(null, data, regexValidate(FormRegex.number(), data));
 }
 
-function decimal(data: any, decimalLimit: number, maxLength: number): IDetail {
+function decimal(data: any, decimalLimit: number | undefined, maxLength: number): IDetail {
     const isValid = regexValidate(FormRegex.decimal(decimalLimit, maxLength), data);
     return new DetailIns(null, data, isValid);
 }

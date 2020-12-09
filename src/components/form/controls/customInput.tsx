@@ -23,8 +23,15 @@ const CustomInput: React.FC<ICustomInputProps> = ({ setReference, inputTag, vali
 
         if (extractValueToSet) {
             newVal = extractValueToSet(newVal);
-            setData(newVal);
+            if (validation && validation.controlSpecific) {
+                const detail = validation.controlSpecific(newVal);
+                if (!detail.isValid) {
+                    newVal = '';
+                }
+            }
         }
+
+        setData(newVal);
     }, [value]);
 
     const changeEvent = (e: IChangeInputEvent) => onChange && onChange(e);

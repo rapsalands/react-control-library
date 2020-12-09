@@ -1,4 +1,5 @@
 import { DetailMode } from "../../form/detailMode";
+import { ValidationType } from "../enumerations";
 import { ICustomEventDelegate } from "./delegates";
 import { IDetail } from "./eventInterfaces";
 
@@ -16,6 +17,7 @@ export interface IValidationProps {
     controlSpecific: ((data: any) => IDetail) | undefined | null;
     /** Prevent user Inputs once following when validation fails. Defaults to onChange and onKeyPress */
     preventInput: DetailMode[];
+    skipValidationTypes: ValidationType[]
 }
 
 export interface IDecimalInputProps extends ICustomInputProps {

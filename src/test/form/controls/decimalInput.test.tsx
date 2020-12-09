@@ -1,52 +1,51 @@
 import * as React from 'react'
 import { fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect';
-import { NumberInput } from '../../../components';
+import { DecimalInput } from '../../../components';
 import { renderControl } from '../../baseTests';
 import userEvent from '@testing-library/user-event'
 
 function render(component: React.ReactElement<any> | null = null, key: string | null = null) {
 
-    const comp = component || <NumberInput aria-label='num-input' />;
-    const id = key || 'num-input';
+    const comp = component || <DecimalInput aria-label='decimal-input' />;
+    const id = key || 'decimal-input';
     return renderControl(comp, id);
 }
 
 describe('Rendering', () => {
-    test('Number Input is rendering', async () => {
+    test('Decimal Input is rendering', async () => {
         const { input, renderResult } = render();
 
         expect(input).not.toBeNull();
         expect(input.value).toBe('');
     });
 
-    test('Number Input is rerender', async () => {
-        let { input, renderResult } = render(<NumberInput aria-label='num-input' value='750' />);
+    test('Decimal Input is rerender', async () => {
+        let { input, renderResult } = render(<DecimalInput aria-label='decimal-input' value='750' />);
         expect(input.value).toBe('750');
 
-        renderResult.rerender(<NumberInput aria-label='num-input' value='890' />)
+        renderResult.rerender(<DecimalInput aria-label='decimal-input' value='890.51' />)
         expect(input).not.toBeNull();
-        expect(input.value).toBe('890');
+        expect(input.value).toBe('890.51');
     });
 
-    test('Number Input is rerender with incorrect value', async () => {
-        let { input, renderResult } = render(<NumberInput aria-label='num-input' value='750qwe' />);
+    test('Decimal Input is rerender with incorrect value', async () => {
+        let { input, renderResult } = render(<DecimalInput aria-label='decimal-input' value='750qwe' />);
 
         expect(input.value).toBe('750');
 
-        renderResult.rerender(<NumberInput aria-label='num-input' value='Test890' />)
+        renderResult.rerender(<DecimalInput aria-label='decimal-input' value='Test890yt.91' />)
         expect(input).not.toBeNull();
-        expect(input.value).toBe('890');
-    });
+        expect(input.value).toBe('890.91');
 
-    test('Number Input is rerender with incorrect max', async () => {
-        let { input, renderResult } = render(<NumberInput max={100} aria-label='num-input' value='200' />);
-        expect(input.value).toBe('200');
+        renderResult.rerender(<DecimalInput aria-label='decimal-input' value='Test890yt.91rtrt.e90erte' />)
+        expect(input).not.toBeNull();
+        expect(input.value).toBe('');
     });
 });
 
 describe('onChange', () => {
-    test('Number Input on Change with numbers as string', async () => {
+    test('Decimal Input on Change with numbers as string', async () => {
 
         const { input } = render();
 
@@ -57,7 +56,7 @@ describe('onChange', () => {
         expect(input.value).toBe('12345');
     });
 
-    test('Number Input on Change with mixed', async () => {
+    test('Decimal Input on Change with mixed', async () => {
 
         const { input } = render();
 
@@ -66,7 +65,7 @@ describe('onChange', () => {
         expect(input.value).toBe('12345');
     });
 
-    test('Number Input on Change with not defined', async () => {
+    test('Decimal Input on Change with not defined', async () => {
 
         const { input } = render();
 
@@ -77,7 +76,7 @@ describe('onChange', () => {
         expect(input.value).toBe('');
     });
 
-    test('Number Input on Change with only string', async () => {
+    test('Decimal Input on Change with only string', async () => {
 
         const { input } = render();
 
@@ -86,24 +85,22 @@ describe('onChange', () => {
         expect(input.value).toBe('');
     });
 
-    test('Number Input on Change with decimal', async () => {
+    test('Decimal Input on Change with decimal', async () => {
 
         const { input } = render();
 
         fireEvent.change(input, { target: { value: 456.232 } });
-        expect(input.value).toBe('456232');
+        expect(input.value).toBe('456.232');
 
         fireEvent.change(input, { target: { value: '321.897' } });
-        expect(input.value).toBe('321897');
+        expect(input.value).toBe('321.897');
     });
 
-    test('Number Input on Change with invalid max', async () => {
+    test('Decimal Input on Change with invalid max', async () => {
 
-        const onChange = jest.fn((e) => {
+        const onChange = jest.fn((e) => { });
 
-        });
-
-        const { input } = render(<NumberInput aria-label='num-input' max={100} onChange={onChange} />);
+        const { input } = render(<DecimalInput aria-label='decimal-input' max={100} onChange={onChange} />);
 
         fireEvent.change(input, { target: { value: 50 } });
         expect(input.value).toBe('50');
@@ -114,12 +111,12 @@ describe('onChange', () => {
         expect(onChange).toHaveBeenCalledTimes(1);
     });
 
-    test('Number Input on Change with invalid maxlength', async () => {
+    test('Decimal Input on Change with invalid maxlength', async () => {
 
         const onChange = jest.fn((e) => {
         });
 
-        const { input } = render(<NumberInput aria-label='num-input' maxLength={5} onChange={onChange} />);
+        const { input } = render(<DecimalInput aria-label='decimal-input' maxLength={5} onChange={onChange} />);
 
         fireEvent.change(input, { target: { value: 5555 } });
         expect(input.value).toBe('5555');
@@ -131,6 +128,34 @@ describe('onChange', () => {
 
         fireEvent.change(input, { target: { value: 555555 } });
         expect(input.value).toBe('55555');
+        expect(onChange).toHaveBeenCalledTimes(2);
+    });
+
+    test('Decimal Input on Change with invalid decimalLimit', async () => {
+
+        const onChange = jest.fn((e) => {
+        });
+
+        const { input } = render(<DecimalInput aria-label='decimal-input' maxLength={3} decimalLimit={2} onChange={onChange} />);
+
+        fireEvent.change(input, { target: { value: 5.1 } });
+        expect(input.value).toBe('5.1');
+        expect(onChange).toHaveBeenCalledTimes(1);
+
+        fireEvent.change(input, { target: { value: 55.55 } });
+        expect(input.value).toBe('55.55');
+        expect(onChange).toHaveBeenCalledTimes(2);
+
+        fireEvent.change(input, { target: { value: 555.555 } });
+        expect(input.value).toBe('55.55');
+        expect(onChange).toHaveBeenCalledTimes(2);
+
+        fireEvent.change(input, { target: { value: 5555.5555 } });
+        expect(input.value).toBe('55.55');
+        expect(onChange).toHaveBeenCalledTimes(2);
+
+        fireEvent.change(input, { target: { value: 5555.55555 } });
+        expect(input.value).toBe('55.55');
         expect(onChange).toHaveBeenCalledTimes(2);
     });
 });
@@ -151,25 +176,25 @@ describe('onKeyPress', () => {
         return { key: keyText, code: keyText, keyCode: charCode, charCode }
     };
 
-    test('Number Input on typing number', async () => {
+    test('Decimal Input on typing number', async () => {
 
         const keyPressSpy = jest.fn((e) => {
             expect(e).not.toBeNull();
             expect(e.key).toBe('1');
         });
 
-        const { input } = render(<NumberInput aria-label='num-input' onKeyPress={keyPressSpy} />);
+        const { input } = render(<DecimalInput aria-label='decimal-input' onKeyPress={keyPressSpy} />);
 
         fireEvent.keyPress(input, keyPressEvent(1));
 
         expect(keyPressSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('Number Input on typing invalid char', async () => {
+    test('Decimal Input on typing invalid char', async () => {
 
         const keyPressSpy = jest.fn((e) => { });
 
-        const { input } = render(<NumberInput aria-label='num-input' onKeyPress={keyPressSpy} />);
+        const { input } = render(<DecimalInput aria-label='decimal-input' onKeyPress={keyPressSpy} />);
 
         fireEvent.keyPress(input, keyPressEvent('A'));
         expect(keyPressSpy).not.toHaveBeenCalled();
@@ -178,7 +203,7 @@ describe('onKeyPress', () => {
         expect(keyPressSpy).not.toHaveBeenCalled();
 
         fireEvent.keyPress(input, keyPressEvent('.'));
-        expect(keyPressSpy).not.toHaveBeenCalled();
+        expect(keyPressSpy).toHaveBeenCalledTimes(1);
     });
 
     test('Keypress allowed on passing max', async () => {
@@ -188,7 +213,7 @@ describe('onKeyPress', () => {
             expect(e.key).toBe('1');
         });
 
-        const { input } = render(<NumberInput max={20} aria-label='num-input' onKeyPress={keyPressSpy} value='20' />);
+        const { input } = render(<DecimalInput max={20} aria-label='decimal-input' onKeyPress={keyPressSpy} value='20' />);
 
         expect(input.value).toBe('20');
 
@@ -200,56 +225,55 @@ describe('onKeyPress', () => {
 
 describe('onBlur', () => {
 
-    test('Number Input on blur with valid char', async () => {
+    test('Decimal Input on blur with valid char', async () => {
 
         const blurSpy = jest.fn((e) => {
             expect(e).not.toBeNull();
             expect(e.target.value).toBe('1');
         });
 
-        const { input } = render(<NumberInput aria-label='num-input' onBlur={blurSpy} />);
+        const { input } = render(<DecimalInput aria-label='decimal-input' onBlur={blurSpy} />);
 
         fireEvent.blur(input, { target: { value: 1 } });
         expect(blurSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('Number Input on blur with invalid char', async () => {
+    test('Decimal Input on blur with invalid char', async () => {
 
         const blurSpy = jest.fn((e) => {
             expect(e).not.toBeNull();
             expect(e.target.value).toBe('123');
         });
 
-        const { input } = render(<NumberInput aria-label='num-input' onBlur={blurSpy} />);
+        const { input } = render(<DecimalInput aria-label='decimal-input' onBlur={blurSpy} />);
 
         fireEvent.blur(input, { target: { value: 'sferfefer1erferfe2efrferf3efrfefre' } });
         expect(blurSpy).toHaveBeenCalledTimes(1);
     });
 });
 
-
 describe('userEvent', () => {
-    test('Number Input on Change with invalid char', async () => {
+    test('Decimal Input on Change with invalid char', async () => {
 
         const onChange = jest.fn((e) => { });
         const onKeyPress = jest.fn((e) => { });
 
-        const { input } = render(<NumberInput aria-label='num-input' onChange={onChange} onKeyPress={onKeyPress} />);
+        const { input } = render(<DecimalInput aria-label='decimal-input' onChange={onChange} onKeyPress={onKeyPress} />);
 
         userEvent.type(input, 'a');
         expect(onKeyPress).not.toHaveBeenCalled();
         expect(onChange).not.toHaveBeenCalled();
 
         userEvent.type(input, '.');
-        expect(onKeyPress).not.toHaveBeenCalled();
-        expect(onChange).not.toHaveBeenCalled();
+        expect(onKeyPress).toHaveBeenCalledTimes(1);
+        expect(onChange).toHaveBeenCalledTimes(1);
     });
 
 });
 
 describe('detail', () => {
 
-    test('Number Input detail with valid char', async () => {
+    test('Decimal Input detail with valid char', async () => {
 
         function validate(e: any) {
             expect(e).not.toBeNull();
@@ -261,7 +285,7 @@ describe('detail', () => {
         const blurSpy = jest.fn((e) => validate(e));
         const changeSpy = jest.fn((e) => validate(e));
 
-        const { input } = render(<NumberInput aria-label='num-input' onBlur={blurSpy} onChange={changeSpy} />);
+        const { input } = render(<DecimalInput aria-label='decimal-input' onBlur={blurSpy} onChange={changeSpy} />);
 
         fireEvent.change(input, { target: { value: 1 } });
         fireEvent.blur(input, { target: { value: 1 } });
@@ -270,7 +294,7 @@ describe('detail', () => {
         expect(blurSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('Number Input detail with invalid input', async () => {
+    test('Decimal Input detail with invalid input', async () => {
 
         function validate(e: any) {
             expect(e).not.toBeNull();
@@ -282,7 +306,7 @@ describe('detail', () => {
         const blurSpy = jest.fn((e) => validate(e));
         const changeSpy = jest.fn((e) => validate(e));
 
-        const { input } = render(<NumberInput aria-label='num-input' onBlur={blurSpy} onChange={changeSpy} />);
+        const { input } = render(<DecimalInput aria-label='decimal-input' onBlur={blurSpy} onChange={changeSpy} />);
 
         fireEvent.change(input, { target: { value: 'wewe1erwerwe2rwerwe3werwerew' } });
         fireEvent.blur(input, { target: { value: 'wewe1erwerwe2rwerwe3werwerew' } });
@@ -291,7 +315,7 @@ describe('detail', () => {
         expect(blurSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('Number Input detail with invalid min', async () => {
+    test('Decimal Input detail with invalid min', async () => {
 
         function validate(e: any) {
             expect(e).not.toBeNull();
@@ -303,7 +327,7 @@ describe('detail', () => {
         const blurSpy = jest.fn((e) => validate(e));
         const changeSpy = jest.fn((e) => validate(e));
 
-        const { input } = render(<NumberInput aria-label='num-input' min={100} onBlur={blurSpy} onChange={changeSpy} />);
+        const { input } = render(<DecimalInput aria-label='decimal-input' min={100} onBlur={blurSpy} onChange={changeSpy} />);
 
         fireEvent.change(input, { target: { value: 10 } });
         fireEvent.blur(input, { target: { value: 10 } });
@@ -312,7 +336,7 @@ describe('detail', () => {
         expect(blurSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('Number Input detail with invalid minLength', async () => {
+    test('Decimal Input detail with invalid minLength', async () => {
 
         function validate(e: any) {
             expect(e).not.toBeNull();
@@ -324,7 +348,7 @@ describe('detail', () => {
         const blurSpy = jest.fn((e) => validate(e));
         const changeSpy = jest.fn((e) => validate(e));
 
-        const { input } = render(<NumberInput aria-label='num-input' minLength={3} onBlur={blurSpy} onChange={changeSpy} />);
+        const { input } = render(<DecimalInput aria-label='decimal-input' minLength={3} onBlur={blurSpy} onChange={changeSpy} />);
 
         fireEvent.change(input, { target: { value: 10 } });
         fireEvent.blur(input, { target: { value: 10 } });

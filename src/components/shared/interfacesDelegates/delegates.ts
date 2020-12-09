@@ -36,12 +36,9 @@ export type blurDelegate = (
     extractValueToSet?: (value: string) => string
 ) => void;
 
-export type populateDetailDelegate = (
-    e: ICustomEventDelegate,
-    value: any,
-    detailModes: DetailMode[],
-    detailMode: DetailMode,
+export type validateDelegate = (
     validation: IValidationProps,
-    props: any,
-    restrict?: boolean,
+    detail: IDetail | null | undefined,
+    value: any,
+    props: any
 ) => (IDetail | null);

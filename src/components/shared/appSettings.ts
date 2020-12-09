@@ -5,7 +5,8 @@ const AppSettings = {
         return new PasswordCriteriaIns(1, 8, 0, 1, 1, '', { number: 5, characters: 5 });
     },
     decimal: {
-        maxLength: 20
+        maxLength: 20,
+        decimalLimit: 10
     }
 };
 

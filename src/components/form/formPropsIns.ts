@@ -2,14 +2,17 @@ import Constants from '../shared/constants';
 import { DetailMode } from './detailMode';
 import { IPasswordCriteria, IPasswordFailure as IPasswordFail, IValidationProps } from '../shared/interfacesDelegates/controlnterfaces';
 import { IDetail } from '../shared/interfacesDelegates/eventInterfaces';
+import { ValidationType } from '../shared/enumerations';
 
 export class ValidationIns implements IValidationProps {
     controlSpecific: ((data: any) => IDetail) | null | undefined;
     preventInput: DetailMode[];
+    skipValidationTypes: ValidationType[];
 
-    constructor(controlSpecific?: ((data: any) => IDetail) | null, preventInput = [DetailMode.onChange, DetailMode.onKeyPress]) {
+    constructor(controlSpecific?: ((data: any) => IDetail) | null, preventInput = [DetailMode.onChange, DetailMode.onKeyPress], skipValidationTypes: ValidationType[] = []) {
         this.controlSpecific = controlSpecific;
         this.preventInput = preventInput;
+        this.skipValidationTypes = skipValidationTypes;
     }
 }
 
