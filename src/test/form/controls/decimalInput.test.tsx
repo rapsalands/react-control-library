@@ -358,3 +358,19 @@ describe('detail', () => {
     });
 
 });
+
+describe('validation', () => {
+    test('Decimal Input for required', async () => {
+
+        const onChangeValue = jest.fn((e) => {
+            expect(e.detail).not.toBeNull();
+            expect(e.detail.isValid).toBe(false);
+            expect(e.detail.attribute).toBe('required');
+        });
+
+        const { input } = render(<DecimalInput required aria-label='decimal-input' onChange={onChangeValue} value='123' />);
+
+        fireEvent.change(input, { target: { value: '' } });
+        expect(onChangeValue).toHaveBeenCalledTimes(1); // Each for "1", "12", "123".
+    });
+});

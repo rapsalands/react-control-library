@@ -1,52 +1,57 @@
 import * as React from 'react'
 import { fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect';
-import { NumberInput } from '../../../components';
+import { AlphaNumeric } from '../../../components';
 import { renderControl } from '../../baseTests';
 import userEvent from '@testing-library/user-event'
 
 function render(component: React.ReactElement<any> | null = null, key: string | null = null) {
 
-    const comp = component || <NumberInput aria-label='num-input' />;
-    const id = key || 'num-input';
+    const comp = component || <AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' />;
+    const id = key || 'alpha-input';
     return renderControl(comp, id);
 }
 
 describe('Rendering', () => {
-    test('Number Input is rendering', async () => {
+    test('Alphanumeric rendering', async () => {
         const { input, renderResult } = render();
 
         expect(input).not.toBeNull();
         expect(input.value).toBe('');
     });
 
-    test('Number Input is rerender', async () => {
-        let { input, renderResult } = render(<NumberInput aria-label='num-input' value='750' />);
+    test('Alphanumeric rerender', async () => {
+        let { input, renderResult } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' value='750' />);
         expect(input.value).toBe('750');
 
-        renderResult.rerender(<NumberInput aria-label='num-input' value='890' />)
+        renderResult.rerender(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' value='890' />)
         expect(input).not.toBeNull();
         expect(input.value).toBe('890');
     });
 
-    test('Number Input is rerender with incorrect value', async () => {
-        let { input, renderResult } = render(<NumberInput aria-label='num-input' value='750qwe' />);
+    test('Alphanumeric rerender with mixed numeric and text', async () => {
+        let { input, renderResult } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' value='750qwe' />);
 
-        expect(input.value).toBe('750');
+        expect(input.value).toBe('750qwe');
 
-        renderResult.rerender(<NumberInput aria-label='num-input' value='Test890' />)
+        renderResult.rerender(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' value='Test890!@#' />)
         expect(input).not.toBeNull();
-        expect(input.value).toBe('890');
+        expect(input.value).toBe('Test890!@#');
     });
 
-    test('Number Input is rerender with incorrect max', async () => {
-        let { input, renderResult } = render(<NumberInput max={100} aria-label='num-input' value='200' />);
-        expect(input.value).toBe('200');
+    test('Alphanumeric render with only symbols', async () => {
+        let { input, renderResult } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' value='!@#$%' />);
+        expect(input.value).toBe('!@#$%');
+    });
+
+    test('Alphanumeric render with invalid and valid characters', async () => {
+        let { input, renderResult } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' value='!@^^*#$%)(*' />);
+        expect(input.value).toBe('!@#$%');
     });
 });
 
 describe('onChange', () => {
-    test('Number Input on Change with numbers as string', async () => {
+    test('Alphanumeric on Change with numbers', async () => {
 
         const { input } = render();
 
@@ -57,16 +62,16 @@ describe('onChange', () => {
         expect(input.value).toBe('12345');
     });
 
-    test('Number Input on Change with mixed', async () => {
+    test('Alphanumeric on Change with mixed', async () => {
 
         const { input } = render();
 
         fireEvent.change(input, { target: { value: '1w2e3yyu4t5dfdf' } });
 
-        expect(input.value).toBe('12345');
+        expect(input.value).toBe('1w2e3yyu4t5dfdf');
     });
 
-    test('Number Input on Change with not defined', async () => {
+    test('Alphanumeric on Change with not defined', async () => {
 
         const { input } = render();
 
@@ -77,16 +82,16 @@ describe('onChange', () => {
         expect(input.value).toBe('');
     });
 
-    test('Number Input on Change with only string', async () => {
+    test('Alphanumeric on Change with symbols only', async () => {
 
         const { input } = render();
 
-        fireEvent.change(input, { target: { value: 'uyuyfgeurbfgeu' } });
+        fireEvent.change(input, { target: { value: '!@#!' } });
 
-        expect(input.value).toBe('');
+        expect(input.value).toBe('!@#!');
     });
 
-    test('Number Input on Change with decimal', async () => {
+    test('Alphanumeric on Change with decimal', async () => {
 
         const { input } = render();
 
@@ -97,41 +102,35 @@ describe('onChange', () => {
         expect(input.value).toBe('321897');
     });
 
-    test('Number Input on Change with invalid max', async () => {
+    test('Alphanumeric on Change with invalid chars', async () => {
 
-        const onChange = jest.fn((e) => {
+        const onChange = jest.fn((e) => { });
 
-        });
+        const { input } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' max={100} onChange={onChange} />);
 
-        const { input } = render(<NumberInput aria-label='num-input' max={100} onChange={onChange} />);
-
-        fireEvent.change(input, { target: { value: 50 } });
-        expect(input.value).toBe('50');
+        fireEvent.change(input, { target: { value: ')(*&&^' } });
+        expect(input.value).toBe('');
         expect(onChange).toHaveBeenCalledTimes(1);
 
-        fireEvent.change(input, { target: { value: 500 } });
-        expect(input.value).toBe('50');
-        expect(onChange).toHaveBeenCalledTimes(1);
+        fireEvent.change(input, { target: { value: 'wer)wrw(er*we&&wer^2423432' } });
+        expect(input.value).toBe('werwrwerwewer2423432');
+        expect(onChange).toHaveBeenCalledTimes(2);
     });
 
-    test('Number Input on Change with invalid maxlength', async () => {
+    test('Alphanumeric on Change with invalid maxlength', async () => {
 
         const onChange = jest.fn((e) => {
         });
 
-        const { input } = render(<NumberInput aria-label='num-input' maxLength={5} onChange={onChange} />);
+        const { input } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' maxLength={10} onChange={onChange} />);
 
-        fireEvent.change(input, { target: { value: 5555 } });
+        fireEvent.change(input, { target: { value: '5555' } });
         expect(input.value).toBe('5555');
         expect(onChange).toHaveBeenCalledTimes(1);
 
-        fireEvent.change(input, { target: { value: 55555 } });
-        expect(input.value).toBe('55555');
-        expect(onChange).toHaveBeenCalledTimes(2);
-
-        fireEvent.change(input, { target: { value: 555555 } });
-        expect(input.value).toBe('55555');
-        expect(onChange).toHaveBeenCalledTimes(2);
+        fireEvent.change(input, { target: { value: 'werwrwerwewer2423432' } });
+        expect(input.value).toBe('5555');
+        expect(onChange).toHaveBeenCalledTimes(1);
     });
 });
 
@@ -151,104 +150,89 @@ describe('onKeyPress', () => {
         return { key: keyText, code: keyText, keyCode: charCode, charCode }
     };
 
-    test('Number Input on typing number', async () => {
+    test('Alphanumeric on typing number', async () => {
 
         const keyPressSpy = jest.fn((e) => {
             expect(e).not.toBeNull();
             expect(e.key).toBe('1');
         });
 
-        const { input } = render(<NumberInput aria-label='num-input' onKeyPress={keyPressSpy} />);
+        const { input } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' onKeyPress={keyPressSpy} />);
 
         fireEvent.keyPress(input, keyPressEvent(1));
 
         expect(keyPressSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('Number Input on typing invalid char', async () => {
+    test('Alphanumeric on typing invalid char', async () => {
 
         const keyPressSpy = jest.fn((e) => { });
 
-        const { input } = render(<NumberInput aria-label='num-input' onKeyPress={keyPressSpy} />);
+        const { input } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' onKeyPress={keyPressSpy} />);
 
         fireEvent.keyPress(input, keyPressEvent('A'));
-        expect(keyPressSpy).not.toHaveBeenCalled();
+        expect(keyPressSpy).toHaveBeenCalledTimes(1);
 
         fireEvent.keyPress(input, keyPressEvent(' '));
-        expect(keyPressSpy).not.toHaveBeenCalled();
+        expect(keyPressSpy).toHaveBeenCalledTimes(1);
 
         fireEvent.keyPress(input, keyPressEvent('.'));
-        expect(keyPressSpy).not.toHaveBeenCalled();
-    });
-
-    test('Keypress allowed on passing max', async () => {
-
-        const keyPressSpy = jest.fn((e) => {
-            expect(e).not.toBeNull();
-            expect(e.key).toBe('1');
-        });
-
-        const { input } = render(<NumberInput max={20} aria-label='num-input' onKeyPress={keyPressSpy} value='20' />);
-
-        expect(input.value).toBe('20');
-
-        fireEvent.keyPress(input, keyPressEvent('1'));
-
-        expect(keyPressSpy).not.toHaveBeenCalledTimes(1);
+        expect(keyPressSpy).toHaveBeenCalledTimes(1);
     });
 });
 
 describe('onBlur', () => {
 
-    test('Number Input on blur with valid char', async () => {
+    test('Alphanumeric on blur with valid char', async () => {
 
         const blurSpy = jest.fn((e) => {
             expect(e).not.toBeNull();
             expect(e.target.value).toBe('1');
         });
 
-        const { input } = render(<NumberInput aria-label='num-input' onBlur={blurSpy} />);
+        const { input } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' onBlur={blurSpy} />);
 
         fireEvent.blur(input, { target: { value: 1 } });
         expect(blurSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('Number Input on blur with invalid char', async () => {
+    test('Alphanumeric on blur with invalid char', async () => {
 
         const blurSpy = jest.fn((e) => {
             expect(e).not.toBeNull();
-            expect(e.target.value).toBe('123');
+            expect(e.target.value).toBe('sferfefer1erferfe2efrferf3efrfefre');
         });
 
-        const { input } = render(<NumberInput aria-label='num-input' onBlur={blurSpy} />);
+        const { input } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' onBlur={blurSpy} />);
 
         fireEvent.blur(input, { target: { value: 'sferfefer1erferfe2efrferf3efrfefre' } });
         expect(blurSpy).toHaveBeenCalledTimes(1);
     });
 });
 
+
 describe('userEvent', () => {
-    test('Number Input on Change with invalid char', async () => {
+    test('Alphanumeric on Change with invalid char', async () => {
 
         const onChange = jest.fn((e) => { });
         const onKeyPress = jest.fn((e) => { });
 
-        const { input } = render(<NumberInput aria-label='num-input' onChange={onChange} onKeyPress={onKeyPress} />);
+        const { input } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' onChange={onChange} onKeyPress={onKeyPress} />);
 
         userEvent.type(input, 'a');
-        expect(onKeyPress).not.toHaveBeenCalled();
-        expect(onChange).not.toHaveBeenCalled();
+        expect(onKeyPress).toHaveBeenCalledTimes(1);
+        expect(onChange).toHaveBeenCalledTimes(1);
 
         userEvent.type(input, '.');
-        expect(onKeyPress).not.toHaveBeenCalled();
-        expect(onChange).not.toHaveBeenCalled();
+        expect(onKeyPress).toHaveBeenCalledTimes(1);
+        expect(onChange).toHaveBeenCalledTimes(1);
     });
 
 });
 
 describe('detail', () => {
 
-    test('Number Input detail with valid char', async () => {
+    test('Alphanumeric detail with valid char', async () => {
 
         function validate(e: any) {
             expect(e).not.toBeNull();
@@ -260,7 +244,7 @@ describe('detail', () => {
         const blurSpy = jest.fn((e) => validate(e));
         const changeSpy = jest.fn((e) => validate(e));
 
-        const { input } = render(<NumberInput aria-label='num-input' onBlur={blurSpy} onChange={changeSpy} />);
+        const { input } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' onBlur={blurSpy} onChange={changeSpy} />);
 
         fireEvent.change(input, { target: { value: 1 } });
         fireEvent.blur(input, { target: { value: 1 } });
@@ -269,19 +253,19 @@ describe('detail', () => {
         expect(blurSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('Number Input detail with invalid input', async () => {
+    test('Alphanumeric detail with invalid input', async () => {
 
         function validate(e: any) {
             expect(e).not.toBeNull();
             expect(e.detail.attribute).toBe(null);
             expect(e.detail.isValid).toBe(true);
-            expect(e.target.value).toBe('123');
+            expect(e.target.value).toBe('wewe1erwerwe2rwerwe3werwerew');
         }
 
         const blurSpy = jest.fn((e) => validate(e));
         const changeSpy = jest.fn((e) => validate(e));
 
-        const { input } = render(<NumberInput aria-label='num-input' onBlur={blurSpy} onChange={changeSpy} />);
+        const { input } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' onBlur={blurSpy} onChange={changeSpy} />);
 
         fireEvent.change(input, { target: { value: 'wewe1erwerwe2rwerwe3werwerew' } });
         fireEvent.blur(input, { target: { value: 'wewe1erwerwe2rwerwe3werwerew' } });
@@ -290,7 +274,7 @@ describe('detail', () => {
         expect(blurSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('Number Input detail with invalid min', async () => {
+    test('Alphanumeric detail with invalid min', async () => {
 
         function validate(e: any) {
             expect(e).not.toBeNull();
@@ -302,7 +286,7 @@ describe('detail', () => {
         const blurSpy = jest.fn((e) => validate(e));
         const changeSpy = jest.fn((e) => validate(e));
 
-        const { input } = render(<NumberInput aria-label='num-input' min={100} onBlur={blurSpy} onChange={changeSpy} />);
+        const { input } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' min={100} onBlur={blurSpy} onChange={changeSpy} />);
 
         fireEvent.change(input, { target: { value: 10 } });
         fireEvent.blur(input, { target: { value: 10 } });
@@ -311,7 +295,7 @@ describe('detail', () => {
         expect(blurSpy).toHaveBeenCalledTimes(1);
     });
 
-    test('Number Input detail with invalid minLength', async () => {
+    test('Alphanumeric detail with invalid minLength', async () => {
 
         function validate(e: any) {
             expect(e).not.toBeNull();
@@ -323,7 +307,7 @@ describe('detail', () => {
         const blurSpy = jest.fn((e) => validate(e));
         const changeSpy = jest.fn((e) => validate(e));
 
-        const { input } = render(<NumberInput aria-label='num-input' minLength={3} onBlur={blurSpy} onChange={changeSpy} />);
+        const { input } = render(<AlphaNumeric allowSymbols='!@#$%' aria-label='alpha-input' minLength={3} onBlur={blurSpy} onChange={changeSpy} />);
 
         fireEvent.change(input, { target: { value: 10 } });
         fireEvent.blur(input, { target: { value: 10 } });
@@ -335,7 +319,7 @@ describe('detail', () => {
 });
 
 describe('validation', () => {
-    test('Number Input for required', async () => {
+    test('AlphaNumeric for required', async () => {
 
         const onChangeValue = jest.fn((e) => {
             expect(e.detail).not.toBeNull();
@@ -343,13 +327,13 @@ describe('validation', () => {
             expect(e.detail.attribute).toBe('required');
         });
 
-        const { input } = render(<NumberInput required aria-label='num-input' onChange={onChangeValue} value='123' />);
+        const { input } = render(<AlphaNumeric required aria-label='alpha-input' onChange={onChangeValue} value='123' />);
 
         fireEvent.change(input, { target: { value: '' } });
-        expect(onChangeValue).toHaveBeenCalledTimes(1); // Each for "1", "12", "123".
+        expect(onChangeValue).toHaveBeenCalledTimes(1);
     });
 
-    test('Number Input for invalid exactLength', async () => {
+    test('AlphaNumeric for invalid exactLength', async () => {
 
         const onChangeValue = jest.fn((e) => {
             expect(e.detail).not.toBeNull();
@@ -357,13 +341,13 @@ describe('validation', () => {
             expect(e.detail.attribute).toBe('exactLength');
         });
 
-        const { input } = render(<NumberInput aria-label='num-input' onChange={onChangeValue} exactLength={5} />);
+        const { input } = render(<AlphaNumeric aria-label='alpha-input' onChange={onChangeValue} exactLength={5} />);
 
         userEvent.type(input, '123');
         expect(onChangeValue).toHaveBeenCalledTimes(3); // Each for "1", "12", "123".
     });
 
-    test('Number Input for exactLength', async () => {
+    test('AlphaNumeric for exactLength', async () => {
 
         const onChangeValue = jest.fn((e) => {
             expect(e.detail).not.toBeNull();
@@ -372,7 +356,7 @@ describe('validation', () => {
             expect(e.detail.attribute).toBe(null);
         });
 
-        const { input } = render(<NumberInput aria-label='num-input' onChange={onChangeValue} exactLength={5} />);
+        const { input } = render(<AlphaNumeric aria-label='alpha-input' onChange={onChangeValue} exactLength={5} />);
 
         fireEvent.change(input, { target: { value: '12345' } });
         expect(onChangeValue).toHaveBeenCalledTimes(1);
