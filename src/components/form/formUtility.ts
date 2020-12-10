@@ -1,9 +1,17 @@
 import { ICustomInputProps } from "../shared/interfacesDelegates/controlnterfaces";
 import { isDefined } from 'type-check-utility';
 
-function getBooleanControlClassName(data: any, originalClassName: string | undefined, prefix: string, baseKey: string | undefined) {
+function getBooleanControlClassName(data: boolean | undefined, originalClassName: string | undefined, prefix: string, baseKey: string | undefined, indeterminate: boolean = false) {
+
     const id = baseKey ? `${baseKey}_` : '';
-    const checkedCn = data ? `${id}${prefix}_checked` : '';
+
+    let checkedCn = '';
+    if (indeterminate) {
+        checkedCn = `${id}${prefix}_indeterminate`;
+    } else if (data) {
+        checkedCn = `${id}${prefix}_checked`;
+    }
+
     const cn = `${checkedCn} ${originalClassName || ''}`.trim();
     return cn;
 }
