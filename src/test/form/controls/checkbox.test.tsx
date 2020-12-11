@@ -93,7 +93,7 @@ describe('onBlur', () => {
 
 describe('detail', () => {
 
-    xtest('Checkbox detail with change', async () => {
+    test('Checkbox detail with change', async () => {
 
         function validate(e: any) {
             expect(e).not.toBeNull();
@@ -101,13 +101,11 @@ describe('detail', () => {
             expect(e.detail.isValid).toBe(true);
         }
 
-        const blurSpy = jest.fn((e) => validate(e));
         const changeSpy = jest.fn((e) => validate(e));
 
-        const { input } = render(<Checkbox aria-label='checkbox-input' onBlur={blurSpy} onChange={changeSpy} />);
+        const { input } = render(<Checkbox aria-label='checkbox-input' onChange={changeSpy} />);
 
-        fireEvent.change(input, { target: { checked: true } });
-
+        fireEvent.click(input);
         expect(changeSpy).toHaveBeenCalledTimes(1);
     });
 });
