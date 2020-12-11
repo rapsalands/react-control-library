@@ -4,7 +4,7 @@ import Email from "./form/controls/email";
 import MaskedInput from "./form/controls/maskedInput";
 import NumberInput from "./form/controls/numberInput";
 import Password from "./form/controls/password";
-import SecureMaskedInput from "./form/controls/secureMaskedInput";
+import SecureInput from "./form/controls/secureInput";
 import TextInput from "./form/controls/textInput";
 
 export {
@@ -15,5 +15,5 @@ export {
     AlphaNumeric,
     TextInput,
     MaskedInput,
-    SecureMaskedInput
+    SecureInput as SecureMaskedInput
 };

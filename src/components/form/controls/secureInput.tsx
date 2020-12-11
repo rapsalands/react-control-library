@@ -4,7 +4,7 @@ import { isDefined } from 'type-check-utility';
 import { ICustomInputProps, ISecureInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
 import MaskedInput from './maskedInput';
 
-const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ mask = [], secure, ...props }) => {
+const SecureInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ mask = [], secure, ...props }) => {
 
     function getReal(value) {
         if (isDefined(value)) {
@@ -53,4 +53,4 @@ const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ ma
     );
 };
 
-export default SecureMaskedInput;
+export default SecureInput;
