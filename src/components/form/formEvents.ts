@@ -30,6 +30,8 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
     }
 
     let detail = validation.controlSpecific && validation.controlSpecific(value);
+
+    // If we need not restrict keys in onChange, then move to next step.
     if (detail && !detail.isValid && validation.preventInput.includes(DetailMode.onChange)) {
         e.target.value = tempData;
         setData(tempData);
@@ -37,15 +39,22 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
         return;
     }
 
-    detail = formVali.forRestriction(validation, detail, value, props);
-    if (detailHasError(detail)) {
+    // We are here means we don't to restrict on onChange.
+    // So check if we need to restrict because of restriction validation, if yes then function ends here.
+    const detailRestriction = formVali.forRestriction(validation, detail, value, props);
+    if (detailHasError(detailRestriction)) {
         e.target.value = tempData;
         setData(tempData);
-        e.detail = detail;
+        e.detail = detailRestriction;
         return;
     }
 
-    detail = formVali.general(validation, detail, value, props);
+    // We are here means restrictionValition passed.
+    // So check if we had controlSpecific validation error, if yes then pass that else check for general.
+    if (!detailHasError(detail)) {
+        detail = formVali.general(validation, detail, value, props);
+    }
+
     e.detail = detail;
     setData && setData(e.target.value);
     onChangeCB && onChangeCB(e);
@@ -53,7 +62,7 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
 
 /**
  * Common onBlur event for all controls.
- * Control Specific validations are not performed as this is onBlur and value won't be changing.
+ * Control Specific validations are performed to fill the detail object as needed.
  * Only attribute based validations are performed here. Mostly to populate detail object.
  * @param e event args
  * @param data current data in control
@@ -67,6 +76,7 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
 const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detailModes, props, extractValueToValidate, extractValueToSet) => {
     let value = extractValueToValidate ? extractValueToValidate(e.target.value) : e.target.value;
     e.detail = null;
+    const tempData = data || '';
 
     if (extractValueToSet) {
         value = extractValueToSet(value);
@@ -74,14 +84,34 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
         setData && setData(value);
     }
 
-    let detail = formVali.general(validation, null, value, props);
-    e.detail = detail;
+    let detail = validation.controlSpecific && validation.controlSpecific(value);
 
-    if (!detailHasError(detail)) {
-        detail = formVali.forRestriction(validation, detail, value, props);
+    // If we need not restrict keys in onChange, then move to next step.
+    if (detail && !detail.isValid && validation.preventInput.includes(DetailMode.onChange)) {
+        e.target.value = tempData;
+        setData(tempData);
         e.detail = detail;
+        return;
     }
 
+    // We are here means we don't to restrict on onChange.
+    // So check if we need to restrict because of restriction validation, if yes then function ends here.
+    const detailRestriction = formVali.forRestriction(validation, detail, value, props);
+    if (detailHasError(detailRestriction)) {
+        e.target.value = tempData;
+        setData(tempData);
+        e.detail = detailRestriction;
+        return;
+    }
+
+    // We are here means restrictionValition passed.
+    // So check if we had controlSpecific validation error, if yes then pass that else check for general.
+    if (!detailHasError(detail)) {
+        detail = formVali.general(validation, detail, value, props);
+    }
+
+    e.detail = detail;
+    setData && setData(e.target.value);
     onBlurCB && onBlurCB(e);
 }
 

@@ -5,11 +5,11 @@ import { IDetail } from '../shared/interfacesDelegates/eventInterfaces';
 import { ValidationType } from '../shared/enumerations';
 
 export class ValidationIns implements IValidationProps {
-    controlSpecific: ((data: any) => IDetail) | null | undefined;
+    controlSpecific: ((data: any) => IDetail) | null;
     preventInput: DetailMode[];
     skipValidationTypes: ValidationType[];
 
-    constructor(controlSpecific?: ((data: any) => IDetail) | null, preventInput = [DetailMode.onChange, DetailMode.onKeyPress], skipValidationTypes: ValidationType[] = []) {
+    constructor(controlSpecific: ((data: any) => IDetail) | null, preventInput = [DetailMode.onChange, DetailMode.onKeyPress], skipValidationTypes: ValidationType[] = []) {
         this.controlSpecific = controlSpecific;
         this.preventInput = preventInput;
         this.skipValidationTypes = skipValidationTypes;
@@ -21,7 +21,7 @@ export class DetailIns implements IDetail {
         this.detail = detail;
         this.value = value;
         this.isValid = !!isValid;
-        this.attribute = attribute;
+        this.attribute = !!isValid ? null : attribute; // Assign attribute only we have error.
         this.metadata = metadata;
     }
     detail: any;
