@@ -19,7 +19,7 @@ const detailHasError = (detail) => !!(detail && !detail.isValid);
  */
 const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation, detailModes, props, extractValueToValidate, extractValueToSet) => {
 
-    let value = extractValueToValidate ? extractValueToValidate(e.target.value) : e.target.value;
+    let value = e.target.value;
     e.detail = null;
     const tempData = data || '';
 
@@ -29,7 +29,8 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
         setData && setData(value);
     }
 
-    let detail = validation.controlSpecific && validation.controlSpecific(value);
+    let value4Validation = extractValueToValidate ? extractValueToValidate(e.target.value) : e.target.value;
+    let detail = validation.controlSpecific && validation.controlSpecific(value4Validation);
 
     // If we need not restrict keys in onChange, then move to next step.
     if (detail && !detail.isValid && validation.preventInput.includes(DetailMode.onChange)) {
@@ -41,7 +42,7 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
 
     // We are here means we don't to restrict on onChange.
     // So check if we need to restrict because of restriction validation, if yes then function ends here.
-    const detailRestriction = formVali.forRestriction(validation, detail, value, props);
+    const detailRestriction = formVali.forRestriction(validation, detail, value4Validation, props);
     if (detailHasError(detailRestriction)) {
         e.target.value = tempData;
         setData(tempData);
@@ -52,7 +53,7 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
     // We are here means restrictionValition passed.
     // So check if we had controlSpecific validation error, if yes then pass that else check for general.
     if (!detailHasError(detail)) {
-        detail = formVali.general(validation, detail, value, props);
+        detail = formVali.general(validation, detail, value4Validation, props);
     }
 
     e.detail = detail;
@@ -74,7 +75,7 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
  * @param extractValueToValidate few controls have decorated values like masked input. functin to extract those values for further processing
  */
 const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detailModes, props, extractValueToValidate, extractValueToSet) => {
-    let value = extractValueToValidate ? extractValueToValidate(e.target.value) : e.target.value;
+    let value = e.target.value;
     e.detail = null;
     const tempData = data || '';
 
@@ -84,7 +85,8 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
         setData && setData(value);
     }
 
-    let detail = validation.controlSpecific && validation.controlSpecific(value);
+    let value4Validation = extractValueToValidate ? extractValueToValidate(e.target.value) : e.target.value;
+    let detail = validation.controlSpecific && validation.controlSpecific(value4Validation);
 
     // If we need not restrict keys in onChange, then move to next step.
     if (detail && !detail.isValid && validation.preventInput.includes(DetailMode.onChange)) {
@@ -96,7 +98,7 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
 
     // We are here means we don't to restrict on onChange.
     // So check if we need to restrict because of restriction validation, if yes then function ends here.
-    const detailRestriction = formVali.forRestriction(validation, detail, value, props);
+    const detailRestriction = formVali.forRestriction(validation, detail, value4Validation, props);
     if (detailHasError(detailRestriction)) {
         e.target.value = tempData;
         setData(tempData);
@@ -107,7 +109,7 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
     // We are here means restrictionValition passed.
     // So check if we had controlSpecific validation error, if yes then pass that else check for general.
     if (!detailHasError(detail)) {
-        detail = formVali.general(validation, detail, value, props);
+        detail = formVali.general(validation, detail, value4Validation, props);
     }
 
     e.detail = detail;

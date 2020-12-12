@@ -86,7 +86,7 @@ describe('onBlur', () => {
 
 describe('detail', () => {
 
-    xtest('RadioButton detail with change', async () => {
+    test('RadioButton detail with change', async () => {
 
         function validate(e: any) {
             expect(e).not.toBeNull();
@@ -99,7 +99,7 @@ describe('detail', () => {
 
         const { input } = render(<RadioButton aria-label='radio-input' onBlur={blurSpy} onChange={changeSpy} />);
 
-        fireEvent.change(input, { target: { checked: true } });
+        fireEvent.click(input);
 
         expect(changeSpy).toHaveBeenCalledTimes(1);
     });

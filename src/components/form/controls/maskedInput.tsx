@@ -53,7 +53,7 @@ const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [
     }
 
     return (
-        <CustomInput {...props} validation={new ValidationIns(formVali.alwaysValid)} onBlur={onBlur} onChange={changeEvent} extractValueToValidate={(value) => maskUtility.extractPureValue(value, mask)} onKeyPress={keyPressEvent} />
+        <CustomInput {...props} validation={new ValidationIns(formVali.alwaysValid)} extractValueToSet={(value) => maskUtility.toMaskWithCursor({ target: { value } }, mask).value} onBlur={onBlur} onChange={changeEvent} extractValueToValidate={(value) => maskUtility.extractPureValue(value, mask)} onKeyPress={keyPressEvent} />
     );
 };
 

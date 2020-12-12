@@ -3,7 +3,7 @@ import utility from "./utility";
 
 function extractPureValue(data: string, mask: any[] = []): string {
     if (!isDefined(data)) return data;
-    
+
     const regexes: any[] = mask.filter(n => isRegex(n));
     let result = '';
 
@@ -28,7 +28,7 @@ function toMaskWithCursor(e: any, mask: any[] = []): IToMaskWithCursor {
     let cursorJump = 0; // Chars Added Before Cursor Position
 
     const currentValue = e.target.value;
-    const pureValue = extractPureValue(currentValue, mask);
+    const pureValue = extractPureValue(currentValue, mask) || '';
     let result = pureValue;
 
     for (let i = 0; i < result.length; i++) {

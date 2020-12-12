@@ -53,7 +53,7 @@ function App() {
         Phone Input
         {
           // @ts-ignore
-          <MaskedInput mask={Regex.phone()} onChange={changeEvent} exactLength={9} />
+          <MaskedInput mask={Regex.phone()} value={'750'} onChange={changeEvent} exactLength={9} />
         }
       </div>
       <div>
