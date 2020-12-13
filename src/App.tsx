@@ -60,7 +60,7 @@ function App() {
         ZipCode Input <MaskedInput mask={Regex.zipcode()} onChange={changeEvent} />
       </div>
       <div>
-        SSN Input <SecureInput secure={{ getValue: (data) => `***${data}` }} value={ssn} mask={Regex.ssn()} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e) }} onBlur={changeEvent} />
+        SSN Input <SecureInput secure={{ getValue: (detail, data) => `***${data}` }} value={ssn} mask={Regex.ssn()} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e) }} onBlur={changeEvent} />
       </div>
       <div>
         Gender

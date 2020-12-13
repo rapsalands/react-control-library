@@ -62,7 +62,7 @@ export interface IMaskedInputProps {
 
 export interface ISecureInputProps extends IMaskedInputProps {
     secure: {
-        getValue: (data: string) => string
+        getValue: (detail: IDetail, data: string) => string
     }
 }
 

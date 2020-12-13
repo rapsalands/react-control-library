@@ -7,7 +7,7 @@ import CustomInput from './customInput';
 import { ValidationIns } from '../formPropsIns';
 import formVali from '../validation/formVali';
 
-const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [], ...props }) => {
+const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [], extractValueToSet, ...props }) => {
 
     function changeEvent(e) {
 
@@ -52,8 +52,22 @@ const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [
         props.onKeyPress && props.onKeyPress(e);
     }
 
+    function extractValueToSetLocal(value) {
+        const { value: data } = maskUtility.toMaskWithCursor({ target: { value } }, mask);
+        return data;
+    }
+
+    const params = {
+        validation: new ValidationIns(formVali.alwaysValid),
+        extractValueToSet: extractValueToSet || extractValueToSetLocal,
+        onBlur,
+        onChange: changeEvent,
+        extractValueToValidate: (value) => maskUtility.extractPureValue(value, mask),
+        onKeyPress: keyPressEvent
+    };
+
     return (
-        <CustomInput {...props} validation={new ValidationIns(formVali.alwaysValid)} extractValueToSet={(value) => maskUtility.toMaskWithCursor({ target: { value } }, mask).value} onBlur={onBlur} onChange={changeEvent} extractValueToValidate={(value) => maskUtility.extractPureValue(value, mask)} onKeyPress={keyPressEvent} />
+        <CustomInput {...props} {...params} />
     );
 };
 
