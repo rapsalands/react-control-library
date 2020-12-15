@@ -1,10 +1,10 @@
 {
   "name": "react-control-library",
-  "version": "1.0.6",
+  "version": "1.1.1",
   "description": "React based control library with features for every application.",
   "main": "index.js",
   "dependencies": {
-    "type-check-utility": "^1.0.2"
+    "type-check-utility": "^2.2.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
