@@ -32,13 +32,13 @@ function App() {
   return (
     <React.Fragment>
       <div>
-        Text Field <TextInput restrictSymbols='~!@#$%' value={ssn} onChange={(e: any) => setSsn(e.target.value)} label='Person Name' />
+        Text Field <TextInput restrictSymbols='~!@#$%' value={ssn} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e); }} label='Person Name' />
       </div>
       <div>
         Number <NumberInput value={num} onChange={numChangeEvent} />
       </div>
       <div>
-        Decimal <DecimalInput decimalLimit={5} value={temp} onChange={(e: any) => setTemp(e.target.value)} />
+        Decimal <DecimalInput decimalLimit={5} value={temp} onChange={(e: any) => { setTemp(e.target.value); changeEvent(e); }} />
       </div>
       <div>
         AlphaNumeric <AlphaNumeric onBlur={(e: any) => { setSsn(e.target.value); setTemp(e.target.value) }} />
@@ -60,7 +60,14 @@ function App() {
         ZipCode Input <MaskedInput mask={Regex.zipcode()} onChange={changeEvent} />
       </div>
       <div>
-        SSN Input <SecureInput secure={{ getValue: (detail, data) => `***${data}` }} value={ssn} mask={Regex.ssn()} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e) }} onBlur={changeEvent} />
+        SSN Input <SecureInput secure={{
+          getValue: (detail, data) => {
+            if (!detail || !detail.value) return data;
+            if (detail.value.length === 9) return `***-**-${detail.value.substring(5, 9)}`;
+
+            return detail.value;
+          }
+        }} value={ssn} mask={Regex.ssn()} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e) }} onBlur={changeEvent} />
       </div>
       <div>
         Gender

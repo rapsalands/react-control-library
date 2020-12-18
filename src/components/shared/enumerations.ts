@@ -15,5 +15,6 @@ export enum ValidationType {
     pattern = 'pattern',
     required = 'required',
     exactLength = 'exactLength',
-    
+    strength = 'strength',
+    capital = 'capital'
 }

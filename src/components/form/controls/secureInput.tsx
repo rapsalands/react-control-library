@@ -21,7 +21,16 @@ const SecureInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ mask = [
 
     function getSecure(detail: IDetail, value) {
         if (!secure) return value;
-        return secure.getValue(detail, value);
+
+        if (Object.keys(detail).length === 0) {
+            detail = {
+                value: maskUtility.extractPureValue(value),
+                isValid: true,
+            } as IDetail;
+        }
+
+        const result = secure.getValue(detail, value);
+        return result;
     }
 
     React.useEffect(() => {

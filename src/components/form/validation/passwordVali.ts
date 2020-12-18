@@ -1,5 +1,5 @@
 import Constants from "../../shared/constants";
-import { PasswordStrength } from "../../shared/enumerations";
+import { PasswordStrength, ValidationType } from "../../shared/enumerations";
 import { IPasswordCriteria, IPasswordFailure } from "../../shared/interfacesDelegates/controlnterfaces";
 import { IDetail } from "../../shared/interfacesDelegates/eventInterfaces";
 import Messages from "../../shared/messages";
@@ -79,7 +79,8 @@ function isPasswordValid(data: any, passwordCriteria: IPasswordCriteria): IDetai
     const passwordStrength = checkPassStrength(data);
     result.push(new PasswordFailIns('strength', data, '', passwordStrength));
 
-    return new DetailIns(null, data, !result.length, null, result);
+    const errorResult = result.filter(n => n.attribute !== ValidationType.strength);
+    return new DetailIns(null, data, !errorResult.length, null, result);
 }
 
 // Referred from: https://stackoverflow.com/a/11268104/815600

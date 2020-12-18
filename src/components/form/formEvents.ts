@@ -42,7 +42,7 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
 
     // We are here means we don't to restrict on onChange.
     // So check if we need to restrict because of restriction validation, if yes then function ends here.
-    const detailRestriction = formVali.forRestriction(validation, detail, value4Validation, props);
+    const detailRestriction = formVali.forRestriction(validation, null, value4Validation, props);
     if (detailHasError(detailRestriction)) {
         e.target.value = tempData;
         setData(tempData);
@@ -53,7 +53,12 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
     // We are here means restrictionValition passed.
     // So check if we had controlSpecific validation error, if yes then pass that else check for general.
     if (!detailHasError(detail)) {
-        detail = formVali.general(validation, detail, value4Validation, props);
+        const generalDetail = formVali.general(validation, null, value4Validation, props);
+        if (generalDetail) {
+            generalDetail.metadata = generalDetail.metadata || [];
+            generalDetail.metadata = generalDetail.metadata.concat(detail?.metadata || []);
+            detail = generalDetail;
+        }
     }
 
     e.detail = detail;
@@ -98,7 +103,7 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
 
     // We are here means we don't to restrict on onChange.
     // So check if we need to restrict because of restriction validation, if yes then function ends here.
-    const detailRestriction = formVali.forRestriction(validation, detail, value4Validation, props);
+    const detailRestriction = formVali.forRestriction(validation, null, value4Validation, props);
     if (detailHasError(detailRestriction)) {
         e.target.value = tempData;
         setData(tempData);
@@ -109,7 +114,12 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
     // We are here means restrictionValition passed.
     // So check if we had controlSpecific validation error, if yes then pass that else check for general.
     if (!detailHasError(detail)) {
-        detail = formVali.general(validation, detail, value4Validation, props);
+        const generalDetail = formVali.general(validation, null, value4Validation, props);
+        if (generalDetail) {
+            generalDetail.metadata = generalDetail.metadata || [];
+            generalDetail.metadata = generalDetail.metadata.concat(detail?.metadata || []);
+            detail = generalDetail;
+        }
     }
 
     e.detail = detail;

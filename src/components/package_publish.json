@@ -1,6 +1,6 @@
 {
   "name": "react-control-library",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "React based control library with features for every application.",
   "main": "index.js",
   "dependencies": {

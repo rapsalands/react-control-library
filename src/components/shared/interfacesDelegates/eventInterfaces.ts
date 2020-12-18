@@ -31,5 +31,5 @@ export interface IDetail {
     value: any,
     isValid: boolean,
     attribute: string | null,
-    metadata?: any
+    metadata?: any[]
 }
