@@ -21,7 +21,7 @@ const AppSettings = {
     },
     decimal: {
         maxLength: 20,
-        decimalLimit: 10
+        decimalLimit: 4
     }
 };
 

@@ -116,19 +116,23 @@ describe('onChange', () => {
         const onChange = jest.fn((e) => {
         });
 
-        const { input } = render(<DecimalInput aria-label='decimal-input' maxLength={5} onChange={onChange} />);
+        const { input } = render(<DecimalInput aria-label='decimal-input' maxLength={6} onChange={onChange} />);
 
-        fireEvent.change(input, { target: { value: 5555 } });
-        expect(input.value).toBe('5555');
+        fireEvent.change(input, { target: { value: 5 } });
+        expect(input.value).toBe('5');
+        expect(onChange).toHaveBeenCalledTimes(1);
+
+        fireEvent.change(input, { target: { value: 55 } });
+        expect(input.value).toBe('5');
         expect(onChange).toHaveBeenCalledTimes(1);
 
         fireEvent.change(input, { target: { value: 55555 } });
-        expect(input.value).toBe('55555');
-        expect(onChange).toHaveBeenCalledTimes(2);
+        expect(input.value).toBe('5');
+        expect(onChange).toHaveBeenCalledTimes(1);
 
         fireEvent.change(input, { target: { value: 555555 } });
-        expect(input.value).toBe('55555');
-        expect(onChange).toHaveBeenCalledTimes(2);
+        expect(input.value).toBe('5');
+        expect(onChange).toHaveBeenCalledTimes(1);
     });
 
     test('Decimal Input on Change with invalid decimalLimit', async () => {
@@ -136,7 +140,7 @@ describe('onChange', () => {
         const onChange = jest.fn((e) => {
         });
 
-        const { input } = render(<DecimalInput aria-label='decimal-input' maxLength={3} decimalLimit={2} onChange={onChange} />);
+        const { input } = render(<DecimalInput aria-label='decimal-input' maxLength={5} decimalLimit={2} onChange={onChange} />);
 
         fireEvent.change(input, { target: { value: 5.1 } });
         expect(input.value).toBe('5.1');

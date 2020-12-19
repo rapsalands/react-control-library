@@ -10,6 +10,9 @@ const FormRegex = {
     number: () => /^\d+$/,
     decimal: (decimalLimit, maxLength) => {
         const regex = /^-?[0-9]{0,maxLength}(\.[0-9]{0,decimalLimit})?$/;
+
+        maxLength = maxLength - (decimalLimit + 1);
+
         let modified = modRegex(regex, maxLength, 'maxLength'); // Replace 10 in regex with maxLength
         modified = modRegex(modified, decimalLimit, 'decimalLimit'); // Replace 10 in regex with decimalPoint
         return new RegExp(modified);

@@ -38,7 +38,7 @@ function App() {
         Number <NumberInput value={num} onChange={numChangeEvent} />
       </div>
       <div>
-        Decimal <DecimalInput decimalLimit={5} value={temp} onChange={(e: any) => { setTemp(e.target.value); changeEvent(e); }} />
+        Decimal <DecimalInput maxLength={10} value={temp} onChange={(e: any) => { setTemp(e.target.value); changeEvent(e); }} />
       </div>
       <div>
         AlphaNumeric <AlphaNumeric onBlur={(e: any) => { setSsn(e.target.value); setTemp(e.target.value) }} />
