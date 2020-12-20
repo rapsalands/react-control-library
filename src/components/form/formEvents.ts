@@ -1,6 +1,7 @@
 import { DetailMode } from "./detailMode";
 import { blurDelegate, changeDelegate, keyPressDelegate } from "../shared/interfacesDelegates/delegates";
 import formVali from "./validation/formVali";
+import utility from "../shared/utility";
 
 const detailHasError = (detail) => !!(detail && !detail.isValid);
 
@@ -24,8 +25,10 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
     const tempData = data || '';
 
     if (extractValueToSet) {
-        value = extractValueToSet(value);
-        e.target.value = value;
+        const valueToSet = extractValueToSet(e, value);
+        utility.setEventArgsValue(e, valueToSet);
+
+        value = valueToSet.value;
         setData && setData(value);
     }
 
@@ -34,7 +37,7 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
 
     // If we need not restrict keys in onChange, then move to next step.
     if (detail && !detail.isValid && validation.preventInput.includes(DetailMode.onChange)) {
-        e.target.value = tempData;
+        utility.setEventArgsValue(e, tempData);
         setData(tempData);
         e.detail = detail;
         return;
@@ -44,7 +47,7 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
     // So check if we need to restrict because of restriction validation, if yes then function ends here.
     const detailRestriction = formVali.forRestriction(validation, null, value4Validation, props);
     if (detailHasError(detailRestriction)) {
-        e.target.value = tempData;
+        utility.setEventArgsValue(e, tempData);
         setData(tempData);
         e.detail = detailRestriction;
         return;
@@ -85,8 +88,10 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
     const tempData = data || '';
 
     if (extractValueToSet) {
-        value = extractValueToSet(value);
-        e.target.value = value;
+        const valueToSet = extractValueToSet(e, value);
+        utility.setEventArgsValue(e, valueToSet);
+
+        value = valueToSet.value;
         setData && setData(value);
     }
 
@@ -95,7 +100,7 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
 
     // If we need not restrict keys in onChange, then move to next step.
     if (detail && !detail.isValid && validation.preventInput.includes(DetailMode.onChange)) {
-        e.target.value = tempData;
+        utility.setEventArgsValue(e, tempData);
         setData(tempData);
         e.detail = detail;
         return;
@@ -105,7 +110,7 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
     // So check if we need to restrict because of restriction validation, if yes then function ends here.
     const detailRestriction = formVali.forRestriction(validation, null, value4Validation, props);
     if (detailHasError(detailRestriction)) {
-        e.target.value = tempData;
+        utility.setEventArgsValue(e, tempData);
         setData(tempData);
         e.detail = detailRestriction;
         return;

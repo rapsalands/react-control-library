@@ -1,5 +1,6 @@
 import React from 'react';
 import { IAllowSymbolsProps } from '../../shared/interfacesDelegates/controlnterfaces';
+import { IToValue } from '../../shared/interfacesDelegates/eventInterfaces';
 import { ValidationIns } from '../formPropsIns';
 import FormRegex from '../formRegex';
 import formUtility from '../formUtility';
@@ -10,12 +11,13 @@ const AlphaNumeric: React.FC<IAllowSymbolsProps> = ({ allowSymbols = '', ...prop
 
     const validation = new ValidationIns((data) => regexVali.alphaNumeric(data, allowSymbols));
 
-    function extractToSet(data): string {
-        return formUtility.getEachValidCharacter(data, (d) => {
+    function extractToSet(e, data): IToValue {
+        const temp = formUtility.getEachValidCharacter(data, (d) => {
             const anValid = regexVali.regexValidate(FormRegex.alphaNumeric(), d);
             const asValid = regexVali.regexValidate(FormRegex.custom(allowSymbols), d);
             return anValid || asValid;
         });
+        return { value: temp };
     }
 
     return (

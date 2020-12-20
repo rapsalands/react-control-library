@@ -63,9 +63,9 @@ function App() {
         SSN Input <SecureInput secure={{
           getValue: (detail, data) => {
             if (!detail || !detail.value) return data;
-            if (detail.value.length === 9) return `***-**-${detail.value.substring(5, 9)}`;
+            if (detail.value.length >= 9) return `***-**-${detail.value.substring(detail.value.length - 4, detail.value.length)}`;
 
-            return detail.value;
+            return data;
           }
         }} value={ssn} mask={Regex.ssn()} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e) }} onBlur={changeEvent} />
       </div>

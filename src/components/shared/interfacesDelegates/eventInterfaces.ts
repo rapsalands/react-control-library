@@ -33,3 +33,12 @@ export interface IDetail {
     attribute: string | null,
     metadata?: any[]
 }
+
+export interface IToValue {
+    value: any,
+}
+
+export interface IToValueWithCursor extends IToValue {
+    cursorStart: number,
+    cursorEnd: number,
+}

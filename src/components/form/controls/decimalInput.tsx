@@ -2,6 +2,7 @@ import React from 'react';
 import AppSettings from '../../shared/appSettings';
 import { ValidationType } from '../../shared/enumerations';
 import { IDecimalInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
+import { IToValue } from '../../shared/interfacesDelegates/eventInterfaces';
 import { DetailMode } from '../detailMode';
 import { ValidationIns } from '../formPropsIns';
 import FormRegex from '../formRegex';
@@ -15,10 +16,11 @@ const DecimalInput: React.FC<IDecimalInputProps> = ({ decimalLimit = AppSettings
         return regexVali.decimal(data, decimalLimit, maxLength)
     }, [DetailMode.onChange, DetailMode.onKeyPress], [ValidationType.maxLength]);
 
-    function extractToSet(data): string {
-        return formUtility.getEachValidCharacter(data, (d) => {
+    function extractToSet(e, data): IToValue {
+        const temp = formUtility.getEachValidCharacter(data, (d) => {
             return regexVali.regexValidate(FormRegex.decimal(decimalLimit, maxLength), d);
         });
+        return { value: temp };
     }
 
     return (

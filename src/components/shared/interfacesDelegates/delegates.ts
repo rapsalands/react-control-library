@@ -1,6 +1,6 @@
 import { DetailMode } from "../../form/detailMode";
 import { IValidationProps } from "./controlnterfaces";
-import { IChangeInputEvent, IDetail, IFocusInputEvent, IKeyboardInputEvent } from "./eventInterfaces";
+import { IChangeInputEvent, IDetail, IFocusInputEvent, IKeyboardInputEvent, IToValue, IToValueWithCursor } from "./eventInterfaces";
 
 export type ICustomEventDelegate = IChangeInputEvent | IFocusInputEvent | IKeyboardInputEvent;
 
@@ -13,7 +13,7 @@ export type changeDelegate = (
     detailModes: DetailMode[],
     props,
     extractValueToValidate: undefined | ((value: any) => string),
-    extractValueToSet?: (value: string) => string
+    extractValueToSet?: (e: IChangeInputEvent, value: string) => IToValue | IToValueWithCursor
 ) => void;
 
 export type keyPressDelegate = (
@@ -33,7 +33,7 @@ export type blurDelegate = (
     detailModes: DetailMode[],
     props,
     extractValueToValidate,
-    extractValueToSet?: (value: string) => string
+    extractValueToSet?: (e: IFocusInputEvent, value: string) => IToValue | IToValueWithCursor
 ) => void;
 
 export type validateDelegate = (

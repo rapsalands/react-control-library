@@ -5,6 +5,7 @@ import regexVali from '../validation/regexVali';
 import FormRegex from '../formRegex';
 import formUtility from '../formUtility';
 import CustomInput from './customInput';
+import { IToValue } from '../../shared/interfacesDelegates/eventInterfaces';
 
 const TextInput: React.FC<IRestrictSymbolsProps> = ({ restrictSymbols, validation, ...props }) => {
 
@@ -14,8 +15,9 @@ const TextInput: React.FC<IRestrictSymbolsProps> = ({ restrictSymbols, validatio
         return !notPattern.isValid ? notPattern : pattern;
     }
 
-    function extractToSet(data): string {
-        return formUtility.getEachValidCharacter(data, (d) => regexVali.regexValidate(FormRegex.custom(restrictSymbols), d), false);
+    function extractToSet(e, data): IToValue {
+        const temp = formUtility.getEachValidCharacter(data, (d) => regexVali.regexValidate(FormRegex.custom(restrictSymbols), d), false);
+        return { value: temp };
     }
 
     const valid = new ValidationIns((data) => validationFunc(data));

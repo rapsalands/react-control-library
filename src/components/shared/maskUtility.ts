@@ -1,8 +1,9 @@
 import { isDefined, isRegex } from "type-check-utility";
+import { IToValue, IToValueWithCursor } from "./interfacesDelegates/eventInterfaces";
 import utility from "./utility";
 
-function extractPureValue(data: string, mask: any[] = []): string {
-    if (!isDefined(data)) return data;
+function extractPureValue(data: any, mask: any[]): string {
+    if (!isDefined(data) || mask.length === 0) return data;
 
     const regexes: any[] = mask.filter(n => isRegex(n));
     let result = '';
@@ -23,13 +24,18 @@ function extractPureValue(data: string, mask: any[] = []): string {
     return result;
 }
 
-function toMaskWithCursor(e: any, mask: any[] = []): IToMaskWithCursor {
+function toMaskWithCursor(e: any, mask: any[]): IToValueWithCursor {
     const { cursorStart, cursorEnd } = utility.cursor(e);
-    let cursorJump = 0; // Chars Added Before Cursor Position
 
     const currentValue = e.target.value;
     const pureValue = extractPureValue(currentValue, mask) || '';
     let result = pureValue;
+
+    if (mask.length === 0) {
+        return { value: result, cursorStart, cursorEnd };
+    }
+
+    let cursorJump = 0; // Chars Added Before Cursor Position
 
     for (let i = 0; i < result.length; i++) {
         const m = mask[i];
@@ -45,7 +51,11 @@ function toMaskWithCursor(e: any, mask: any[] = []): IToMaskWithCursor {
     return { value: result, cursorStart: cursorStart + cursorJump, cursorEnd: cursorEnd + cursorJump };
 }
 
-function toMask(value: any, mask: any[] = []): IToMask {
+function toMask(value: any, mask: any[]): IToValue {
+    if (mask.length === 0) {
+        return { value: value };
+    }
+
     const currentValue = value;
     const pureValue = extractPureValue(currentValue, mask);
     let result = pureValue;
@@ -61,13 +71,13 @@ function toMask(value: any, mask: any[] = []): IToMask {
     return { value: result };
 }
 
-function updateEventArgs(e: any, toMaskResult: IToMaskWithCursor) {
+function updateEventArgs(e: any, toMaskResult: IToValueWithCursor) {
     e.target.value = toMaskResult.value;
     e.target.selectionStart = toMaskResult.cursorStart;
     e.target.selectionEnd = toMaskResult.cursorEnd;
 }
 
-function updateDetail(e: any, mask: any[] = []) {
+function updateDetail(e: any, mask: any[]) {
     const value = e?.detail?.value;
     if (!value) return;
 
@@ -78,12 +88,3 @@ function updateDetail(e: any, mask: any[] = []) {
 const maskUtility = { toMaskWithCursor, updateEventArgs, toMask, updateDetail, extractPureValue };
 
 export default maskUtility;
-
-export interface IToMask {
-    value: any,
-}
-
-export interface IToMaskWithCursor extends IToMask {
-    cursorStart: number,
-    cursorEnd: number,
-}

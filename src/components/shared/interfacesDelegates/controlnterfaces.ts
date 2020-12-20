@@ -1,7 +1,6 @@
 import { DetailMode } from "../../form/detailMode";
 import { ValidationType } from "../enumerations";
-import { ICustomEventDelegate } from "./delegates";
-import { IDetail } from "./eventInterfaces";
+import { IChangeInputEvent, IDetail, IFocusInputEvent, IToValue, IToValueWithCursor } from "./eventInterfaces";
 
 export interface ICustomInputProps extends React.HTMLProps<HTMLInputElement> {
     exactLength?: number;
@@ -10,7 +9,7 @@ export interface ICustomInputProps extends React.HTMLProps<HTMLInputElement> {
     detailModes?: DetailMode[],
     setReference?: (refSetter: ((ref: React.MutableRefObject<HTMLInputElement | undefined>) => void)) => void,
     extractValueToValidate?: (value) => any,
-    extractValueToSet?: (value: string) => string,
+    extractValueToSet?: (e: IChangeInputEvent | IFocusInputEvent | null, value: string) => IToValueWithCursor | IToValue,
 }
 
 export interface IValidationProps {
@@ -57,7 +56,7 @@ export interface IPasswordFailure {
 }
 
 export interface IMaskedInputProps {
-    mask: any[]
+    mask: any[] // Empty mask must be treated as no masking is required.
 }
 
 export interface ISecureInputProps extends IMaskedInputProps {

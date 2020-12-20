@@ -1,5 +1,7 @@
 import { ChangeEvent } from "react";
+import { isDefined } from "type-check-utility";
 import { ICursor } from "./interfacesDelegates/controlnterfaces";
+import { IChangeInputEvent, IToValue, IToValueWithCursor } from "./interfacesDelegates/eventInterfaces";
 
 const insertAt = (data, sub, pos): string => `${data.slice(0, pos)}${sub}${data.slice(pos)}`;
 
@@ -11,6 +13,21 @@ const cursor = (e: React.ChangeEvent<HTMLInputElement>): ICursor => {
     return { cursorStart: start, cursorEnd: end, selectLength, newLengthIsPermitted };
 }
 
-const utility = { insertAt, cursor };
+function setEventArgsValue(e: IChangeInputEvent, valueToSet: IToValue | IToValueWithCursor) {
+    e = e || {};
+    let { selectionStart: oldStart, selectionEnd: oldEnd } = e.target || {};
+    e.target.value = valueToSet.value;
+
+    const valueWithCursor = (valueToSet as IToValueWithCursor);
+    if (isDefined(valueWithCursor.cursorStart)) {
+        oldStart = valueWithCursor.cursorStart;
+        oldEnd = valueWithCursor.cursorEnd;
+    }
+
+    e.target.selectionStart = oldStart;
+    e.target.selectionEnd = oldEnd;
+}
+
+const utility = { insertAt, cursor, setEventArgsValue };
 
 export default utility;

@@ -6,11 +6,20 @@ import { ICustomInputProps, IMaskedInputProps } from '../../shared/interfacesDel
 import CustomInput from './customInput';
 import { ValidationIns } from '../formPropsIns';
 import formVali from '../validation/formVali';
+import { IToValueWithCursor } from '../../shared/interfacesDelegates/eventInterfaces';
 
 const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [], extractValueToSet, ...props }) => {
 
+    // const [data, setData] = React.useState(value);
+
+    // React.useEffect(() => {
+    //     setData(value);
+    // }, [value]);
+
     function changeEvent(e) {
 
+        // console.log(data);
+        // setData(e.target.value);
         const toMaskResult = maskUtility.toMaskWithCursor(e, mask);
         maskUtility.updateEventArgs(e, toMaskResult);
         maskUtility.updateDetail(e, mask);
@@ -24,6 +33,11 @@ const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [
     }
 
     function keyPressEvent(e) {
+
+        if (mask.length === 0) {
+            props.onKeyPress && props.onKeyPress(e);
+            return;
+        }
 
         let { cursorStart: start, newLengthIsPermitted } = utility.cursor(e);
         if (newLengthIsPermitted >= mask.length) {
@@ -52,14 +66,13 @@ const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [
         props.onKeyPress && props.onKeyPress(e);
     }
 
-    function extractValueToSetLocal(value) {
-        const { value: data } = maskUtility.toMaskWithCursor({ target: { value } }, mask);
-        return data;
+    function extractValueToSetLocal(e, value): IToValueWithCursor {
+        const valueWithCursor = maskUtility.toMaskWithCursor(e || { target: { value } }, mask);
+        return valueWithCursor;
     }
 
     const params = {
         validation: new ValidationIns(formVali.alwaysValid),
-        extractValueToSet: extractValueToSet || extractValueToSetLocal,
         onBlur,
         onChange: changeEvent,
         extractValueToValidate: (value) => maskUtility.extractPureValue(value, mask),
@@ -67,7 +80,7 @@ const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [
     };
 
     return (
-        <CustomInput {...props} {...params} />
+        <CustomInput extractValueToSet={extractValueToSet || extractValueToSetLocal} {...props} {...params} />
     );
 };
 
