@@ -69,6 +69,22 @@ describe('Rendering', () => {
 });
 
 describe('onChange', () => {
+    test('Secure Input on Change full value', async () => {
+
+        const { input } = render();
+
+        fireEvent.change(input, { target: { value: '987654321' } });
+        expect(input.value).toBe('987-65-4321');
+    });
+
+    test('Secure Input on Change with last value', async () => {
+
+        const { input } = render(<SecureInput secure={{ getValue }} mask={ssnMask} aria-label='secure-input' value='' />);
+
+        userEvent.type(input, '987654321');
+        expect(input.value).toBe('987-65-4321');
+    });
+
     test('Secure Input on Change with numbers as string', async () => {
 
         const { input } = render();

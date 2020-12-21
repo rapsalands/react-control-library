@@ -15,7 +15,7 @@ import Regex from './regex';
 function App() {
 
   const [num, setNum] = React.useState('435qwe');
-  const [ssn, setSsn] = React.useState('8767867576565');
+  const [ssn, setSsn] = React.useState('');
   const [temp, setTemp] = React.useState(98798);
   const [gender, setGender] = React.useState('male');
   const [yesNo, setYesNo] = React.useState(false);
@@ -31,7 +31,7 @@ function App() {
 
   return (
     <React.Fragment>
-      <div>
+      {/* <div>
         Text Field <TextInput restrictSymbols='~!@#$%' value={ssn} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e); }} label='Person Name' />
       </div>
       <div>
@@ -58,7 +58,7 @@ function App() {
       </div>
       <div>
         ZipCode Input <MaskedInput mask={Regex.zipcode()} onChange={changeEvent} />
-      </div>
+      </div> */}
       <div>
         SSN Input <SecureInput secure={{
           getValue: (detail, data) => {
@@ -69,7 +69,7 @@ function App() {
           }
         }} value={ssn} mask={Regex.ssn()} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e) }} onBlur={changeEvent} />
       </div>
-      <div>
+      {/* <div>
         Gender
         <RadioButton name='gender' placeholder='One' checked={gender === 'male'} onChange={_ => setGender('male')} />
         <RadioButton name='gender' placeholder='Two' checked={gender === 'female'} onChange={_ => setGender('female')} />
@@ -82,7 +82,7 @@ function App() {
         <button onClick={() => {
           setNum('500');
         }}>Click</button>
-      </div>
+      </div> */}
     </React.Fragment>
   );
 }
