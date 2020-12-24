@@ -8,9 +8,10 @@ import MaskedInput from './components/form/controls/maskedInput';
 import NumberInput from './components/form/controls/numberInput';
 import Password from './components/form/controls/password';
 import RadioButton from './components/form/controls/radioButton';
-import SecureInput from './components/form/controls/secureInput';
 import TextInput from './components/form/controls/textInput';
 import Regex from './regex';
+import SecureMaskedInput from './components/form/controls/secureMaskedInput';
+import ReadMeExample from './ReadmeExample';
 
 function App() {
 
@@ -31,14 +32,15 @@ function App() {
 
   return (
     <React.Fragment>
-      {/* <div>
+      <ReadMeExample />
+      <div>
         Text Field <TextInput restrictSymbols='~!@#$%' value={ssn} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e); }} label='Person Name' />
       </div>
       <div>
         Number <NumberInput value={num} onChange={numChangeEvent} />
       </div>
       <div>
-        Decimal <DecimalInput maxLength={10} value={temp} onChange={(e: any) => { setTemp(e.target.value); changeEvent(e); }} />
+        Decimal <DecimalInput max={100} maxLength={6} decimalLimit={2} value={temp} onChange={(e: any) => { setTemp(e.target.value); changeEvent(e); }} />
       </div>
       <div>
         AlphaNumeric <AlphaNumeric onBlur={(e: any) => { setSsn(e.target.value); setTemp(e.target.value) }} />
@@ -58,18 +60,15 @@ function App() {
       </div>
       <div>
         ZipCode Input <MaskedInput mask={Regex.zipcode()} onChange={changeEvent} />
-      </div> */}
+      </div>
       <div>
-        SSN Input <SecureInput secure={{
+        SSN Input <SecureMaskedInput secure={{
           getValue: (detail, data) => {
-            if (!detail || !detail.value) return data;
-            if (detail.value.length >= 9) return `***-**-${detail.value.substring(detail.value.length - 4, detail.value.length)}`;
-
-            return data;
+            return 'HIDDEN';
           }
         }} value={ssn} mask={Regex.ssn()} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e) }} onBlur={changeEvent} />
       </div>
-      {/* <div>
+      <div>
         Gender
         <RadioButton name='gender' placeholder='One' checked={gender === 'male'} onChange={_ => setGender('male')} />
         <RadioButton name='gender' placeholder='Two' checked={gender === 'female'} onChange={_ => setGender('female')} />
@@ -82,7 +81,7 @@ function App() {
         <button onClick={() => {
           setNum('500');
         }}>Click</button>
-      </div> */}
+      </div>
     </React.Fragment>
   );
 }

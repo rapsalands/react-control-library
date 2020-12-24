@@ -4,7 +4,7 @@ import { IDetail } from '../../shared/interfacesDelegates/eventInterfaces';
 import maskUtility from '../../shared/maskUtility';
 import MaskedInput from './maskedInput';
 
-const SecureInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ secure, onChange, mask, value, onFocus, onBlur, ...props }) => {
+const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ secure, onChange, mask, value, onFocus, onBlur, ...props }) => {
 
     function getSecureValue(value: any): string {
         if (!secure || !secure.getValue) return value;
@@ -68,4 +68,4 @@ const SecureInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ secure, 
     );
 };
 
-export default SecureInput;
+export default SecureMaskedInput;
