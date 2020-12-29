@@ -4,14 +4,14 @@ import formUtility from '../formUtility';
 import CustomInput from './customInput';
 import { isDefined } from 'type-check-utility';
 
-const Checkbox: React.FC<ICustomInputProps & ICheckboxProps> = ({ type, indeterminate, ...props }) => {
+const Checkbox: React.FC<ICustomInputProps & ICheckboxProps> = ({ type, indeterminate, id, ...props }) => {
 
     const [indeter, setIndeter] = React.useState<boolean | undefined>(indeterminate);
     const [data, setData] = React.useState<boolean | undefined>(props.checked || false);
     const [reference, setReference] = React.useState<any>();
     // React.useEffect(() => setData(props.checked || false), [props.checked]);
 
-    const cn = formUtility.getBooleanControlClassName(data, props.className, 'checkbox', props.id, indeter);
+    const cn = formUtility.getBooleanControlClassName(data, props.className, 'checkbox', id, indeter);
 
     React.useEffect(() => {
         // if (!reference || !reference.current) return;
@@ -46,8 +46,28 @@ const Checkbox: React.FC<ICustomInputProps & ICheckboxProps> = ({ type, indeterm
 
     updateIndeterminate();
 
+    if (props.inputTag) {
+        return (
+            <CustomInput type='checkbox'
+                setReference={setReference}
+                checked={data}
+                id={id}
+                onChange={onChange}
+                className={cn} {...props}
+            />
+        );
+    }
+
+    let checkId: string | undefined = id;
+    if (!isDefined(id)) {
+        checkId = (Math.random() * Date.now()).toString();
+    }
+
     return (
-        <CustomInput type='checkbox' setReference={setReference} checked={data} onChange={onChange} className={cn} {...props} />
+        <React.Fragment>
+            <CustomInput type='checkbox' id={checkId} setReference={setReference} checked={data} onChange={onChange} className={cn} {...props} />
+            <label htmlFor={checkId}>{props.label || props.children}</label>
+        </React.Fragment>
     );
 };
 

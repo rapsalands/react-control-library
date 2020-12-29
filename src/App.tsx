@@ -70,12 +70,15 @@ function App() {
       </div>
       <div>
         Gender
-        <RadioButton name='gender' placeholder='One' checked={gender === 'male'} onChange={_ => setGender('male')} />
-        <RadioButton name='gender' placeholder='Two' checked={gender === 'female'} onChange={_ => setGender('female')} />
+        <RadioButton id='maleId' name='gender' label='Male' placeholder='One' checked={gender === 'male'} onChange={_ => setGender('male')} />
+        <RadioButton name='gender' label='Female' placeholder='Two' checked={gender === 'female'} onChange={_ => setGender('female')} />
       </div>
       <div>
         Yes/No
-        <Checkbox1 indeterminate={gender === 'male'} />
+        <Checkbox1 id='c1' label='Check 1' indeterminate={gender === 'male'} />
+        <Checkbox1 id='c2' indeterminate={gender === 'male'}>Check 2</Checkbox1>
+        <Checkbox1 id='c3' label='Check 3' indeterminate={gender === 'male'} />
+        <Checkbox1 id='c4' label='Check 4' indeterminate={gender === 'male'} />
       </div>
       <div>
         <button onClick={() => {

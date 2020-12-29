@@ -486,7 +486,8 @@ export default App;
 1. Allows all the characters to be typed.
 2. Internally `Email` control uses regex to validate user input. Regex is taken from [here](https://www.w3resource.com/javascript/form/email-validation.php) under <b>RFC 2822 standard email validation</b>.
 3. Attributes `pattern` overrides the default regex pattern.
-4. Validation about the user input can be accessed via `e.detail`.
+4. Do not pass pattern value that start with '/' and ends with '/'. Please ignore the escape characters while passing. As an example, if you want to pass email pattern as `\^[^@\s]+@[^@\s\.]+\.[^@\.\s]+$\` then pass `^[^@\s]+@[^@\s\.]+\.[^@\.\s]+$` by leaving the escape characters out.
+5. Validation about the user input can be accessed via `e.detail`.
 
 <hr />
 
@@ -586,8 +587,7 @@ const App = () => {
 export default App;
 ```
 ###### Attributes
-1. Attribute `max` restricts the user character input if validation fails. This is unlike traditional controls who allows user input even when max validation fails.
-2. Attributes like `min`, `minLength`, `max`, `maxLength`, and `exactLength` can be passed to control to validate various conditions. All validation result will be present in `e.detail`.
-3. Copy & Paste or Drag & Drop text from outside source must be take numbers only from the text.
+1. Clicking the label should toggle the checkbox value.
+2. All checked checkboxes will have a class assigned as `{name}_radio_checked`.
 
 <hr />

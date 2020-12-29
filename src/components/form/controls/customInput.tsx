@@ -43,7 +43,9 @@ const CustomInput: React.FC<ICustomInputProps> = ({ setReference, inputTag, vali
     const consolidatedProps = { type, exactLength, ...props };
 
     const validationParam = validation || new ValidationIns();
-    const params = {
+
+    // For pure HTML controls, do not pass children object as that will throw HTML exception in React.
+    const { children, ...params } = {
         type: type || 'text',
         className: className,
         onChange: (e: IChangeInputEvent) => {
@@ -57,8 +59,9 @@ const CustomInput: React.FC<ICustomInputProps> = ({ setReference, inputTag, vali
     };
 
     if (InputTag) {
-        return <InputTag ref={inputRef} {...params} />;
+        return <InputTag ref={inputRef} children={children} {...params} />;
     }
+
     // @ts-ignore
     return <input ref={inputRef} {...params} />;
 };
