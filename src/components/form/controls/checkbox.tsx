@@ -51,6 +51,8 @@ const Checkbox: React.FC<ICustomInputProps & ICheckboxProps> = ({ type, indeterm
             <CustomInput type='checkbox'
                 setReference={setReference}
                 checked={data}
+                //@ts-ignore
+                indeterminate={indeterminate}
                 id={id}
                 onChange={onChange}
                 className={cn} {...props}

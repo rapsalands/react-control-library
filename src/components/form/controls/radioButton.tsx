@@ -13,7 +13,7 @@ const RadioButton: React.FC<ICustomInputProps> = ({ type, id, ...props }) => {
 
     if (props.inputTag) {
         return (
-            <CustomInput type='checkbox'
+            <CustomInput type='radio'
                 checked={data}
                 id={id}
                 className={cn} {...props}
