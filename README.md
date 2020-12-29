@@ -92,17 +92,17 @@ Below is the schema for the detail object (in terms of typescript).
 
         For example, in code `<NumberInput min={100} >` if user enters 50, then `e.detail` in `onChange` and `onBlur` should be populated with `isValid: false` and `attribute: min`.
 
-    - When attribute value is `userinput` it denotes that the control is in invalid state due to behavior provided by rcl library.
+    - When attribute value is `userInput` it denotes that the control is in invalid state due to behavior provided by rcl library.
     For example, if a user enters invalid email format in `Email` control, then attribute should be populated with `userInput` value.
 * `metadata` (any[])
     - This attribute is populated to provide further information about the state of control if needed.
-    - Look for `Password` control. In case control is valid, then metadata is populated with `strength` of the password. In case it is invalid, metedata is populated with all the password violations and strength of the password.
+    - Look for `Password` control. In case control is valid, then metadata is populated with `strength` of the password. In case it is invalid, metadata is populated with all the password violations and strength of the password.
 * `detail` (any)
     - This is populated with original `e.detail` value.
-    - The value will be mostly null until set explictly.
+    - The value will be mostly null until set explicitly.
 
 #### Attributes
-RCL controls accept all attribtes that of HTML input controls. However there are additional attributes introduced with this library to perform additional validation.
+RCL controls accept all attributes that of HTML input controls. However there are additional attributes introduced with this library to perform additional validation.
 
 * `exactLength` (number)
     - This attribute can be passed to see if user input the control value is of exact length passed by user.
@@ -139,8 +139,8 @@ RCL controls accept all attribtes that of HTML input controls. However there are
         5. `symbols`: (number): Minimum number of symbols required. Defaults to `1`.;
         6. `restrictSymbols`: (string): Characters that are not allowed in password. User will be allowed to type the characters however.
         7. `sequence`: (object): Maximum sequence of characters allowed.
-            a. `number`: (number): Defaults to `5`. Means 6 or more consecutve numbers are considered invalid password.
-            b. `characters`: (number): Defaults to `5`. Means 6 or more consecutve characters are considered invalid password.
+            a. `number`: (number): Defaults to `5`. Means 6 or more consecutive numbers are considered invalid password.
+            b. `characters`: (number): Defaults to `5`. Means 6 or more consecutive characters are considered invalid password.
 * `secure` (object)
     - This attribute is specific to `SecureMaskedInput` control.
     - This provides the secure format of value when user leaves the control.
@@ -155,20 +155,20 @@ RCL controls accept all attribtes that of HTML input controls. However there are
 * RCL controls do allow copy/paste or drag/drop of text into the controls.
 * Only valid characters are accepted upon action for that specific control.
 * For example, `<NumberInput />` upon dragging and dropping text of `425 123 4567` or `(425) 123-4567`, only `4251234567` will be seen and accepted in the control.
-#### Seamless Integraton with Third Library controls
+#### Seamless Integration with Third Library controls
 * RCL controls are designed to provide awesome and useful functionality. However they do not come with any predefined styles.
 * RCL controls can be integrated with any third party controls. Any Component to be rendered can be passed as `inputTag`.
 * For example, `<NumberInput inputTag={TextField} />` will render `TextField` from `@material-ui/core` with functionality of `NumberInput` control.
-* Please note that, any custom-attributes like `label`, `passing children for Checkbox/RadioButton`, `indeterminate` etc. may or may not work based on the imlementation of third party control and how they handle that attribute internally.
+* Please note that, any custom-attributes like `label`, `passing children for Checkbox/RadioButton`, `indeterminate` etc. may or may not work based on the implementation of third party control and how they handle that attribute internally.
 
 ## Controls
 ##### <a name="MaskedInput"></a>1. MaskedInput
 
-[Maskedinput](https://codesandbox.io/s/react-control-library-maskedinput-n0tlk)
+[MaskedInput](https://codesandbox.io/s/react-control-library-maskedinput-n0tlk)
 
-[Maskedinput with Material UI](https://codesandbox.io/s/react-control-library-maskedinput-materialui-gsbo0)
+[MaskedInput with Material UI](https://codesandbox.io/s/react-control-library-maskedinput-materialui-gsbo0)
 
-[Maskedinput With ReactStrap](https://codesandbox.io/s/react-control-library-maskedinput-reactstrap-sxtno)
+[MaskedInput With ReactStrap](https://codesandbox.io/s/react-control-library-maskedinput-reactstrap-sxtno)
 
 ```jsx
 import React from "react";
@@ -223,11 +223,11 @@ For example, if `mask` passed is `[/^[0-9]*$/, '-', /^[0-9]*$/, '-', /^[0-9]*$/]
 
 ##### <a name="SecureMaskedInput"></a>2. SecureMaskedInput
 
-[SecureMaskedinput](https://codesandbox.io/s/react-control-library-securemaskedinput-4u1yu)
+[SecureMaskedInput](https://codesandbox.io/s/react-control-library-securemaskedinput-4u1yu)
 
-[SecureMaskedinput with Material UI](https://codesandbox.io/s/react-control-library-securemaskedinput-forked-nz94n)
+[SecureMaskedInput with Material UI](https://codesandbox.io/s/react-control-library-securemaskedinput-forked-nz94n)
 
-[SecureMaskedinput with ReactStrap](https://codesandbox.io/s/react-control-library-securemaskedinput-reactstrap-xb0m2)
+[SecureMaskedInput with ReactStrap](https://codesandbox.io/s/react-control-library-securemaskedinput-reactstrap-xb0m2)
 
 ```jsx
 import React from "react";
@@ -410,7 +410,7 @@ export default App;
       - `number`: 5, // max 5 consecutive numbers allowed.
       - `characters`: 5 // max 5 consecutive characters allowed.
     }
-3. `e.detail.metadata`, an object arary, provides additional information about the password typed by user.
+3. `e.detail.metadata`, an object array, provides additional information about the password typed by user.
 4. `e.detail.metadata` array last item provides `Password Strength` of the user input.
 
 <hr />
