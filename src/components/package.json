@@ -10,7 +10,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "delete": "rimraf ./react-control-library",
     "build": "npm run delete && tsc",
-    "copy": "copy package_publish.json react-control-library\\package.json",
+    "copy": "copy package_publish.json react-control-library\\package.json && copy ..\\..\\README.md react-control-library\\README.md",
     "dist": "npm run build && npm run copy",
     "prepare": "npm run dist && npm publish",
     "final": "npm run dist && npm publish react-control-library && npm run delete"
