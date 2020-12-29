@@ -1,5 +1,5 @@
 import { PasswordCriteriaIns } from "../form/formPropsIns";
-import { IPasswordCriteria } from "./interfacesDelegates/controlnterfaces";
+import { IPasswordCriteria } from "./interfacesDelegates/controlInterfaces";
 
 const AppSettings = {
     defaultPasswordCriteria: () => {

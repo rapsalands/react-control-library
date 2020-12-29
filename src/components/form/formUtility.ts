@@ -1,4 +1,4 @@
-import { ICustomInputProps } from "../shared/interfacesDelegates/controlnterfaces";
+import { ICustomInputProps } from "../shared/interfacesDelegates/controlInterfaces";
 import { isDefined } from 'type-check-utility';
 
 function getBooleanControlClassName(data: boolean | undefined, originalClassName: string | undefined, prefix: string, baseKey: string | undefined, indeterminate: boolean = false) {

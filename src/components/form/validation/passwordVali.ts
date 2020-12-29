@@ -1,6 +1,6 @@
 import Constants from "../../shared/constants";
 import { PasswordStrength, ValidationType } from "../../shared/enumerations";
-import { IPasswordCriteria, IPasswordFailure } from "../../shared/interfacesDelegates/controlnterfaces";
+import { IPasswordCriteria, IPasswordFailure } from "../../shared/interfacesDelegates/controlInterfaces";
 import { IDetail } from "../../shared/interfacesDelegates/eventInterfaces";
 import Messages from "../../shared/messages";
 import { DetailIns, PasswordFailIns } from "../formPropsIns";

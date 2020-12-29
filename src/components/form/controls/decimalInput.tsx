@@ -1,7 +1,7 @@
 import React from 'react';
 import AppSettings from '../../shared/appSettings';
 import { ValidationType } from '../../shared/enumerations';
-import { IDecimalInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
+import { IDecimalInputProps } from '../../shared/interfacesDelegates/controlInterfaces';
 import { IToValue } from '../../shared/interfacesDelegates/eventInterfaces';
 import { DetailMode } from '../detailMode';
 import { ValidationIns } from '../formPropsIns';

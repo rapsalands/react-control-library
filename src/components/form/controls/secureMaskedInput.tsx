@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICustomInputProps, ISecureInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
+import { ICustomInputProps, ISecureInputProps } from '../../shared/interfacesDelegates/controlInterfaces';
 import { IDetail } from '../../shared/interfacesDelegates/eventInterfaces';
 import maskUtility from '../../shared/maskUtility';
 import MaskedInput from './maskedInput';

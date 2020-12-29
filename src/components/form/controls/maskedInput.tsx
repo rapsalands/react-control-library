@@ -2,7 +2,7 @@ import React from 'react';
 import maskUtility from '../../shared/maskUtility';
 import { isRegex } from 'type-check-utility';
 import utility from '../../shared/utility';
-import { ICustomInputProps, IMaskedInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
+import { ICustomInputProps, IMaskedInputProps } from '../../shared/interfacesDelegates/controlInterfaces';
 import CustomInput from './customInput';
 import { ValidationIns } from '../formPropsIns';
 import formVali from '../validation/formVali';

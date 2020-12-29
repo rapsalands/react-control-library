@@ -1,5 +1,5 @@
 import { DetailMode } from "../../form/detailMode";
-import { IValidationProps } from "./controlnterfaces";
+import { IValidationProps } from "./controlInterfaces";
 import { IChangeInputEvent, IDetail, IFocusInputEvent, IKeyboardInputEvent, IToValue, IToValueWithCursor } from "./eventInterfaces";
 
 export type ICustomEventDelegate = IChangeInputEvent | IFocusInputEvent | IKeyboardInputEvent;

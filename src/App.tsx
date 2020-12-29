@@ -16,7 +16,7 @@ import ReadMeExample from './ReadmeExample';
 function App() {
 
   const [num, setNum] = React.useState('435qwe');
-  const [ssn, setSsn] = React.useState('');
+  const [ssn, setSsn] = React.useState();
   const [temp, setTemp] = React.useState(98798);
   const [gender, setGender] = React.useState('male');
   const [yesNo, setYesNo] = React.useState(false);
@@ -46,7 +46,7 @@ function App() {
         AlphaNumeric <AlphaNumeric onBlur={(e: any) => { setSsn(e.target.value); setTemp(e.target.value) }} />
       </div>
       <div>
-        Email <Email required onBlur={(e: any) => console.log(e.detail)} onChange={changeEvent} />
+        Email <Email required pattern='^[^@\s]+@[^@\s\.]+\.[^@\.\s]+$' onBlur={(e: any) => console.log(e.detail)} onChange={changeEvent} />
       </div>
       <div>
         Password <Password onChange={changeEvent} />
@@ -66,7 +66,7 @@ function App() {
           getValue: (detail, data) => {
             return 'HIDDEN';
           }
-        }} value={ssn} mask={Regex.ssn()} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e) }} onBlur={changeEvent} />
+        }} value={ssn} mask={Regex.paymentCard()} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e) }} onBlur={changeEvent} />
       </div>
       <div>
         Gender

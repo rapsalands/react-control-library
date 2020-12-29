@@ -21,8 +21,8 @@ function alphaNumeric(data: any, allowSymbols: string): IDetail {
     return new DetailIns(null, data, isValid);
 }
 
-function email(data: any, pattern: any = null): IDetail {
-    const regex = pattern ? new RegExp(pattern) : FormRegex.email();
+function email(data: any, pattern: string | null = null): IDetail {
+    const regex = !!pattern ? new RegExp(pattern) : FormRegex.email();
     const isValid = regexValidate(regex, data);
     return new DetailIns(null, data, isValid);
 }

@@ -1,9 +1,9 @@
-const num = /^[0-9]*$/;
-
+const n = /^[0-9]*$/;
 const Regex = {
-    phone: () => ['(', num, num, num, ')', ' ', num, num, num, '-', num, num, num, num],
-    zipcode: () => [num, num, num, num, num],
-    ssn: () => [num, num, num, '-', num, num, '-', num, num, num, num],
+    phone: () => ['(', n, n, n, ')', ' ', n, n, n, '-', n, n, n, n],
+    zipcode: () => [n, n, n, n, n],
+    ssn: () => [n, n, n, '-', n, n, '-', n, n, n, n],
+    paymentCard: () => [n, n, n, n, " ", n, n, n, n, " ", n, n, n, n, " ", n, n, n, n]
 };
 
 export default Regex;

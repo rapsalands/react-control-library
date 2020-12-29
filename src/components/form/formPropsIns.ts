@@ -1,6 +1,6 @@
 import Constants from '../shared/constants';
 import { DetailMode } from './detailMode';
-import { IPasswordCriteria, IPasswordFailure as IPasswordFail, IValidationProps } from '../shared/interfacesDelegates/controlnterfaces';
+import { IPasswordCriteria, IPasswordFailure as IPasswordFail, IValidationProps } from '../shared/interfacesDelegates/controlInterfaces';
 import { IDetail } from '../shared/interfacesDelegates/eventInterfaces';
 import { ValidationType } from '../shared/enumerations';
 

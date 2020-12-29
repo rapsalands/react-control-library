@@ -2,7 +2,7 @@ import { DetailIns } from "../formPropsIns";
 import { IDetail } from "../../shared/interfacesDelegates/eventInterfaces";
 import { validateDelegate } from "../../shared/interfacesDelegates/delegates";
 import { ValidationType } from "../../shared/enumerations";
-import { IValidationProps } from "../../shared/interfacesDelegates/controlnterfaces";
+import { IValidationProps } from "../../shared/interfacesDelegates/controlInterfaces";
 
 function alwaysValid(data: any): IDetail {
     return new DetailIns(null, data, true, null, null);

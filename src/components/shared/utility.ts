@@ -1,6 +1,6 @@
 import { ChangeEvent } from "react";
 import { isDefined } from "type-check-utility";
-import { ICursor } from "./interfacesDelegates/controlnterfaces";
+import { ICursor } from "./interfacesDelegates/controlInterfaces";
 import { IChangeInputEvent, IToValue, IToValueWithCursor } from "./interfacesDelegates/eventInterfaces";
 
 const insertAt = (data, sub, pos): string => `${data.slice(0, pos)}${sub}${data.slice(pos)}`;

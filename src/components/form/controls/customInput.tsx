@@ -1,7 +1,7 @@
 import React, { } from 'react';
 import { DetailMode } from '../detailMode';
 import FormEvents from '../formEvents';
-import { ICustomInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
+import { ICustomInputProps } from '../../shared/interfacesDelegates/controlInterfaces';
 import { ValidationIns } from '../formPropsIns';
 import { IChangeInputEvent, IFocusInputEvent, IKeyboardInputEvent } from '../../shared/interfacesDelegates/eventInterfaces';
 

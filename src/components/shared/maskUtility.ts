@@ -29,7 +29,7 @@ function toMaskWithCursor(e: any, mask: any[]): IToValueWithCursor {
 
     const currentValue = e.target.value;
     const pureValue = extractPureValue(currentValue, mask) || '';
-    let result = pureValue;
+    let result = pureValue || '';
 
     if (mask.length === 0) {
         return { value: result, cursorStart, cursorEnd };
@@ -58,7 +58,7 @@ function toMask(value: any, mask: any[]): IToValue {
 
     const currentValue = value;
     const pureValue = extractPureValue(currentValue, mask);
-    let result = pureValue;
+    let result = pureValue || '';
 
     for (let i = 0; i < result.length; i++) {
         const m = mask[i];

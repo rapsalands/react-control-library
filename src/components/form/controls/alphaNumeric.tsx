@@ -1,5 +1,5 @@
 import React from 'react';
-import { IAllowSymbolsProps } from '../../shared/interfacesDelegates/controlnterfaces';
+import { IAllowSymbolsProps } from '../../shared/interfacesDelegates/controlInterfaces';
 import { IToValue } from '../../shared/interfacesDelegates/eventInterfaces';
 import { ValidationIns } from '../formPropsIns';
 import FormRegex from '../formRegex';

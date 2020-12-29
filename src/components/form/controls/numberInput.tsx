@@ -1,5 +1,5 @@
 import React from 'react';
-import { ICustomInputProps } from '../../shared/interfacesDelegates/controlnterfaces';
+import { ICustomInputProps } from '../../shared/interfacesDelegates/controlInterfaces';
 import { ValidationIns } from '../formPropsIns';
 import regexVali from '../validation/regexVali';
 import FormRegex from '../formRegex';
