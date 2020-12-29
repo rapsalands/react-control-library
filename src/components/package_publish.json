@@ -6,6 +6,10 @@
   "dependencies": {
     "type-check-utility": "^2.2.3"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rapsalands/react-control-library"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

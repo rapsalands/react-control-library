@@ -49,16 +49,16 @@ export default App;
 [React-Control-Library With ReactStrap](https://codesandbox.io/s/react-control-library-reactstrap-demo-5qocq)
 
 ## Controls
-1. [MaskedInput](#MaskedInput)
-2. [SecureMaskedInput](#SecureMaskedInput)
-3. [NumberInput](#NumberInput)
-4. [DecimalInput](#DecimalInput)
-5. [Password](#Password)
-6. [Alphanumeric](#Alphanumeric)
-7. [TextInput](#TextInput)
-8. [Email](#Email)
-9. [Checkbox](#Checkbox)
-10. [RadioButton](#RadioButton)
+1. [MaskedInput](#1-MaskedInput)
+2. [SecureMaskedInput](#2-SecureMaskedInput)
+3. [NumberInput](#3-NumberInput)
+4. [DecimalInput](#4-DecimalInput)
+5. [Password](#5-Password)
+6. [Alphanumeric](#6-Alphanumeric)
+7. [TextInput](#7-TextInput)
+8. [Email](#8-Email)
+9. [Checkbox](#9-Checkbox)
+10. [RadioButton](#10-RadioButton)
 
 ## About
 This project provides some awesome light weight controls for every web application that is designed and developed. They are developed upon pure HTML input controls and hence can be used and styled in a known manner. Controls can be styled using any styling library like BootStrap.
@@ -159,6 +159,7 @@ RCL controls accept all attribtes that of HTML input controls. However there are
 * RCL controls are designed to provide awesome and useful functionality. However they do not come with any predefined styles.
 * RCL controls can be integrated with any third party controls. Any Component to be rendered can be passed as `inputTag`.
 * For example, `<NumberInput inputTag={TextField} />` will render `TextField` from `@material-ui/core` with functionality of `NumberInput` control.
+* Please note that, any custom-attributes like `label`, `passing children for Checkbox/RadioButton`, `indeterminate` etc. may or may not work based on the imlementation of third party control and how they handle that attribute internally.
 
 ## Controls
 ##### <a name="MaskedInput"></a>1. MaskedInput
@@ -574,8 +575,10 @@ const App = () => {
 export default App;
 ```
 ###### Attributes
-1. Attribute `indeterminate` when passed as true, checkbox will be in partially checked state.
-2. All checked checkboxes will have a class assigned as `checkbox_checked`.
+1. Clicking associated label must toggle checkbox. To have associated label, pass `label` attribute like `<Checkbox label='Agreement Read' />` or children to component like `<Checkbox>Agreement Read</Checkbox>`.
+2. However note that, passing `label` in above mentioned fashion may not work in ReactStrap based on internal implementation of ReactStrap.
+3. Attribute `indeterminate` when passed as true, checkbox will be in partially checked state. `indeterminate` attribute may not work as expected in ReactStrap based on internal implementation of ReactStrap.
+4. All checked checkboxes will have a class assigned as `checkbox_checked`.
 
 <hr />
 
@@ -629,7 +632,9 @@ const App = () => {
 export default App;
 ```
 ###### Attributes
-1. Clicking the label should toggle the checkbox value.
-2. All checked checkboxes will have a class assigned as `{name}_radio_checked`.
+1. Clicking associated label must toggle checkbox. To have associated label, pass `label` attribute like `<RadioButton label='Home' />` or children to component like `<RadioButton>Home</RadioButton>`.
+2. However note that, passing `label` in above mentioned fashion may not work in ReactStrap based on internal implementation of ReactStrap.
+3. Clicking the label should toggle the checkbox value.
+4. All checked checkboxes will have a class assigned as `{name}_radio_checked`.
 
 <hr />
