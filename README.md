@@ -42,11 +42,11 @@ export default App;
 
 
 ## Demo
-[React-Control-Library](https://codesandbox.io/s/react-control-library-demo-kkbeh).
+[React-Control-Library](https://codesandbox.io/s/react-control-library-demo-kkbeh)
 
-[React-Control-Library With Material UI](https://codesandbox.io/s/react-control-library-demo-materialui-dyl2v).
+[React-Control-Library With Material UI](https://codesandbox.io/s/react-control-library-demo-materialui-dyl2v)
 
-[React-Control-Library With ReactStrap](https://codesandbox.io/s/react-control-library-reactstrap-demo-5qocq).
+[React-Control-Library With ReactStrap](https://codesandbox.io/s/react-control-library-reactstrap-demo-5qocq)
 
 ## Controls
 1. [MaskedInput](#MaskedInput)
@@ -164,7 +164,9 @@ RCL controls accept all attribtes that of HTML input controls. However there are
 ##### <a name="MaskedInput"></a>1. MaskedInput
 
 [Maskedinput](https://codesandbox.io/s/react-control-library-maskedinput-n0tlk)
+
 [Maskedinput with Material UI](https://codesandbox.io/s/react-control-library-maskedinput-materialui-gsbo0)
+
 [Maskedinput With ReactStrap](https://codesandbox.io/s/react-control-library-maskedinput-reactstrap-sxtno)
 
 ```jsx
@@ -221,7 +223,9 @@ For example, if `mask` passed is `[/^[0-9]*$/, '-', /^[0-9]*$/, '-', /^[0-9]*$/]
 ##### <a name="SecureMaskedInput"></a>2. SecureMaskedInput
 
 [SecureMaskedinput](https://codesandbox.io/s/react-control-library-securemaskedinput-4u1yu)
+
 [SecureMaskedinput with Material UI](https://codesandbox.io/s/react-control-library-securemaskedinput-forked-nz94n)
+
 [SecureMaskedinput with ReactStrap](https://codesandbox.io/s/react-control-library-securemaskedinput-reactstrap-xb0m2)
 
 ```jsx
@@ -275,7 +279,9 @@ For example, if `mask` passed is `[/^[0-9]*$/, '-', /^[0-9]*$/, '-', /^[0-9]*$/]
 ##### <a name="NumberInput"></a>3. NumberInput
 
 [NumberInput](https://codesandbox.io/s/react-control-library-numberinput-y45ed)
+
 [NumberInput with Material UI](https://codesandbox.io/s/react-control-library-numberinput-materialui-v72uy)
+
 [NumberInput with ReactStrap](https://codesandbox.io/s/react-control-library-numberinput-reactstrap-g3lkg)
 
 ```jsx
@@ -307,7 +313,9 @@ export default App;
 ##### <a name="DecimalInput"></a>4. DecimalInput
 
 [DecimalInput](https://codesandbox.io/s/react-control-library-decimalinput-uyrtb)
+
 [DecimalInput with Material UI](https://codesandbox.io/s/react-control-library-decimalinput-materialui-ejymj)
+
 [DecimalInput with ReactStrap](https://codesandbox.io/s/react-control-library-decimalinput-reactstrap-4x3jo)
 
 ```jsx
@@ -346,7 +354,9 @@ So `maxLength = 8 = 5 + 2 + dot`.
 
 ##### <a name="Password"></a>5. Password
 [Password](https://codesandbox.io/s/react-control-library-password-6zcte)
+
 [Password with Material UI](https://codesandbox.io/s/react-control-library-password-materialui-30o6c)
+
 [Password with ReactStrap](https://codesandbox.io/s/react-control-library-password-reactstrap-t5fq0)
 
 ```jsx
@@ -407,7 +417,9 @@ export default App;
 ##### <a name="AlphaNumeric"></a>6. AlphaNumeric
 
 [AlphaNumeric](https://codesandbox.io/s/react-control-library-alphanumeric-154n5)
+
 [AlphaNumeric with Material UI](https://codesandbox.io/s/react-control-library-alphanumeric-materialui-klgh1)
+
 [AlphaNumeric with ReactStrap](https://codesandbox.io/s/react-control-library-alphanumeric-reactstrap-ujoq6)
 
 ```jsx
@@ -442,7 +454,9 @@ export default App;
 ##### <a name="TextInput"></a>7. TextInput
 
 [TextInput](https://codesandbox.io/s/react-control-library-textinput-ifl7u)
+
 [TextInput with Material UI](https://codesandbox.io/s/react-control-library-textinput-materialui-qccbm)
+
 [TextInput with ReactStrap](https://codesandbox.io/s/react-control-library-textinput-reactstrap-wx02q)
 
 ```jsx
@@ -477,7 +491,9 @@ export default App;
 ##### <a name="Email"></a>8. Email
 
 [Email](https://codesandbox.io/s/react-control-library-email-e7y47)
+
 [Email with Material UI](https://codesandbox.io/s/react-control-library-email-materialui-itiy5)
+
 [Email with ReactStrap](https://codesandbox.io/s/react-control-library-email-reactstrap-jh7r8)
 
 ```jsx
@@ -514,7 +530,9 @@ export default App;
 ##### <a name="Checkbox"></a>9. Checkbox
 
 [Checkbox](https://codesandbox.io/s/react-control-library-checkbox-c0xnm)
+
 [Checkbox with Material UI](https://codesandbox.io/s/react-control-library-checkbox-materialui-bq3g4)
+
 [Checkbox with ReactStrap](https://codesandbox.io/s/react-control-library-checkbox-reactstrap-974iy)
 
 ```jsx
@@ -564,6 +582,7 @@ export default App;
 ##### <a name="RadioButton"></a>10. RadioButton
 
 [RadioButton](https://codesandbox.io/s/react-control-library-radiobutton-1pgf0)
+
 [RadioButton with ReactStrap](https://codesandbox.io/s/react-control-library-radiobutton-reactstrap-mejme)
 
 ```jsx
