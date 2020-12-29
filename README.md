@@ -67,7 +67,7 @@ React-Control-Library was bootstrapped with [Create React App](https://github.co
 
 ## Salient Features
 
-##### Detail & Validation
+#### Detail & Validation
 All RCL controls (except Checkbox and RadioButton) comes with some validation features in-built which helps developers avoid writing repeated code. It makes development faster and convenient.
 
 On every control `onChange` and `onBlur` event, eventArgs are populated with `detail` object. This behavior can be seen in [demo](https://codesandbox.io/s/react-control-library-demo-kkbeh) for all controls.
@@ -101,7 +101,7 @@ Below is the schema for the detail object (in terms of typescript).
     - This is populated with original `e.detail` value.
     - The value will be mostly null until set explictly.
 
-##### Attributes
+#### Attributes
 RCL controls accept all attribtes that of HTML input controls. However there are additional attributes introduced with this library to perform additional validation.
 
 * `exactLength` (number)
@@ -151,11 +151,11 @@ RCL controls accept all attribtes that of HTML input controls. However there are
     - When trues, checkbox is rendered as partially checked.
     - See [demo](https://codesandbox.io/s/react-control-library-demo-kkbeh) for more usage.
 
-##### Copy/Paste & Drag/Drop
+#### Copy/Paste & Drag/Drop
 * RCL controls do allow copy/paste or drag/drop of text into the controls.
 * Only valid characters are accepted upon action for that specific control.
 * For example, `<NumberInput />` upon dragging and dropping text of `425 123 4567` or `(425) 123-4567`, only `4251234567` will be seen and accepted in the control.
-##### Seamless Integraton with Third Library controls
+#### Seamless Integraton with Third Library controls
 * RCL controls are designed to provide awesome and useful functionality. However they do not come with any predefined styles.
 * RCL controls can be integrated with any third party controls. Any Component to be rendered can be passed as `inputTag`.
 * For example, `<NumberInput inputTag={TextField} />` will render `TextField` from `@material-ui/core` with functionality of `NumberInput` control.
