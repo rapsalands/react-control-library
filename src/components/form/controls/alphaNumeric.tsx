@@ -9,7 +9,11 @@ import CustomInput from './customInput';
 
 const AlphaNumeric: React.FC<IAllowSymbolsProps> = ({ allowSymbols = '', ...props }) => {
 
-    const validation = new ValidationIns((data) => regexVali.alphaNumeric(data, allowSymbols));
+    allowSymbols = FormRegex.addEscapeToRegex(allowSymbols);
+
+    const validation = new ValidationIns((data) => {
+        return regexVali.alphaNumeric(data, allowSymbols);
+    });
 
     function extractToSet(e, data): IToValue {
         const temp = formUtility.getEachValidCharacter(data, (d) => {

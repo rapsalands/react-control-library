@@ -9,6 +9,8 @@ import { IToValue } from '../../shared/interfacesDelegates/eventInterfaces';
 
 const TextInput: React.FC<IRestrictSymbolsProps> = ({ restrictSymbols, validation, ...props }) => {
 
+    restrictSymbols = FormRegex.addEscapeToRegex(restrictSymbols);
+
     function validationFunc(data) {
         const notPattern = regexVali.notPatternMatch(data, restrictSymbols || '');
         const pattern = regexVali.patternMatch(data, props.pattern || '');

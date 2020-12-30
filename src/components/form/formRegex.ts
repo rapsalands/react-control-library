@@ -7,6 +7,14 @@ function modRegex(originalRegex, symbols: string | number = '', temp = 'SPECIAL'
 }
 
 const FormRegex = {
+    addEscapeToRegex: (pattern: string | undefined) => {
+
+        if (!pattern) return '';
+
+        pattern = pattern.replace(/_/g, '\\_');
+        pattern = pattern.replace(/-/g, '\\-');
+        return pattern;
+    },
     number: () => /^\d+$/,
     decimal: (decimalLimit, maxLength) => {
         const regex = /^-?[0-9]{0,maxLength}(\.[0-9]{0,decimalLimit})?$/;

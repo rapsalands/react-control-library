@@ -43,7 +43,7 @@ function App() {
         Decimal <DecimalInput max={100} maxLength={6} decimalLimit={2} value={temp} onChange={(e: any) => { setTemp(e.target.value); changeEvent(e); }} />
       </div>
       <div>
-        AlphaNumeric <AlphaNumeric onBlur={(e: any) => { setSsn(e.target.value); setTemp(e.target.value) }} />
+        AlphaNumeric <AlphaNumeric allowSymbols='~!#$%^&*()_+?-=<>/' onBlur={(e: any) => { setSsn(e.target.value); setTemp(e.target.value) }} />
       </div>
       <div>
         Email <Email required pattern='^[^@\s]+@[^@\s\.]+\.[^@\.\s]+$' onBlur={(e: any) => console.log(e.detail)} onChange={changeEvent} />

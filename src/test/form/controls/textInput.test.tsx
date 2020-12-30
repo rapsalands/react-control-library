@@ -48,6 +48,16 @@ describe('Rendering', () => {
         let { input, renderResult } = render(<TextInput restrictSymbols='~!@#$' aria-label='alpha-input' value='!@^^*#$%)(*' />);
         expect(input.value).toBe('^^*%)(*');
     });
+
+    test('TextInput render with special RegExp characters', async () => {
+        let { input, renderResult } = render(<TextInput restrictSymbols='!@_#$-S%' aria-label='alpha-input' value='!@^^*#$%)(*' />);
+        expect(input.value).toBe('^^*)(*');
+    });
+
+    test('TextInput render with special RegExp characters did not work in outside project', async () => {
+        let { input, renderResult } = render(<TextInput restrictSymbols='~!#$%^&*()_+?-=<>/' aria-label='alpha-input' value='!@^^*#$%)(*' />);
+        expect(input.value).toBe('@');
+    });
 });
 
 describe('onChange', () => {
