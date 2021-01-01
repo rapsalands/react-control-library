@@ -1,5 +1,7 @@
 import { ICustomInputProps } from "../shared/interfacesDelegates/controlInterfaces";
 import { isDefined } from 'type-check-utility';
+import utility from "../shared/utility";
+import Constants from "../shared/constants";
 
 function getBooleanControlClassName(data: boolean | undefined, originalClassName: string | undefined, prefix: string, baseKey: string | undefined, indeterminate: boolean = false) {
 
@@ -20,6 +22,31 @@ function getDefaultValue(props: ICustomInputProps) {
     if (isDefined(props.value)) return props.value;
     if (isDefined(props.checked)) return props.checked;
     return '';
+}
+
+/**
+ * Move cursor/caret back or forward based on key pressed. This happens if action is performed on any of the provided params.
+ * e: Event Args for KeyDown (mostly).
+ * predicate: function is returns true, move the cursor back and do not delete character.
+ */
+function backspaceDoNotDelete(e, conditionToOnlyMoveBack: (index: number) => boolean) {
+
+    if (e.keyCode !== Constants.ascii.backspace) {
+        return false;
+    }
+
+    let { cursorStart } = utility.cursor(e);
+
+    const projectedStart = cursorStart - 1;
+
+    if (projectedStart < 0) return;
+
+    if (conditionToOnlyMoveBack(projectedStart)) {
+        e.target.selectionStart = projectedStart;
+        e.target.selectionEnd = projectedStart;
+        e.preventDefault();
+        return;
+    }
 }
 
 /**
@@ -53,7 +80,7 @@ function getEachValidCharacter(data: string, validateFunc: ((data: string) => bo
 }
 
 const formUtility = {
-    getBooleanControlClassName, getDefaultValue, getEachValidCharacter
+    getBooleanControlClassName, getDefaultValue, getEachValidCharacter, backspaceDoNotDelete
 };
 
 export default formUtility;

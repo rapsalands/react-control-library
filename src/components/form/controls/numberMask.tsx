@@ -8,6 +8,8 @@ import formVali from '../validation/formVali';
 import { IToValueWithCursor } from '../../shared/interfacesDelegates/eventInterfaces';
 import AppSettings from '../../shared/appSettings';
 import numberMaskUtility from '../../shared/numberMaskUtility';
+import Constants from '../../shared/constants';
+import formUtility from '../formUtility';
 
 const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ numberMask = {} as INumberMask, extractValueToSet, ...props }) => {
 
@@ -38,7 +40,16 @@ const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ numberMask
 
     function keyPressEvent(e) {
 
-        let { cursorStart: start, newLengthIsPermitted } = utility.cursor(e);
+        // let { cursorStart: start, newLengthIsPermitted } = utility.cursor(e);
+
+        // if (e.keyCode === Constants.ascii.backspace) {
+        //     if (e.target.value[--start] === numberMask.thousandsSeparatorSymbol) {
+        //         e.target.selectionStart = start;
+        //         e.target.selectionEnd = start;
+        //         e.preventDefault();
+        //     }
+        // }
+
         // if (newLengthIsPermitted >= numberMask.length) {
         //     e.preventDefault();
         //     props.onKeyPress && props.onKeyPress(e);
@@ -70,12 +81,20 @@ const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ numberMask
         return valueWithCursor;
     }
 
+    function keyDownEvent(e) {
+        function conditionToOnlyMoveBack(index) {
+            return [numberMask.thousandsSeparatorSymbol, numberMask.suffix].includes(e.target.value[index]);
+        }
+        formUtility.backspaceDoNotDelete(e, conditionToOnlyMoveBack);
+    }
+
     const params = {
         validation: new ValidationIns(formVali.alwaysValid),
         onBlur,
         onChange: changeEvent,
         extractValueToValidate: (value) => numberMaskUtility.extractPureValue(value, numberMask),
-        onKeyPress: keyPressEvent
+        onKeyPress: keyPressEvent,
+        onKeyDown: keyDownEvent
     };
 
     return (

@@ -2,6 +2,7 @@ import React from 'react';
 import { ICustomInputProps, ISecureInputProps } from '../../shared/interfacesDelegates/controlInterfaces';
 import { IDetail } from '../../shared/interfacesDelegates/eventInterfaces';
 import maskUtility from '../../shared/maskUtility';
+import formUtility from '../formUtility';
 import MaskedInput from './maskedInput';
 
 const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ secure, onChange, mask, value, onFocus, onBlur, ...props }) => {
@@ -63,8 +64,24 @@ const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ se
         onChange && onChange(e);
     }
 
+
+    function keyDownEvent(e) {
+        function conditionToOnlyMoveBack(index) {
+            return maskUtility.extractConstFromMask(mask).includes(e.target.value[index]);
+        }
+        formUtility.backspaceDoNotDelete(e, conditionToOnlyMoveBack);
+    }
+
     return (
-        <MaskedInput mask={secureMask} onChange={changeEvent} onBlur={blurEvent} onFocus={focusEvent} value={secureValue} {...props} />
+        <MaskedInput
+            mask={secureMask}
+            onChange={changeEvent}
+            onBlur={blurEvent}
+            onFocus={focusEvent}
+            value={secureValue}
+            onKeyDown={keyDownEvent}
+            {...props}
+        />
     );
 };
 

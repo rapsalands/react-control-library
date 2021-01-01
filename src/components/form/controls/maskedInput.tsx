@@ -7,6 +7,7 @@ import CustomInput from './customInput';
 import { ValidationIns } from '../formPropsIns';
 import formVali from '../validation/formVali';
 import { IToValueWithCursor } from '../../shared/interfacesDelegates/eventInterfaces';
+import formUtility from '../formUtility';
 
 const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [], extractValueToSet, ...props }) => {
 
@@ -62,12 +63,20 @@ const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [
         return valueWithCursor;
     }
 
+    function keyDownEvent(e) {
+        function conditionToOnlyMoveBack(index) {
+            return maskUtility.extractConstFromMask(mask).includes(e.target.value[index]);
+        }
+        formUtility.backspaceDoNotDelete(e, conditionToOnlyMoveBack);
+    }
+
     const params = {
         validation: new ValidationIns(formVali.alwaysValid),
         onBlur,
         onChange: changeEvent,
         extractValueToValidate: (value) => maskUtility.extractPureValue(value, mask),
-        onKeyPress: keyPressEvent
+        onKeyPress: keyPressEvent,
+        onKeyDown: keyDownEvent
     };
 
     return (

@@ -1,16 +1,21 @@
-import { isDefined, isRegex } from "type-check-utility";
+import { isDefined, isNotDefinedOrEmptyObject, isRegex } from "type-check-utility";
 import { IToValue, IToValueWithCursor } from "./interfacesDelegates/eventInterfaces";
 import utility from "./utility";
+
+function extractConstFromMask(mask: any[]): any[] {
+    if (isNotDefinedOrEmptyObject(mask)) return [];
+    return mask.filter(m => !isRegex(m));
+}
 
 function extractPureValue(data: any, mask: any[]): string {
     if (!isDefined(data) || mask.length === 0) return data;
 
-    const regexes: any[] = mask.filter(n => isRegex(n));
+    const regexps: any[] = mask.filter(n => isRegex(n));
     let result = '';
 
     let di = 0;
-    for (let ri = 0; (ri < regexes.length && di < data.length); ri++) {
-        const regex = regexes[ri] as RegExp;
+    for (let ri = 0; (ri < regexps.length && di < data.length); ri++) {
+        const regex = regexps[ri] as RegExp;
         const val = data[di];
 
         if (regex.test(val)) {
@@ -85,6 +90,6 @@ function updateDetail(e: any, mask: any[]) {
     e.detail.value = pureValue;
 }
 
-const maskUtility = { toMaskWithCursor, updateEventArgs, toMask, updateDetail, extractPureValue };
+const maskUtility = { toMaskWithCursor, updateEventArgs, toMask, updateDetail, extractPureValue, extractConstFromMask };
 
 export default maskUtility;
