@@ -17,6 +17,7 @@ import { INumberMask } from './components/shared/interfacesDelegates/controlInte
 
 function App() {
 
+  const [numMask, setNumMask] = React.useState('43587');
   const [num, setNum] = React.useState('435qwe');
   const [ssn, setSsn] = React.useState();
   const [temp, setTemp] = React.useState(98798);
@@ -35,9 +36,15 @@ function App() {
     <React.Fragment>
       <ReadMeExample />
       <div>
-        Currency Number Mask <NumberMask numberMask={{
-          thousandsSeparatorSymbol: ','
-        } as INumberMask} />
+        Currency Number Mask <NumberMask value={numMask}
+          onChange={(e: any) => {
+            setNumMask(e.target.value);
+            console.log(e.detail);
+          }}
+          numberMask={{
+            thousandsSeparatorSymbol: ','
+          } as INumberMask}
+        />
       </div>
       <div>
         Percentage Number Mask <NumberMask numberMask={{
