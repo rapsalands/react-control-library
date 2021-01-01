@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNotDefinedOrEmptyObject, isRegex } from 'type-check-utility';
+import { isNotDefinedOrEmpty, isNotDefinedOrEmptyObject, isRegex } from 'type-check-utility';
 import utility from '../../shared/utility';
 import { ICustomInputProps, INumberMask, INumberMaskProps } from '../../shared/interfacesDelegates/controlInterfaces';
 import CustomInput from './customInput';
@@ -13,8 +13,7 @@ import formUtility from '../formUtility';
 
 const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ numberMask = {} as INumberMask, extractValueToSet, ...props }) => {
 
-    numberMask = isNotDefinedOrEmptyObject(numberMask) ? AppSettings.defaultNumberMask() : numberMask;
-    // numberMask.decimalLimit = 0;
+    numberMask = { ...AppSettings.defaultNumberMask(), ...numberMask };
 
     // prefix (string): what to display before the amount. Defaults to '$'.
     // suffix (string): what to display after the amount. Defaults to empty string.
@@ -82,9 +81,18 @@ const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ numberMask
     }
 
     function keyDownEvent(e) {
-        function conditionToOnlyMoveBack(index) {
-            return [numberMask.thousandsSeparatorSymbol, numberMask.suffix].includes(e.target.value[index]);
+
+        if (isNotDefinedOrEmpty(numberMask.thousandsSeparatorSymbol) || isNotDefinedOrEmpty(e.target.value)) {
+            return;
         }
+
+        const conditionToOnlyMoveBack = (index) => {
+            // This is important as separator/suffix can be multi character long.
+            const arr = utility.strings2FlatArray(numberMask.thousandsSeparatorSymbol, numberMask.suffix);
+            return arr.includes(e.target.value[index]);
+        }
+
+        // Handle backspace. Delete is handled automatically.
         formUtility.backspaceDoNotDelete(e, conditionToOnlyMoveBack);
     }
 

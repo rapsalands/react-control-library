@@ -21,7 +21,6 @@ function App() {
   const [ssn, setSsn] = React.useState();
   const [temp, setTemp] = React.useState(98798);
   const [gender, setGender] = React.useState('male');
-  const [yesNo, setYesNo] = React.useState(false);
 
   function changeEvent(e) {
     console.log(e.detail);
@@ -36,7 +35,16 @@ function App() {
     <React.Fragment>
       <ReadMeExample />
       <div>
-        Number Mask <NumberMask numberMask={{} as INumberMask} />
+        Currency Number Mask <NumberMask numberMask={{
+          thousandsSeparatorSymbol: ','
+        } as INumberMask} />
+      </div>
+      <div>
+        Percentage Number Mask <NumberMask numberMask={{
+          prefix: '$$',
+          suffix: '$$',
+          decimalLimit: 2
+        } as INumberMask} />
       </div>
       <div>
         Text Field <TextInput restrictSymbols='~!@#$%' value={ssn} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e); }} label='Person Name' />

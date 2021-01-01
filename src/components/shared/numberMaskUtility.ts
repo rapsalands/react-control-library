@@ -1,4 +1,4 @@
-import { isDefined, isNotDefinedOrEmptyObject, isNotDefinedOrWhiteSpace } from "type-check-utility";
+import { isDefined, isNotDefinedOrEmpty, isNotDefinedOrEmptyObject, isNotDefinedOrWhiteSpace } from "type-check-utility";
 import FormRegex from "../form/formRegex";
 import { INumberMask } from "./interfacesDelegates/controlInterfaces";
 import { IToValue, IToValueWithCursor } from "./interfacesDelegates/eventInterfaces";
@@ -24,11 +24,28 @@ function extractPureValue(data: any, numberMask: INumberMask): string {
 }
 
 function formatNumber(value: string, numberMask: INumberMask): string {
-    // Format number 1000000 to 1,234,567
-    return value.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, numberMask.thousandsSeparatorSymbol);
+
+    if (!isNotDefinedOrEmpty(numberMask.prefix)) {
+        if (value.startsWith(numberMask.prefix)) {
+            value = value.substring(numberMask.prefix.length);
+        }
+    }
+
+    if (!isNotDefinedOrEmpty(numberMask.suffix)) {
+        if (value.endsWith(numberMask.suffix)) {
+            value = value.substring(0, value.length - numberMask.suffix.length);
+        }
+    }
+
+    if (isNotDefinedOrEmpty(numberMask.thousandsSeparatorSymbol)) {
+        return value;
+    }
+
+    value = value.replace(/\D/g, ""); // Removes all symbols (everything except digits).
+    return value.replace(/\B(?=(\d{3})+(?!\d))/g, numberMask.thousandsSeparatorSymbol);
 }
 
-function replaceSymbols(value: string, numberMask: INumberMask): string {
+function replaceDecimalSymbols(value: string, numberMask: INumberMask): string {
 
     if (!value.includes(numberMask.decimalSymbol)) return value;
 
@@ -51,7 +68,7 @@ function replaceSymbols(value: string, numberMask: INumberMask): string {
     return resultStr;
 }
 
-function formatCurrency(e, numberMask: INumberMask): IToValueWithCursor {
+function formatToMask(e, numberMask: INumberMask): IToValueWithCursor {
 
     let value = e.target.value;
 
@@ -62,7 +79,7 @@ function formatCurrency(e, numberMask: INumberMask): IToValueWithCursor {
     // Don't validate empty input
     if (isNotDefinedOrWhiteSpace(value)) { return { value, cursorStart, cursorEnd }; }
 
-    value = replaceSymbols(value, numberMask);
+    value = replaceDecimalSymbols(value, numberMask);
 
     // Original length
     let original_len = value.length;
@@ -88,19 +105,22 @@ function formatCurrency(e, numberMask: INumberMask): IToValueWithCursor {
         rhsOfDecimal = rhsOfDecimal.substring(0, numberMask.decimalLimit);
 
         // Join number by decimalSymbol
-        value = `${numberMask.prefix}${lhsOfDecimal}${numberMask.decimalSymbol}${rhsOfDecimal}`;
+        value = `${lhsOfDecimal}${numberMask.decimalSymbol}${rhsOfDecimal}`;
 
     } else {
         // no decimal entered
         // add commas to number
         // remove all non-digits
         value = formatNumber(value, numberMask);
-        value = `${numberMask.prefix}${value}${numberMask.suffix}`;
 
         // // final formatting
         // if (blur === "blur") {
         //     value += ".00";
         // }
+    }
+
+    if (!isNotDefinedOrEmpty(value)) {
+        value = `${numberMask.prefix}${value}${numberMask.suffix}`;
     }
 
     // send updated string to input
@@ -110,13 +130,19 @@ function formatCurrency(e, numberMask: INumberMask): IToValueWithCursor {
     let updated_len = value.length;
     cursorStart = updated_len - original_len + cursorStart;
 
+    // If user has typed the first character and we are also adding a suffix,
+    // then make sure to pull the caret back 1 level (if suffix length is 1 else back to suffix length)
+    if (original_len === 1 && !isNotDefinedOrEmpty(numberMask.suffix)) {
+        cursorStart = cursorStart - numberMask.suffix.length;
+    }
+
     return { value, cursorStart, cursorEnd: cursorStart };
 }
 
 function toNumberMaskWithCursor(e: any, numberMask: INumberMask): IToValueWithCursor {
     const { cursorStart, cursorEnd } = utility.cursor(e);
 
-    const toValueWithCursor = formatCurrency(e, numberMask);
+    const toValueWithCursor = formatToMask(e, numberMask);
 
     // const currentValue = e.target.value;
     // const pureValue = extractPureValue(currentValue, numberMask) || '';

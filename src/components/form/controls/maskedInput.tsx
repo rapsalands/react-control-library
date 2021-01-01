@@ -1,6 +1,6 @@
 import React from 'react';
 import maskUtility from '../../shared/maskUtility';
-import { isRegex } from 'type-check-utility';
+import { isNotDefinedOrEmpty, isRegex } from 'type-check-utility';
 import utility from '../../shared/utility';
 import { ICustomInputProps, IMaskedInputProps } from '../../shared/interfacesDelegates/controlInterfaces';
 import CustomInput from './customInput';
@@ -64,8 +64,9 @@ const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [
     }
 
     function keyDownEvent(e) {
-        function conditionToOnlyMoveBack(index) {
-            return maskUtility.extractConstFromMask(mask).includes(e.target.value[index]);
+        const conditionToOnlyMoveBack = (index) => {
+            const arr = utility.strings2FlatArray(...maskUtility.extractConstFromMask(mask));
+            return arr.includes(e.target.value[index]);
         }
         formUtility.backspaceDoNotDelete(e, conditionToOnlyMoveBack);
     }

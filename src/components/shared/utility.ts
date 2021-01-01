@@ -28,6 +28,15 @@ function setEventArgsValue(e: IChangeInputEvent, valueToSet: IToValue | IToValue
     e.target.selectionEnd = oldEnd;
 }
 
-const utility = { insertAt, cursor, setEventArgsValue };
+function strings2FlatArray(...strings: string[]): string[] {
+    let result: string[] = [];
+    strings.forEach(s => {
+        //@ts-ignore
+        result = result.concat(...s);
+    });
+    return result;
+}
+
+const utility = { insertAt, cursor, setEventArgsValue, strings2FlatArray };
 
 export default utility;
