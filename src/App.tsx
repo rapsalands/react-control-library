@@ -12,6 +12,8 @@ import TextInput from './components/form/controls/textInput';
 import Regex from './regex';
 import SecureMaskedInput from './components/form/controls/secureMaskedInput';
 import ReadMeExample from './ReadmeExample';
+import NumberMask from './components/form/controls/numberMask';
+import { INumberMask } from './components/shared/interfacesDelegates/controlInterfaces';
 
 function App() {
 
@@ -33,6 +35,9 @@ function App() {
   return (
     <React.Fragment>
       <ReadMeExample />
+      <div>
+        Number Mask <NumberMask numberMask={{} as INumberMask} />
+      </div>
       <div>
         Text Field <TextInput restrictSymbols='~!@#$%' value={ssn} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e); }} label='Person Name' />
       </div>

@@ -2,7 +2,7 @@ const Constants = {
     userInput: 'userInput',
     attributes: {
         minLength: 'minLength',
-        maxLenth: 'maxLength',
+        maxLength: 'maxLength',
         required: 'required',
         pattern: 'pattern',
         min: 'min',
@@ -24,6 +24,11 @@ const Constants = {
         delete: 127,
         backspace: 8,
         symbols: '~!@#$%^&*()_+=-|\\}]{[:;"\'<,>.?/'
+    },
+    negative: {
+        hyphen: '-',
+        bracketOpen: '(',
+        bracketClose: ')',
     }
 };
 

@@ -55,6 +55,20 @@ export interface IPasswordFailure {
     metadata: any,
 }
 
+export interface INumberMaskProps {
+    numberMask: INumberMask
+}
+export interface INumberMask {
+    prefix: string; // what to display before the amount. Defaults to '$'.
+    suffix: string; // what to display after the amount. Defaults to empty string.
+    // thousandsSeparator: boolean; // whether or not to separate thousands. Defaults to to true.
+    thousandsSeparatorSymbol: string; // character with which to separate thousands. Default to ','.
+    decimalSymbol: string; // character that will act as a decimal point. Defaults to '.'
+    decimalLimit: number; // how many digits to allow after the decimal. Defaults to 2
+    maxLength: number; // limit the length of the integer number. Defaults to null for unlimited
+    negativeSymbol: boolean; // negative symbol. Defaults to none,
+}
+
 export interface IMaskedInputProps {
     mask: any[] // Empty mask must be treated as no masking is required.
 }

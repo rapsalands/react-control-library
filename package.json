@@ -16,7 +16,7 @@
     "react-scripts": "3.4.3",
     "rimraf": "^3.0.2",
     "ts-jest": "^26.4.4",
-    "type-check-utility": "^2.2.0",
+    "type-check-utility": "^2.2.4",
     "typescript": "^3.7.5"
   },
   "scripts": {

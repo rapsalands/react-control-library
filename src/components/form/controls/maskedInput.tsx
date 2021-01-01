@@ -10,16 +10,7 @@ import { IToValueWithCursor } from '../../shared/interfacesDelegates/eventInterf
 
 const MaskedInput: React.FC<ICustomInputProps & IMaskedInputProps> = ({ mask = [], extractValueToSet, ...props }) => {
 
-    // const [data, setData] = React.useState(value);
-
-    // React.useEffect(() => {
-    //     setData(value);
-    // }, [value]);
-
     function changeEvent(e) {
-
-        // console.log(data);
-        // setData(e.target.value);
         const toMaskResult = maskUtility.toMaskWithCursor(e, mask);
         maskUtility.updateEventArgs(e, toMaskResult);
         maskUtility.updateDetail(e, mask);
