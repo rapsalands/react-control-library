@@ -24,7 +24,7 @@ const AppSettings = {
             decimalSymbol: '.',
             decimalLimit: 4,
             maxLength: 20,
-            negativeSymbol: false,
+            negativeAllowed: false,
         } as INumberMask;
     },
     decimal: {

@@ -25,7 +25,7 @@ const Constants = {
         backspace: 8,
         symbols: '~!@#$%^&*()_+=-|\\}]{[:;"\'<,>.?/'
     },
-    negative: {
+    keyboard: {
         hyphen: '-',
         bracketOpen: '(',
         bracketClose: ')',

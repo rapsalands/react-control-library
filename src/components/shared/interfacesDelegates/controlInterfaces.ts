@@ -66,7 +66,7 @@ export interface INumberMask {
     decimalSymbol: string; // character that will act as a decimal point. Defaults to '.'
     decimalLimit: number; // how many digits to allow after the decimal. Defaults to 2
     maxLength: number; // limit the length of the integer number. Defaults to null for unlimited
-    negativeSymbol: boolean; // negative symbol. Defaults to none,
+    negativeAllowed: boolean; // negative symbol. Defaults to none,
 }
 
 export interface IMaskedInputProps {

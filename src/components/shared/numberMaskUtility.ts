@@ -1,13 +1,51 @@
 import { isDefined, isNotDefinedOrEmpty, isNotDefinedOrEmptyObject, isNotDefinedOrWhiteSpace } from "type-check-utility";
 import FormRegex from "../form/formRegex";
+import Constants from "./constants";
 import { INumberMask } from "./interfacesDelegates/controlInterfaces";
 import { IToValue, IToValueWithCursor } from "./interfacesDelegates/eventInterfaces";
 import utility from "./utility";
+
+function isValidChar(key: string, numberMask: INumberMask) {
+
+    if (isSpecialCase()) {
+        switch (key) {
+
+            case numberMask.decimalSymbol:
+                if (numberMask.decimalLimit <= 0) return false;
+
+            case Constants.keyboard.hyphen:
+                if (!numberMask.negativeAllowed) return false;
+
+        }
+
+        return true;
+    }
+
+    const validChar = FormRegex.number().test(key);
+    if (!validChar) return false;
+
+    return true;
+
+    function isSpecialCase() {
+        return key === numberMask.decimalSymbol || key === Constants.keyboard.hyphen;
+    }
+}
+
+function getNegativeSymbol(data, numberMask: INumberMask): boolean {
+    if (isNotDefinedOrEmpty(data)) return false;
+
+    if (numberMask.negativeAllowed) {
+        if (data.startsWith(Constants.keyboard.hyphen))
+            return true;
+    }
+    return false;
+}
 
 function extractPureValue(data: any, numberMask: INumberMask): string {
     if (!isDefined(data)) return data;
 
     let result = '';
+    const isNeg = getNegativeSymbol(data, numberMask);
 
     for (let i = 0; i < data.length; i++) {
         const d = data[i];
@@ -20,6 +58,7 @@ function extractPureValue(data: any, numberMask: INumberMask): string {
         result += d;
     }
 
+    result = isNeg ? `${Constants.keyboard.hyphen}${result}` : result;
     return result;
 }
 
@@ -41,7 +80,8 @@ function formatNumber(value: string, numberMask: INumberMask): string {
         return value;
     }
 
-    value = value.replace(/\D/g, ""); // Removes all symbols (everything except digits).
+    const negSymbol = getNegativeSymbol(value, numberMask) ? Constants.keyboard.hyphen : '';
+    value = negSymbol + value.replace(/\D/g, ""); // Removes all symbols (everything except digits). Leaves negative symbol is needed.
     return value.replace(/\B(?=(\d{3})+(?!\d))/g, numberMask.thousandsSeparatorSymbol);
 }
 
@@ -79,6 +119,7 @@ function formatToMask(e, numberMask: INumberMask): IToValueWithCursor {
     // Don't validate empty input
     if (isNotDefinedOrWhiteSpace(value)) { return { value, cursorStart, cursorEnd }; }
 
+    // const isNegative = numberMask.negativeAllowed && value.startsWith(Constants.keyboard.hyphen);
     value = replaceDecimalSymbols(value, numberMask);
 
     // Original length
@@ -120,7 +161,14 @@ function formatToMask(e, numberMask: INumberMask): IToValueWithCursor {
     }
 
     if (!isNotDefinedOrEmpty(value)) {
-        value = `${numberMask.prefix}${value}${numberMask.suffix}`;
+        // if (value.startsWith(Constants.keyboard.hyphen)) {
+        //     value = `${numberMask.prefix}${value}${numberMask.suffix}`;
+        // }
+        const isNegative = value.startsWith(Constants.keyboard.hyphen);
+        if (isNegative) {
+            value = value.substring(1);
+        }
+        value = `${isNegative ? Constants.keyboard.hyphen : ''}${numberMask.prefix}${value}${numberMask.suffix}`;
     }
 
     // send updated string to input
@@ -192,6 +240,6 @@ function updateDetail(e: any, numberMask: INumberMask) {
     e.detail.value = pureValue;
 }
 
-const numberMaskUtility = { toNumberMaskWithCursor, updateEventArgs, toNumberMask, updateDetail, extractPureValue };
+const numberMaskUtility = { toNumberMaskWithCursor, updateEventArgs, toNumberMask, updateDetail, extractPureValue, isValidChar };
 
 export default numberMaskUtility;

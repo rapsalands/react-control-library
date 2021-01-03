@@ -41,17 +41,24 @@ function App() {
             setNumMask(e.target.value);
             console.log(e.detail);
           }}
+          min={100}
+          max={200000}
           numberMask={{
-            thousandsSeparatorSymbol: ','
+            thousandsSeparatorSymbol: ',',
+            negativeAllowed: true
           } as INumberMask}
         />
       </div>
       <div>
-        Percentage Number Mask <NumberMask numberMask={{
-          prefix: '$$',
-          suffix: '$$',
-          decimalLimit: 2
-        } as INumberMask} />
+        Percentage Number Mask <NumberMask
+          onChange={changeEvent}
+          max={100}
+          min={10}
+          numberMask={{
+            prefix: '',
+            suffix: '%',
+            decimalLimit: 4
+          } as INumberMask} />
       </div>
       <div>
         Text Field <TextInput restrictSymbols='~!@#$%' value={ssn} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e); }} label='Person Name' />

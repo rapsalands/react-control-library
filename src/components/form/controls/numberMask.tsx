@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNotDefinedOrEmpty, isNotDefinedOrEmptyObject, isRegex } from 'type-check-utility';
+import { isNotDefinedOrEmpty } from 'type-check-utility';
 import utility from '../../shared/utility';
 import { ICustomInputProps, INumberMask, INumberMaskProps } from '../../shared/interfacesDelegates/controlInterfaces';
 import CustomInput from './customInput';
@@ -8,21 +8,11 @@ import formVali from '../validation/formVali';
 import { IToValueWithCursor } from '../../shared/interfacesDelegates/eventInterfaces';
 import AppSettings from '../../shared/appSettings';
 import numberMaskUtility from '../../shared/numberMaskUtility';
-import Constants from '../../shared/constants';
 import formUtility from '../formUtility';
 
 const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ numberMask = {} as INumberMask, extractValueToSet, ...props }) => {
 
     numberMask = { ...AppSettings.defaultNumberMask(), ...numberMask };
-
-    // prefix (string): what to display before the amount. Defaults to '$'.
-    // suffix (string): what to display after the amount. Defaults to empty string.
-    // thousandsSeparator (boolean): whether or not to separate thousands. Defaults to to true.
-    // thousandsSeparatorSymbol (string): character with which to separate thousands. Default to ','.
-    // decimalSymbol (string): character that will act as a decimal point. Defaults to '.'
-    // decimalLimit (number): how many digits to allow after the decimal. Defaults to 2
-    // maxLength (number): limit the length of the integer number. Defaults to null for unlimited
-    // allowNegative (boolean): whether or not to allow negative numbers. Defaults to false
 
     function changeEvent(e) {
         const toMaskResult = numberMaskUtility.toNumberMaskWithCursor(e, numberMask);
@@ -38,6 +28,10 @@ const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ numberMask
     }
 
     function keyPressEvent(e) {
+
+        if (!numberMaskUtility.isValidChar(e.key, numberMask)) {
+            e.preventDefault();
+        }
 
         // let { cursorStart: start, newLengthIsPermitted } = utility.cursor(e);
 
