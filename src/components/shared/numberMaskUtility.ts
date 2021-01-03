@@ -139,7 +139,7 @@ function toNumberMaskWithCursor(e, numberMask: INumberMask): IToValueWithCursor 
     let cursorEnd = e.target.selectionEnd;
 
     // Don't validate empty input
-    if (isNotDefinedOrWhiteSpace(value)) { return { value, cursorStart, cursorEnd }; }
+    if (isNotDefinedOrWhiteSpace(value)) return { value, cursorStart, cursorEnd };
 
     // Remove all decimal symbols except first one. This may occur if user copy paste text with multiple decimal symbols from outside.
     value = replaceDecimalSymbols(value, numberMask);
@@ -148,47 +148,49 @@ function toNumberMaskWithCursor(e, numberMask: INumberMask): IToValueWithCursor 
     let originalLength = value.length;
 
     // If float number
-    if (value.includes('.')) {
+    value = addCommasAndRemoveNonDigits(value, numberMask);
 
-        // Get position of first decimal
-        // This prevents multiple decimals from being entered
-        let decimalPosition = value.indexOf(numberMask.decimalSymbol);
+    value = moveNegativeSymbol(value, numberMask);
 
-        // Split number by decimal point
-        let lhsOfDecimal = value.substring(0, decimalPosition);
-        let rhsOfDecimal = value.substring(decimalPosition + 1);
+    cursorStart = updateCursor(value, cursorStart, originalLength, numberMask);
 
-        // Add commas to lhs of float number.
-        lhsOfDecimal = addCommas(lhsOfDecimal, numberMask);
+    return { value, cursorStart, cursorEnd: cursorStart };
+}
 
-        // Remove any invalid characters
-        rhsOfDecimal = extractPureValue(rhsOfDecimal, numberMask);
+/**
+ * Add commas to value and removes any non-digits if needed.
+ * Considers negative symbol as needed.
+ */
+function addCommasAndRemoveNonDigits(value: any, numberMask: INumberMask) {
 
-        // Limit decimal to only {decimalLimit} digits
-        rhsOfDecimal = rhsOfDecimal.substring(0, numberMask.decimalLimit);
+    // Add commas to number and remove all non-digits when no decimal symbol found.
+    if (!value.includes(numberMask.decimalSymbol))
+        return addCommas(value, numberMask);
 
-        // Concat number by decimalSymbol
-        value = `${lhsOfDecimal}${numberMask.decimalSymbol}${rhsOfDecimal}`;
+    // Get position of first decimal. This prevents multiple decimals from being entered.
+    let decimalPosition = value.indexOf(numberMask.decimalSymbol);
 
-    } else {
-        // Add commas to number and remove all non-digits when no decimal symbol found.
-        value = addCommas(value, numberMask);
-    }
+    // Split number by decimal point
+    let lhsOfDecimal = value.substring(0, decimalPosition);
+    let rhsOfDecimal = value.substring(decimalPosition + 1);
 
-    if (!isNotDefinedOrEmpty(value)) {
-        const isNegative = value.startsWith(Constants.keyboard.hyphen);
-        if (isNegative) {
-            value = value.substring(1);
-        }
+    // Add commas to lhs of float number.
+    lhsOfDecimal = addCommas(lhsOfDecimal, numberMask);
 
-        if (value === numberMask.decimalSymbol) {
-            value = `0${value}`;
-        }
+    // Remove any invalid characters
+    rhsOfDecimal = extractPureValue(rhsOfDecimal, numberMask);
 
-        value = `${isNegative ? Constants.keyboard.hyphen : ''}${numberMask.prefix}${value}${numberMask.suffix}`;
-    }
+    // Limit decimal to only {decimalLimit} digits
+    rhsOfDecimal = rhsOfDecimal.substring(0, numberMask.decimalLimit);
 
-    // Update cursor position.
+    // Concat number by decimalSymbol
+    return `${lhsOfDecimal}${numberMask.decimalSymbol}${rhsOfDecimal}`;
+}
+
+/**
+ * Update cursor position.
+ */
+function updateCursor(value: any, cursorStart: number, originalLength: number, numberMask: INumberMask) {
     let updatedLength = value.length;
     cursorStart = updatedLength - originalLength + cursorStart;
 
@@ -197,8 +199,27 @@ function toNumberMaskWithCursor(e, numberMask: INumberMask): IToValueWithCursor 
     if (originalLength === 1 && !isNotDefinedOrEmpty(numberMask.suffix)) {
         cursorStart = cursorStart - numberMask.suffix.length;
     }
+    return cursorStart;
+}
 
-    return { value, cursorStart, cursorEnd: cursorStart };
+/**
+ * If input is negative, then move negative symbol before prefix.
+ */
+function moveNegativeSymbol(value: any, numberMask: INumberMask) {
+
+    // If value or prefix is empty, then no need to move anything.
+    if (isNotDefinedOrEmpty(value)) return value;
+
+    const negSymbol = getNegativeSymbol(value, numberMask);
+    if (!isNotDefinedOrEmpty(negSymbol)) {
+        value = value.substring(1);
+    }
+
+    if (value === numberMask.decimalSymbol) {
+        value = `0${value}`;
+    }
+
+    return `${negSymbol}${numberMask.prefix}${value}${numberMask.suffix}`;
 }
 
 /**

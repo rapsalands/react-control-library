@@ -52,8 +52,8 @@ function App() {
       <div>
         Percentage Number Mask <NumberMask
           onChange={changeEvent}
-          max={-100}
-          min={-1000}
+          max={1000}
+          min={100}
           numberMask={{
             prefix: '',
             suffix: '%',
