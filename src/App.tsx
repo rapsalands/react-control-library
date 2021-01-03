@@ -52,12 +52,13 @@ function App() {
       <div>
         Percentage Number Mask <NumberMask
           onChange={changeEvent}
-          max={100}
-          min={10}
+          max={-100}
+          min={-1000}
           numberMask={{
             prefix: '',
             suffix: '%',
-            decimalLimit: 4
+            decimalLimit: 4,
+            negativeAllowed: true
           } as INumberMask} />
       </div>
       <div>

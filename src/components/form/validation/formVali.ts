@@ -12,34 +12,55 @@ function has2Validate(validation: IValidationProps, validType: ValidationType) {
     return !validation.skipValidationTypes.includes(validType);
 }
 
-const general: validateDelegate = (validation, detail, data, props): IDetail => {
+/**
+ * Perform validation for user input. Validation result will included in e.detail property.
+ * Max validation will be performed only if value is less than zero. Else max will be performed in forRestriction validation.
+ * @param validation validation settings sent by user.
+ * @param detail detail of control.
+ * @param value value entered in control.
+ * @param props control entire props object.
+ */
+const general: validateDelegate = (validation, detail, value, props): IDetail => {
 
     const isValidAttr = (validType: ValidationType) => has2Validate(validation, validType);
 
     props = props || {};
-    data = data || '';
+    value = value || '';
 
-    if (!data) {
+    if (!value) {
         if (isValidAttr(ValidationType.required) && props.required) {
-            return new DetailIns(detail, data, false, 'required');
+            return new DetailIns(detail, value, false, 'required');
         }
-        return new DetailIns(detail, data, true, null);
+        return new DetailIns(detail, value, true, null);
     }
 
-    if (isValidAttr(ValidationType.minLength) && props.minLength && data && props.minLength > data.length) {
-        return new DetailIns(detail, data, false, 'minLength');
+    if (isValidAttr(ValidationType.minLength) && props.minLength && value && props.minLength > value.length) {
+        return new DetailIns(detail, value, false, 'minLength');
     }
 
-    if (isValidAttr(ValidationType.exactLength) && props.exactLength && data && props.exactLength > data.length) {
-        return new DetailIns(detail, data, false, 'exactLength');
+    if (isValidAttr(ValidationType.exactLength) && props.exactLength && value && props.exactLength > value.length) {
+        return new DetailIns(detail, value, false, 'exactLength');
     }
 
-    if (isValidAttr(ValidationType.min) && props.min && +props.min > +data) {
-        return new DetailIns(detail, data, false, 'min');
+    if (isValidAttr(ValidationType.min) && props.min && +props.min > +value) {
+        return new DetailIns(detail, value, false, 'min');
     }
 
-    return new DetailIns(detail, data, true, null);
+    if (isValidAttr(ValidationType.max) && props.max && +props.max < +value && (+value < 0)) {
+        return new DetailIns(detail, value, false, 'max');
+    }
+
+    return new DetailIns(detail, value, true, null);
 }
+
+/**
+ * Perform validation for user input. If validations fails, then user input is restricted (not entered).
+ * Max validation will be performed only if value is greater than zero. Else max will be included in general validation.
+ * @param validation validation settings sent by user.
+ * @param detail detail of control.
+ * @param value value entered in control.
+ * @param props control entire props object.
+ */
 const forRestriction: validateDelegate = (validation, detail, value, props): IDetail => {
 
     const isValidAttr = (validType: ValidationType) => has2Validate(validation, validType);
@@ -55,7 +76,7 @@ const forRestriction: validateDelegate = (validation, detail, value, props): IDe
         return new DetailIns(detail, value, false, 'maxLength');
     }
 
-    if (isValidAttr(ValidationType.max) && props.max && +props.max < +value) {
+    if (isValidAttr(ValidationType.max) && props.max && +props.max < +value && (+value > 0)) {
         return new DetailIns(detail, value, false, 'max');
     }
 

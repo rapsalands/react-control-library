@@ -36,6 +36,12 @@ export type blurDelegate = (
     extractValueToSet?: (e: IFocusInputEvent, value: string) => IToValue | IToValueWithCursor
 ) => void;
 
+/**
+ * @param validation validation settings sent by user.
+ * @param detail detail of control.
+ * @param value value entered in control.
+ * @param props control entire props object.
+ */
 export type validateDelegate = (
     validation: IValidationProps,
     detail: IDetail | null | undefined,

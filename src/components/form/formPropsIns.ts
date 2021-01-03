@@ -9,6 +9,12 @@ export class ValidationIns implements IValidationProps {
     preventInput: DetailMode[];
     skipValidationTypes: ValidationType[];
 
+    /**
+     * 
+     * @param controlSpecific 
+     * @param preventInput : Defaults to onChange & onKeyPress
+     * @param skipValidationTypes 
+     */
     constructor(controlSpecific: ((data: any) => IDetail) | null = null, preventInput = [DetailMode.onChange, DetailMode.onKeyPress], skipValidationTypes: ValidationType[] = []) {
         this.controlSpecific = controlSpecific;
         this.preventInput = preventInput;

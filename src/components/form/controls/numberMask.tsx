@@ -1,5 +1,5 @@
 import React from 'react';
-import { isNotDefinedOrEmpty } from 'type-check-utility';
+import { isDefined, isNotDefinedOrEmpty } from 'type-check-utility';
 import utility from '../../shared/utility';
 import { ICustomInputProps, INumberMask, INumberMaskProps } from '../../shared/interfacesDelegates/controlInterfaces';
 import CustomInput from './customInput';
@@ -9,6 +9,7 @@ import { IToValueWithCursor } from '../../shared/interfacesDelegates/eventInterf
 import AppSettings from '../../shared/appSettings';
 import numberMaskUtility from '../../shared/numberMaskUtility';
 import formUtility from '../formUtility';
+import Constants from '../../shared/constants';
 
 const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ numberMask = {} as INumberMask, extractValueToSet, ...props }) => {
 
@@ -23,48 +24,24 @@ const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ numberMask
     }
 
     function onBlur(e) {
+
+        let pureValue = numberMaskUtility.extractPureValue(e.target.value, numberMask);
+        if (!isDefined(pureValue)) pureValue = '';
+
+        // If control only has symbols like negative/decimal, then clear the control.
+        if ([Constants.keyboard.hyphen, numberMask.decimalSymbol].includes(pureValue)) {
+            numberMaskUtility.updateEventArgs(e, { value: '', cursorStart: 0, cursorEnd: 0 });
+        }
+
         numberMaskUtility.updateDetail(e, numberMask);
         props.onBlur && props.onBlur(e);
     }
 
     function keyPressEvent(e) {
 
-        if (!numberMaskUtility.isValidChar(e.key, numberMask)) {
+        if (!numberMaskUtility.isValidChar(e, numberMask)) {
             e.preventDefault();
         }
-
-        // let { cursorStart: start, newLengthIsPermitted } = utility.cursor(e);
-
-        // if (e.keyCode === Constants.ascii.backspace) {
-        //     if (e.target.value[--start] === numberMask.thousandsSeparatorSymbol) {
-        //         e.target.selectionStart = start;
-        //         e.target.selectionEnd = start;
-        //         e.preventDefault();
-        //     }
-        // }
-
-        // if (newLengthIsPermitted >= numberMask.length) {
-        //     e.preventDefault();
-        //     props.onKeyPress && props.onKeyPress(e);
-        //     return;
-        // }
-
-        // while (true) {
-        //     // if (start >= numberMask.length) {
-        //     //     e.preventDefault();
-        //     //     break;
-        //     // }
-        //     const m = numberMask[start];
-        //     if (isRegex(m)) {
-        //         const reg = m as RegExp;
-        //         if (!reg.test(e.key)) {
-        //             e.preventDefault();
-        //         }
-        //         break;
-        //     } else {
-        //         start++;
-        //     }
-        // }
 
         props.onKeyPress && props.onKeyPress(e);
     }

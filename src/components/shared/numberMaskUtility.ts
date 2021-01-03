@@ -3,18 +3,25 @@ import FormRegex from "../form/formRegex";
 import Constants from "./constants";
 import { INumberMask } from "./interfacesDelegates/controlInterfaces";
 import { IToValue, IToValueWithCursor } from "./interfacesDelegates/eventInterfaces";
-import utility from "./utility";
 
-function isValidChar(key: string, numberMask: INumberMask) {
+/**
+ * Calculates if key stroke entered is valid or not.
+ * @param e event Args for KeyPress
+ * @param numberMask Number Mask
+ */
+function isValidChar(e: any, numberMask: INumberMask) {
 
+    const key = e?.key;
     if (isSpecialCase()) {
-        switch (key) {
+        switch (e.key) {
 
             case numberMask.decimalSymbol:
                 if (numberMask.decimalLimit <= 0) return false;
+                break;
 
             case Constants.keyboard.hyphen:
-                if (!numberMask.negativeAllowed) return false;
+                if (e.target.selectionStart !== 0 || !numberMask.negativeAllowed) return false;
+                break;
 
         }
 
@@ -31,21 +38,26 @@ function isValidChar(key: string, numberMask: INumberMask) {
     }
 }
 
-function getNegativeSymbol(data, numberMask: INumberMask): boolean {
-    if (isNotDefinedOrEmpty(data)) return false;
+/**
+ * Based on data and numberMask settings, returns negative symbol else empty string.
+ */
+function getNegativeSymbol(data, numberMask: INumberMask): string {
+    if (isNotDefinedOrEmpty(data)) return '';
 
     if (numberMask.negativeAllowed) {
         if (data.startsWith(Constants.keyboard.hyphen))
-            return true;
+            return Constants.keyboard.hyphen;
     }
-    return false;
+    return '';
 }
 
+/**
+ * Extract pure value from data passed. Also considers negative numbers based on numberMask settings.
+ */
 function extractPureValue(data: any, numberMask: INumberMask): string {
     if (!isDefined(data)) return data;
 
     let result = '';
-    const isNeg = getNegativeSymbol(data, numberMask);
 
     for (let i = 0; i < data.length; i++) {
         const d = data[i];
@@ -58,11 +70,15 @@ function extractPureValue(data: any, numberMask: INumberMask): string {
         result += d;
     }
 
-    result = isNeg ? `${Constants.keyboard.hyphen}${result}` : result;
+    const negSymbol = getNegativeSymbol(data, numberMask);
+    result = `${negSymbol}${result}`;
     return result;
 }
 
-function formatNumber(value: string, numberMask: INumberMask): string {
+/**
+ * Add Commas to the data passed. Excludes prefix, suffix is passed.
+ */
+function addCommas(value: string, numberMask: INumberMask): string {
 
     if (!isNotDefinedOrEmpty(numberMask.prefix)) {
         if (value.startsWith(numberMask.prefix)) {
@@ -80,11 +96,15 @@ function formatNumber(value: string, numberMask: INumberMask): string {
         return value;
     }
 
-    const negSymbol = getNegativeSymbol(value, numberMask) ? Constants.keyboard.hyphen : '';
-    value = negSymbol + value.replace(/\D/g, ""); // Removes all symbols (everything except digits). Leaves negative symbol is needed.
+    const negSymbol = getNegativeSymbol(value, numberMask);
+    value = negSymbol + value.replace(/\D/g, ""); // Removes all symbols (everything except digits). Leaves negative symbol if needed.
     return value.replace(/\B(?=(\d{3})+(?!\d))/g, numberMask.thousandsSeparatorSymbol);
 }
 
+/**
+ * Replaces numberMask.decimalSymbol with empty string except first one.
+ * This is to avoid multiple decimal symbols in user input.
+ */
 function replaceDecimalSymbols(value: string, numberMask: INumberMask): string {
 
     if (!value.includes(numberMask.decimalSymbol)) return value;
@@ -108,24 +128,26 @@ function replaceDecimalSymbols(value: string, numberMask: INumberMask): string {
     return resultStr;
 }
 
-function formatToMask(e, numberMask: INumberMask): IToValueWithCursor {
+/**
+ * Formats input as per the mask passed by user. Considers negative numbers, prefix and suffix.
+ * Also returns the cursor position as per the updated masked text.
+ */
+function toNumberMaskWithCursor(e, numberMask: INumberMask): IToValueWithCursor {
 
     let value = e.target.value;
-
-    // Initial caret position 
     let cursorStart = e.target.selectionStart;
     let cursorEnd = e.target.selectionEnd;
 
     // Don't validate empty input
     if (isNotDefinedOrWhiteSpace(value)) { return { value, cursorStart, cursorEnd }; }
 
-    // const isNegative = numberMask.negativeAllowed && value.startsWith(Constants.keyboard.hyphen);
+    // Remove all decimal symbols except first one. This may occur if user copy paste text with multiple decimal symbols from outside.
     value = replaceDecimalSymbols(value, numberMask);
 
-    // Original length
-    let original_len = value.length;
+    // Original text length.
+    let originalLength = value.length;
 
-    // Check for decimal
+    // If float number
     if (value.includes('.')) {
 
         // Get position of first decimal
@@ -136,8 +158,8 @@ function formatToMask(e, numberMask: INumberMask): IToValueWithCursor {
         let lhsOfDecimal = value.substring(0, decimalPosition);
         let rhsOfDecimal = value.substring(decimalPosition + 1);
 
-        // Add commas to left side of number
-        lhsOfDecimal = formatNumber(lhsOfDecimal, numberMask);
+        // Add commas to lhs of float number.
+        lhsOfDecimal = addCommas(lhsOfDecimal, numberMask);
 
         // Remove any invalid characters
         rhsOfDecimal = extractPureValue(rhsOfDecimal, numberMask);
@@ -145,93 +167,64 @@ function formatToMask(e, numberMask: INumberMask): IToValueWithCursor {
         // Limit decimal to only {decimalLimit} digits
         rhsOfDecimal = rhsOfDecimal.substring(0, numberMask.decimalLimit);
 
-        // Join number by decimalSymbol
+        // Concat number by decimalSymbol
         value = `${lhsOfDecimal}${numberMask.decimalSymbol}${rhsOfDecimal}`;
 
     } else {
-        // no decimal entered
-        // add commas to number
-        // remove all non-digits
-        value = formatNumber(value, numberMask);
-
-        // // final formatting
-        // if (blur === "blur") {
-        //     value += ".00";
-        // }
+        // Add commas to number and remove all non-digits when no decimal symbol found.
+        value = addCommas(value, numberMask);
     }
 
     if (!isNotDefinedOrEmpty(value)) {
-        // if (value.startsWith(Constants.keyboard.hyphen)) {
-        //     value = `${numberMask.prefix}${value}${numberMask.suffix}`;
-        // }
         const isNegative = value.startsWith(Constants.keyboard.hyphen);
         if (isNegative) {
             value = value.substring(1);
         }
+
+        if (value === numberMask.decimalSymbol) {
+            value = `0${value}`;
+        }
+
         value = `${isNegative ? Constants.keyboard.hyphen : ''}${numberMask.prefix}${value}${numberMask.suffix}`;
     }
 
-    // send updated string to input
-    //input.value(value);
-
-    // put caret back in the right position
-    let updated_len = value.length;
-    cursorStart = updated_len - original_len + cursorStart;
+    // Update cursor position.
+    let updatedLength = value.length;
+    cursorStart = updatedLength - originalLength + cursorStart;
 
     // If user has typed the first character and we are also adding a suffix,
-    // then make sure to pull the caret back 1 level (if suffix length is 1 else back to suffix length)
-    if (original_len === 1 && !isNotDefinedOrEmpty(numberMask.suffix)) {
+    // then make sure to pull the cursor back 1 level (if suffix length is 1, else back to suffix length)
+    if (originalLength === 1 && !isNotDefinedOrEmpty(numberMask.suffix)) {
         cursorStart = cursorStart - numberMask.suffix.length;
     }
 
     return { value, cursorStart, cursorEnd: cursorStart };
 }
 
-function toNumberMaskWithCursor(e: any, numberMask: INumberMask): IToValueWithCursor {
-    const { cursorStart, cursorEnd } = utility.cursor(e);
-
-    const toValueWithCursor = formatToMask(e, numberMask);
-
-    // const currentValue = e.target.value;
-    // const pureValue = extractPureValue(currentValue, numberMask) || '';
-    // let result = pureValue || '';
-
-    // // if (isNotDefinedOrEmptyObject(numberMask)) {
-    // //     return { value: result, cursorStart, cursorEnd };
-    // // }
-
-    // let cursorJump = 0; // Chars Added Before Cursor Position
-
-    // for (let i = 0; i < result.length; i++) {
-    //     const m = numberMask[i];
-    //     if (m === undefined) break;
-    //     if (!isRegex(m) && m !== result[i]) {
-    //         result = utility.insertAt(result, m, i);
-
-    //         if (currentValue[i] !== m && i <= cursorStart)
-    //             cursorJump = (cursorJump + 1);
-    //     }
-    // }
-
-    // return { value: toValueWithCursor.value, cursorStart: cursorStart + cursorJump, cursorEnd: cursorEnd + cursorJump };
-    return toValueWithCursor;
-}
-
+/**
+ * Formats input as per the mask passed by user. Considers negative numbers, prefix and suffix.
+ */
 function toNumberMask(value: any, numberMask: INumberMask): IToValue {
     if (isNotDefinedOrEmptyObject(numberMask)) {
         return { value: value };
     }
 
     const pureValue = extractPureValue(value, numberMask);
-    return { value: formatNumber(pureValue, numberMask) };
+    return { value: addCommas(pureValue, numberMask) };
 }
 
+/**
+ * Updates event Args with value and cursor position.
+ */
 function updateEventArgs(e: any, toNumberMaskResult: IToValueWithCursor) {
     e.target.value = toNumberMaskResult.value;
     e.target.selectionStart = toNumberMaskResult.cursorStart;
     e.target.selectionEnd = toNumberMaskResult.cursorEnd;
 }
 
+/**
+ * Update e.detail property.
+ */
 function updateDetail(e: any, numberMask: INumberMask) {
     const value = e?.detail?.value;
     if (!value) return;
