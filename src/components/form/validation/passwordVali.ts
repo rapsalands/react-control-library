@@ -9,7 +9,9 @@ function isPasswordValid(data: any, passwordCriteria: IPasswordCriteria): IDetai
 
     data = data || '';
 
-    const addPassFail = (key, message: any = null) => result.push(new PasswordFailIns(key, data, message));
+    const addPassFail = (key, message: any = null) => {
+        result.push(new PasswordFailIns(key, data, message));
+    }
     const validRange = (data, start, end) => data >= start && data <= end;
     const validSymbols = (data) => {
         const syms = Constants.ascii.symbols;
@@ -49,10 +51,16 @@ function isPasswordValid(data: any, passwordCriteria: IPasswordCriteria): IDetai
                 if (el === nextEl) {
                     nextEl++;
                     count++;
+                } else {
+                    nextEl = -1;
+                    count = 0;
                 }
             }
 
-            if (count > toCompare) addPassFail(key, message);
+            if (count > toCompare) {
+                addPassFail(key, message);
+                break; // One key will be added just once.
+            }
         }
     }
 
@@ -75,6 +83,7 @@ function isPasswordValid(data: any, passwordCriteria: IPasswordCriteria): IDetai
 
     checkSequence(Constants.attributes.numberSeq, ascii.zero, ascii.nine, pc.sequence?.number, passMess.numberSeq(pc.sequence?.number));
     checkSequence(Constants.attributes.characterSeq, ascii.a, ascii.z, pc.sequence?.characters, passMess.characterSeq(pc.sequence?.characters));
+    checkSequence(Constants.attributes.characterSeq, ascii.A, ascii.Z, pc.sequence?.characters, passMess.characterSeq(pc.sequence?.characters));
 
     const passwordStrength = checkPassStrength(data);
     result.push(new PasswordFailIns('strength', data, '', passwordStrength));

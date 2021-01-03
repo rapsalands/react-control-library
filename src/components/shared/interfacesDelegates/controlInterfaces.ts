@@ -41,7 +41,6 @@ export interface IPasswordCriteria {
     maxLength?: number,
     numberCount?: number,
     symbols?: number,
-    restrictSymbols?: string
     sequence?: {
         number?: number,
         characters?: number,

@@ -25,6 +25,8 @@ function App() {
 
   function changeEvent(e) {
     console.log(e.detail);
+    const f = e.detail.metadata.find(n => n.attribute === 'strength');
+    console.log(f?.metadata?.strength);
   }
 
   function numChangeEvent(e) {
