@@ -19,7 +19,6 @@ const AppSettings = {
         return {
             prefix: '$',
             suffix: '',
-            thousandsSeparator: true,
             thousandsSeparatorSymbol: ',',
             decimalSymbol: '.',
             decimalLimit: 4,

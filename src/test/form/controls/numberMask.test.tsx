@@ -10,7 +10,6 @@ function defaultMask() {
     return {
         prefix: '$',
         suffix: '#',
-        thousandsSeparator: true,
         thousandsSeparatorSymbol: ',',
         decimalSymbol: '.',
         decimalLimit: 4,

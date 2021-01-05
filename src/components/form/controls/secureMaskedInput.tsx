@@ -67,7 +67,7 @@ const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ se
 
     function keyDownEvent(e) {
         function conditionToOnlyMoveBack(index) {
-            const arr = utility.strings2FlatArray(...maskUtility.extractConstFromMask(mask));
+            const arr = utility.strings2FlatArray(maskUtility.extractConstFromMask(mask));
             return arr.includes(e.target.value[index]);
         }
         formUtility.backspaceDoNotDelete(e, conditionToOnlyMoveBack);

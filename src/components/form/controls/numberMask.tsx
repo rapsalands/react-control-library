@@ -59,12 +59,14 @@ const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ mask = {} 
 
         const conditionToOnlyMoveBack = (index) => {
             // This is important as separator/suffix can be multi character long.
-            const arr = utility.strings2FlatArray(mask.thousandsSeparatorSymbol, mask.suffix);
+            const arr = utility.strings2FlatArray([mask.thousandsSeparatorSymbol, mask.suffix]);
             return arr.includes(e.target.value[index]);
         }
 
         // Handle backspace. Delete is handled automatically.
         formUtility.backspaceDoNotDelete(e, conditionToOnlyMoveBack);
+
+        props.onKeyDown && props.onKeyDown(e);
     }
 
     const params = {
@@ -75,8 +77,6 @@ const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ mask = {} 
         onKeyPress: keyPressEvent,
         onKeyDown: keyDownEvent
     };
-
-    console.log(props.value);
 
     return (
         <CustomInput extractValueToSet={extractValueToSet || extractValueToSetLocal} {...props} {...params} />

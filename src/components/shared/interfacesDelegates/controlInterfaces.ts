@@ -60,12 +60,11 @@ export interface INumberMaskProps {
 export interface INumberMask {
     prefix: string; // what to display before the amount. Defaults to '$'.
     suffix: string; // what to display after the amount. Defaults to empty string.
-    // thousandsSeparator: boolean; // whether or not to separate thousands. Defaults to to true.
     thousandsSeparatorSymbol: string; // character with which to separate thousands. Default to ','.
     decimalSymbol: string; // character that will act as a decimal point. Defaults to '.'
-    decimalLimit: number; // how many digits to allow after the decimal. Defaults to 2
-    maxLength: number; // limit the length of the integer number. Defaults to null for unlimited
-    negativeAllowed: boolean; // negative symbol. Defaults to none,
+    decimalLimit: number; // how many digits to allow after the decimal. Defaults to 2.
+    maxLength: number; // limit the length of the integer number. Defaults to null for unlimited.
+    negativeAllowed: boolean; // negative symbol. Defaults to false.
 }
 
 export interface IMaskedInputProps {

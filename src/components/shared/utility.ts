@@ -28,7 +28,7 @@ function setEventArgsValue(e: IChangeInputEvent, valueToSet: IToValue | IToValue
     e.target.selectionEnd = oldEnd;
 }
 
-function strings2FlatArray(...strings: string[]): string[] {
+function strings2FlatArray(strings: string[]): string[] {
     let result: string[] = [];
     strings.forEach(s => {
         //@ts-ignore
