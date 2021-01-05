@@ -17,7 +17,7 @@ import { INumberMask } from './components/shared/interfacesDelegates/controlInte
 
 function App() {
 
-  const [numMask, setNumMask] = React.useState('43587');
+  const [numMask, setNumMask] = React.useState('750qwe');
   const [num, setNum] = React.useState('435qwe');
   const [ssn, setSsn] = React.useState();
   const [temp, setTemp] = React.useState(98798);
@@ -45,7 +45,8 @@ function App() {
           }}
           min={100}
           max={200000}
-          numberMask={{
+          mask={{
+            suffix: '#',
             thousandsSeparatorSymbol: ',',
             negativeAllowed: true
           } as INumberMask}
@@ -56,7 +57,7 @@ function App() {
           onChange={changeEvent}
           max={1000}
           min={100}
-          numberMask={{
+          mask={{
             prefix: '',
             suffix: '%',
             decimalLimit: 4,

@@ -3,7 +3,6 @@ import { fireEvent } from '@testing-library/react'
 import '@testing-library/jest-dom/extend-expect';
 import { Password } from '../../../components';
 import { renderControl, keyPressEvent } from '../../baseTests';
-import userEvent from '@testing-library/user-event'
 import { IPasswordCriteria } from '../../../components/shared/interfacesDelegates/controlInterfaces';
 import { PasswordStrength } from '../../../components/shared/enumerations';
 
@@ -73,14 +72,14 @@ describe('onChange', () => {
 
     test('taking characters', () => {
         const { input, renderResult } = render();
-        fireEvent.blur(input, { target: { value: 'asffyyefyUIYUHYU' } });
-        expect(input.value).toBe('asffyyefyUIYUHYU');
+        fireEvent.blur(input, { target: { value: 'passwordCHANGED' } });
+        expect(input.value).toBe('passwordCHANGED');
     });
 
     test('taking symbols', () => {
         const { input, renderResult } = render();
-        fireEvent.blur(input, { target: { value: '*&*^*&^*^*&(\$=_*&^&^786475uiyhuf' } });
-        expect(input.value).toBe('*&*^*&^*^*&(\$=_*&^&^786475uiyhuf');
+        fireEvent.blur(input, { target: { value: '*&*^*&^*^*&(\$=_*&^&^786475wording' } });
+        expect(input.value).toBe('*&*^*&^*^*&(\$=_*&^&^786475wording');
     });
 
     test('taking 2 Caps', () => {
@@ -115,7 +114,7 @@ describe('onChange', () => {
         });
 
         const { input, renderResult } = render(null, null, { onChange });
-        fireEvent.change(input, { target: { value: 'gferu' } });
+        fireEvent.change(input, { target: { value: 'gaming' } });
         expect(onChange).toHaveBeenCalledTimes(1);
     });
 
@@ -136,8 +135,8 @@ describe('onChange', () => {
         const pc = customPc({ maxLength: 10 });
 
         const { input, renderResult } = render(null, null, pc);
-        fireEvent.change(input, { target: { value: '1234567890utweufewif' } });
-        expect(input.value).toBe('1234567890utweufewif');
+        fireEvent.change(input, { target: { value: '1234567890gameEngine' } });
+        expect(input.value).toBe('1234567890gameEngine');
     });
 
 })

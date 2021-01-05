@@ -11,35 +11,35 @@ import numberMaskUtility from '../../shared/numberMaskUtility';
 import formUtility from '../formUtility';
 import Constants from '../../shared/constants';
 
-const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ numberMask = {} as INumberMask, extractValueToSet, ...props }) => {
+const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ mask = {} as INumberMask, extractValueToSet, ...props }) => {
 
-    numberMask = { ...AppSettings.defaultNumberMask(), ...numberMask };
+    mask = { ...AppSettings.defaultNumberMask(), ...mask };
 
     function changeEvent(e) {
-        const toMaskResult = numberMaskUtility.toNumberMaskWithCursor(e, numberMask);
+        const toMaskResult = numberMaskUtility.toNumberMaskWithCursor(e, mask);
         numberMaskUtility.updateEventArgs(e, toMaskResult);
-        numberMaskUtility.updateDetail(e, numberMask);
+        numberMaskUtility.updateDetail(e, mask);
 
         props.onChange && props.onChange(e);
     }
 
     function onBlur(e) {
 
-        let pureValue = numberMaskUtility.extractPureValue(e.target.value, numberMask);
+        let pureValue = numberMaskUtility.extractPureValue(e.target.value, mask);
         if (!isDefined(pureValue)) pureValue = '';
 
         // If control only has symbols like negative/decimal, then clear the control.
-        if ([Constants.keyboard.hyphen, numberMask.decimalSymbol].includes(pureValue)) {
+        if ([Constants.keyboard.hyphen, mask.decimalSymbol].includes(pureValue)) {
             numberMaskUtility.updateEventArgs(e, { value: '', cursorStart: 0, cursorEnd: 0 });
         }
 
-        numberMaskUtility.updateDetail(e, numberMask);
+        numberMaskUtility.updateDetail(e, mask);
         props.onBlur && props.onBlur(e);
     }
 
     function keyPressEvent(e) {
 
-        if (!numberMaskUtility.isValidChar(e, numberMask)) {
+        if (!numberMaskUtility.isValidChar(e, mask)) {
             e.preventDefault();
         }
 
@@ -47,19 +47,19 @@ const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ numberMask
     }
 
     function extractValueToSetLocal(e, value): IToValueWithCursor {
-        const valueWithCursor = numberMaskUtility.toNumberMaskWithCursor(e || { target: { value } }, numberMask);
+        const valueWithCursor = numberMaskUtility.toNumberMaskWithCursor(e || { target: { value } }, mask);
         return valueWithCursor;
     }
 
     function keyDownEvent(e) {
 
-        if (isNotDefinedOrEmpty(numberMask.thousandsSeparatorSymbol) || isNotDefinedOrEmpty(e.target.value)) {
+        if (isNotDefinedOrEmpty(mask.thousandsSeparatorSymbol) || isNotDefinedOrEmpty(e.target.value)) {
             return;
         }
 
         const conditionToOnlyMoveBack = (index) => {
             // This is important as separator/suffix can be multi character long.
-            const arr = utility.strings2FlatArray(numberMask.thousandsSeparatorSymbol, numberMask.suffix);
+            const arr = utility.strings2FlatArray(mask.thousandsSeparatorSymbol, mask.suffix);
             return arr.includes(e.target.value[index]);
         }
 
@@ -71,10 +71,12 @@ const NumberMask: React.FC<ICustomInputProps & INumberMaskProps> = ({ numberMask
         validation: new ValidationIns(formVali.alwaysValid),
         onBlur,
         onChange: changeEvent,
-        extractValueToValidate: (value) => numberMaskUtility.extractPureValue(value, numberMask),
+        extractValueToValidate: (value) => numberMaskUtility.extractPureValue(value, mask),
         onKeyPress: keyPressEvent,
         onKeyDown: keyDownEvent
     };
+
+    console.log(props.value);
 
     return (
         <CustomInput extractValueToSet={extractValueToSet || extractValueToSetLocal} {...props} {...params} />

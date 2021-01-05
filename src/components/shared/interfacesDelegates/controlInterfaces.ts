@@ -55,7 +55,7 @@ export interface IPasswordFailure {
 }
 
 export interface INumberMaskProps {
-    numberMask: INumberMask
+    mask: INumberMask
 }
 export interface INumberMask {
     prefix: string; // what to display before the amount. Defaults to '$'.
