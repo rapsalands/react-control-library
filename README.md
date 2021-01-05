@@ -49,16 +49,17 @@ export default App;
 [React-Control-Library With ReactStrap](https://codesandbox.io/s/react-control-library-reactstrap-demo-5qocq)
 
 ## Controls
-1. [MaskedInput](#1-MaskedInput)
-2. [SecureMaskedInput](#2-SecureMaskedInput)
-3. [NumberInput](#3-NumberInput)
-4. [DecimalInput](#4-DecimalInput)
-5. [Password](#5-Password)
-6. [Alphanumeric](#6-Alphanumeric)
-7. [TextInput](#7-TextInput)
-8. [Email](#8-Email)
-9. [Checkbox](#9-Checkbox)
-10. [RadioButton](#10-RadioButton)
+1. [NumberMask](#NumberMask)
+2. [MaskedInput](#MaskedInput)
+3. [SecureMaskedInput](#SecureMaskedInput)
+4. [NumberInput](#NumberInput)
+5. [DecimalInput](#DecimalInput)
+6. [Password](#Password)
+7. [Alphanumeric](#Alphanumeric)
+8. [TextInput](#TextInput)
+9. [Email](#Email)
+10. [Checkbox](#Checkbox)
+11. [RadioButton](#RadioButton)
 
 ## About
 This project provides some awesome light weight controls for every web application that is designed and developed. They are developed upon pure HTML input controls and hence can be used and styled in a known manner. Controls can be styled using any styling library like BootStrap.
@@ -111,6 +112,16 @@ RCL controls accept all attributes that of HTML input controls. However there ar
     - This attribute can be passed to `MaskedInput` and `SecureMaskedInput` control.
     - They are generally array of strings and regex to hold a mask on the control. See [demo](https://codesandbox.io/s/react-control-library-demo-kkbeh) for more details on usage.
     - In case the mask is empty array, the control behaves without any masking and any of the characters are allowed.
+* `mask` (object)
+    - This attribute is specific to `NumberMask` control.
+    - It provides configuration for `NumberMask` control.
+        1. `prefix`: (string): Prefix string that will concatenated to the user input when entered. Defaults to `$`.
+        2. `suffix`: (string): Suffix string that will concatenated to the user input when entered. Defaults to empty string.
+        3. `thousandsSeparatorSymbol`: (string): Can be useful to format currency. String that will be used every thousand denomination of the user input. When passed empty string, nothing no formatting will be done at thousand denomination. Defaults to `,`.
+        4. `decimalLimit`: (number): Maximum of decimal limit allowed in the user input. Defaults to `4`. If passed as `0`, then decimal will not be allowed.
+        5. `decimalSymbol`: (string): String used to denote decimal point. Defaults to `.`. Will never be used if `decimalLimit` is passed as `0`.
+        6. `maxLength`: (number): Maximum length of user input allowed. Defaults to 20. This length will exclude `thousandsSeparatorSymbol`, `decimalSymbol` etc.
+        7. `negativeAllowed`: (boolean): Negative currency allowed is `true`. Defaults to `false`.
 * `inputTag` (React Component)
     - RCL controls can be integrated with any third party libraries like ReactStrap, Material UI.
     - For example, we can pass `Input` from ReactStrap as `inputTag` attribute. Like `<NumberInput inputTag={Input}`.
@@ -162,7 +173,55 @@ RCL controls accept all attributes that of HTML input controls. However there ar
 * Please note that, any custom-attributes like `label`, `passing children for Checkbox/RadioButton`, `indeterminate` etc. may or may not work based on the implementation of third party control and how they handle that attribute internally.
 
 ## Controls
-##### <a name="MaskedInput"></a>1. MaskedInput
+##### <a name="NumberMask"></a> ## NumberMask
+
+[NumberMask](https://codesandbox.io/s/react-control-library-numbermask-mhplf)
+
+[NumberMask with Material UI](https://codesandbox.io/s/react-control-library-numbermask-materialui-mfkt2)
+
+[NumberMask With ReactStrap](https://codesandbox.io/s/react-control-library-numbermask-reactstrap-xfdqk)
+
+```jsx
+import React from "react";
+import { NumberMask } from "react-control-library";
+
+const App = () => {
+
+    const [data, setData] = React.useState('');
+
+    function getNumberMask() {
+        return {
+            prefix: '$',
+            suffix: '',
+            thousandsSeparator: true,
+            thousandsSeparatorSymbol: ',',
+            decimalSymbol: '.',
+            decimalLimit: 4,
+            maxLength: 20,
+            negativeAllowed: false,
+        };
+    }
+
+    return (
+        <React.Fragment>
+            Enter USD: <NumberMask mask={getNumberMask()} value={data} onChange={(e) => setData(e.target.value)} />
+        </React.Fragment>
+    );
+};
+
+export default App;
+```
+
+###### Attributes
+
+1. Attribute `mask` must be passed to `NumberMask` control. `mask` is of type object.
+2. Designed to take input of only numbers/digits  and symbols/string passed in `mask`.
+3. Copy & Paste or Drag & Drop text from outside source must be formatted in control as per the `mask` provided.
+4. `e.detail` will be populated on `onChange` and `onBlur` event by default.
+
+<hr />
+
+##### <a name="MaskedInput"></a> ## MaskedInput
 
 [MaskedInput](https://codesandbox.io/s/react-control-library-maskedinput-n0tlk)
 
@@ -175,41 +234,23 @@ import React from "react";
 import { MaskedInput } from "react-control-library";
 
 const App = () => {
-  const [data, setData] = React.useState();
-  const phoneMask = () => ["(",/^[0-9]*$/,/^[0-9]*$/,/^[0-9]*$/,")"," ",/^[0-9]*$/,/^[0-9]*$/,/^[0-9]*$/,"-",/^[0-9]*$/,/^[0-9]*$/,/^[0-9]*$/,/^[0-9]*$/];
+    const [data, setData] = React.useState();
+    const phoneMask = () => ["(", /^[0-9]*$/, /^[0-9]*$/, /^[0-9]*$/, ")", " ", /^[0-9]*$/, /^[0-9]*$/, /^[0-9]*$/, "-", /^[0-9]*$/, /^[0-9]*$/, /^[0-9]*$/, /^[0-9]*$/];
 
-  return (import React from "react";
-import { NumberInput } from "react-control-library";
-
-const App = () => {
-  const [data, setData] = React.useState("");
-
-  return (
-    <React.Fragment>
-      Enter Numeric Characters {" "}
-      <NumberInput value={data} onChange={(e) => setData(e.target.value)} />
-    </React.Fragment>
-  );
+    return (
+        <React.Fragment>
+            Enter Phone Number {" "}
+            <MaskedInput
+                mask={phoneMask()}
+                value={data}
+                onChange={(e) => setData(e.target.value)}
+            />
+        </React.Fragment>
+    );
 };
 
 export default App;
-    <React.Fragment
-    
-    ###### Attributes
-    >
-      Enter Phone Number {" "}
-      <MaskedInput
-        mask={phoneMask()}
-        value={data}
-        onChange={(e) => setData(e.target.value)}
-      />
-    </React.Fragment>
-  );
-
-};
-
-export default App;
-```
+````
 
 ###### Attributes
 
@@ -221,7 +262,7 @@ For example, if `mask` passed is `[/^[0-9]*$/, '-', /^[0-9]*$/, '-', /^[0-9]*$/]
 
 <hr />
 
-##### <a name="SecureMaskedInput"></a>2. SecureMaskedInput
+##### <a name="SecureMaskedInput"></a> ## SecureMaskedInput
 
 [SecureMaskedInput](https://codesandbox.io/s/react-control-library-securemaskedinput-4u1yu)
 
@@ -277,7 +318,7 @@ For example, if `mask` passed is `[/^[0-9]*$/, '-', /^[0-9]*$/, '-', /^[0-9]*$/]
 
 <hr />
 
-##### <a name="NumberInput"></a>3. NumberInput
+##### <a name="NumberInput"></a> ## NumberInput
 
 [NumberInput](https://codesandbox.io/s/react-control-library-numberinput-y45ed)
 
@@ -311,7 +352,7 @@ export default App;
 
 <hr />
 
-##### <a name="DecimalInput"></a>4. DecimalInput
+##### <a name="DecimalInput"></a> ## DecimalInput
 
 [DecimalInput](https://codesandbox.io/s/react-control-library-decimalinput-uyrtb)
 
@@ -353,7 +394,7 @@ So `maxLength = 8 = 5 + 2 + dot`.
 
 <hr />
 
-##### <a name="Password"></a>5. Password
+##### <a name="Password"></a> ## Password
 [Password](https://codesandbox.io/s/react-control-library-password-6zcte)
 
 [Password with Material UI](https://codesandbox.io/s/react-control-library-password-materialui-30o6c)
@@ -415,7 +456,7 @@ export default App;
 
 <hr />
 
-##### <a name="AlphaNumeric"></a>6. AlphaNumeric
+##### <a name="AlphaNumeric"></a> ## AlphaNumeric
 
 [AlphaNumeric](https://codesandbox.io/s/react-control-library-alphanumeric-154n5)
 
@@ -452,7 +493,7 @@ export default App;
 
 <hr />
 
-##### <a name="TextInput"></a>7. TextInput
+##### <a name="TextInput"></a> ## TextInput
 
 [TextInput](https://codesandbox.io/s/react-control-library-textinput-ifl7u)
 
@@ -489,7 +530,7 @@ export default App;
 
 <hr />
 
-##### <a name="Email"></a>8. Email
+##### <a name="Email"></a> ## Email
 
 [Email](https://codesandbox.io/s/react-control-library-email-e7y47)
 
@@ -528,7 +569,7 @@ export default App;
 
 <hr />
 
-##### <a name="Checkbox"></a>9. Checkbox
+##### <a name="Checkbox"></a> ## Checkbox
 
 [Checkbox](https://codesandbox.io/s/react-control-library-checkbox-c0xnm)
 
@@ -582,7 +623,7 @@ export default App;
 
 <hr />
 
-##### <a name="RadioButton"></a>10. RadioButton
+##### <a name="RadioButton"></a> ## RadioButton
 
 [RadioButton](https://codesandbox.io/s/react-control-library-radiobutton-1pgf0)
 

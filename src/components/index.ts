@@ -8,6 +8,7 @@ import Password from "./form/controls/password";
 import RadioButton from "./form/controls/radioButton";
 import SecureMaskedInput from "./form/controls/secureMaskedInput";
 import TextInput from "./form/controls/textInput";
+import NumberMask from "./form/controls/numberMask";
 
 export {
     NumberInput,
@@ -19,5 +20,6 @@ export {
     MaskedInput,
     SecureMaskedInput,
     Checkbox,
-    RadioButton
+    RadioButton,
+    NumberMask
 };

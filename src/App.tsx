@@ -14,6 +14,7 @@ import SecureMaskedInput from './components/form/controls/secureMaskedInput';
 import ReadMeExample from './ReadmeExample';
 import NumberMask from './components/form/controls/numberMask';
 import { INumberMask } from './components/shared/interfacesDelegates/controlInterfaces';
+import ReadMeNumberMaskDemo from './readme/numberMask';
 
 function App() {
 
@@ -36,6 +37,7 @@ function App() {
 
   return (
     <React.Fragment>
+      <ReadMeNumberMaskDemo />
       <ReadMeExample />
       <div>
         Currency Number Mask <NumberMask value={numMask}
