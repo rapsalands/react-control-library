@@ -29,6 +29,9 @@ const AppSettings = {
     decimal: {
         maxLength: 20,
         decimalLimit: 4
+    },
+    error: {
+        defaultControlError: 'rcl-control-error'
     }
 };
 

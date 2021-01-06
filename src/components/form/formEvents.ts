@@ -18,7 +18,7 @@ const detailHasError = (detail) => !!(detail && !detail.isValid);
  * @param props all original props
  * @param extractValueToValidate few controls have decorated values like masked input. functin to extract those values for further processing
  */
-const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation, detailModes, props, extractValueToValidate, extractValueToSet) => {
+const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation, detailModes, props, extractValueToValidate, setControlHasError, extractValueToSet) => {
 
     let value = e.target.value;
     e.detail = null;
@@ -53,7 +53,7 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
         return;
     }
 
-    // We are here means restrictionValition passed.
+    // We are here means restrictionValidation passed.
     // So check if we had controlSpecific validation error, if yes then pass that else check for general.
     if (!detailHasError(detail)) {
         const generalDetail = formVali.general(validation, null, value4Validation, props);
@@ -65,6 +65,7 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
     }
 
     e.detail = detail;
+    setControlHasError(e.detail && !e.detail.isValid);
     setData && setData(e.target.value);
     onChangeCB && onChangeCB(e);
 }
@@ -82,7 +83,7 @@ const onChangeEvent: changeDelegate = (e, data, setData, onChangeCB, validation,
  * @param props all original props
  * @param extractValueToValidate few controls have decorated values like masked input. functin to extract those values for further processing
  */
-const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detailModes, props, extractValueToValidate, extractValueToSet) => {
+const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detailModes, props, extractValueToValidate, setControlHasError, extractValueToSet) => {
     let value = e.target.value;
     e.detail = null;
     const tempData = data || '';
@@ -116,7 +117,7 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
         return;
     }
 
-    // We are here means restrictionValition passed.
+    // We are here means restrictionValidation passed.
     // So check if we had controlSpecific validation error, if yes then pass that else check for general.
     if (!detailHasError(detail)) {
         const generalDetail = formVali.general(validation, null, value4Validation, props);
@@ -128,6 +129,7 @@ const onBlurEvent: blurDelegate = (e, data, setData, onBlurCB, validation, detai
     }
 
     e.detail = detail;
+    setControlHasError(e.detail && !e.detail.isValid);
     setData && setData(e.target.value);
     onBlurCB && onBlurCB(e);
 }

@@ -108,6 +108,10 @@ RCL controls accept all attributes that of HTML input controls. However there ar
 * `exactLength` (number)
     - This attribute can be passed to see if user input the control value is of exact length passed by user.
     - If user input is not that of length passed by user, validation is considered as failed and `e.detail.isValid` is populated with `false` flag. `e.detail.attribute` will hold `exactLength` as value.
+* `hasError` (boolean)
+    - When passed as true, this will assign a `class` to control with value `rcl-control-error`.
+    - Class `rcl-control-error` will also be assigned when `e.detail.isValid` is false on `onChange` and `onBlur` event.
+    - This attribute is present for all controls.
 * `mask` (any[])
     - This attribute can be passed to `MaskedInput` and `SecureMaskedInput` control.
     - They are generally array of strings and regex to hold a mask on the control. See [demo](https://codesandbox.io/s/react-control-library-demo-kkbeh) for more details on usage.

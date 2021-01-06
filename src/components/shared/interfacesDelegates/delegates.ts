@@ -13,7 +13,8 @@ export type changeDelegate = (
     detailModes: DetailMode[],
     props,
     extractValueToValidate: undefined | ((value: any) => string),
-    extractValueToSet?: (e: IChangeInputEvent, value: string) => IToValue | IToValueWithCursor
+    setControlHasError: (boolean) => void,
+    extractValueToSet?: (e: IChangeInputEvent, value: string) => IToValue | IToValueWithCursor,
 ) => void;
 
 export type keyPressDelegate = (
@@ -33,6 +34,7 @@ export type blurDelegate = (
     detailModes: DetailMode[],
     props,
     extractValueToValidate,
+    setControlHasError: (boolean) => void,
     extractValueToSet?: (e: IFocusInputEvent, value: string) => IToValue | IToValueWithCursor
 ) => void;
 

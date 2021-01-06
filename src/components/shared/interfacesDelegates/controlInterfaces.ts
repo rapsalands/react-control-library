@@ -10,6 +10,7 @@ export interface ICustomInputProps extends React.HTMLProps<HTMLInputElement> {
     setReference?: (refSetter: ((ref: React.MutableRefObject<HTMLInputElement | undefined>) => void)) => void,
     extractValueToValidate?: (value) => any,
     extractValueToSet?: (e: IChangeInputEvent | IFocusInputEvent | null, value: string) => IToValueWithCursor | IToValue,
+    hasError?: boolean
 }
 
 export interface IValidationProps {
