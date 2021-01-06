@@ -30,10 +30,11 @@ function setEventArgsValue(e: IChangeInputEvent, valueToSet: IToValue | IToValue
 
 function strings2FlatArray(strings: string[]): string[] {
     let result: string[] = [];
-    strings.forEach(s => {
-        //@ts-ignore
-        result = result.concat(...s);
-    });
+
+    for (let i = 0; i < strings.length; i++) {
+        const str = strings[i];
+        result = result.concat(Array.from(str));
+    }
     return result;
 }
 
