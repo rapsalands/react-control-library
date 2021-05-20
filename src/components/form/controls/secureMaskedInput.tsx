@@ -5,6 +5,7 @@ import maskUtility from '../../shared/maskUtility';
 import utility from '../../shared/utility';
 import formUtility from '../formUtility';
 import MaskedInput from './maskedInput';
+import { isEqual } from 'lodash';
 
 const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ secure, onChange, mask, value, onFocus, onBlur, ...props }) => {
 
@@ -31,14 +32,20 @@ const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ se
     const [secureMask, setSecureMask] = React.useState<any[]>([]);
 
     // Supports dynamic masking if user changes mask dynamically.
-    React.useEffect(() => { setRealMask(mask) }, [mask]);
+    React.useEffect(() => {
+
+        if (isEqual(mask, realMask)) return;
+
+        setRealMask(mask);
+        setSecureValue(getSecureValue(value));
+    }, [mask]);
 
     React.useEffect(() => {
         if (secureValue === value) return;
         setSecureValue(getSecureValue(value));
         const pureValue = maskUtility.extractPureValue(value, mask);
         setRealValue(pureValue);
-    }, [value, mask]);
+    }, [value]);
 
     function focusEvent(e) {
 
