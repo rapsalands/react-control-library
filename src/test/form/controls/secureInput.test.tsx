@@ -8,6 +8,7 @@ import SecureMaskedInput from '../../../components/form/controls/secureMaskedInp
 const num = /^[0-9]*$/;
 
 const ssnMask = [num, num, num, '-', num, num, '-', num, num, num, num];
+const feinMask = [num, num, "-", num, num, num, num, num, num, num];
 
 function getValue(detail, data) {
     return `*${data || ''}*`;
@@ -255,6 +256,19 @@ describe('userEvent', () => {
         userEvent.type(input, '.');
         expect(onKeyPress).toHaveBeenCalledTimes(2);
         expect(onChange).not.toHaveBeenCalled();
+    });
+
+});
+
+describe('dynamic masking', () => {
+    test('When mask is changed dynamically by user.', async () => {
+
+        const { input, renderResult } = render(<SecureMaskedInput secure={{ getValue }} mask={ssnMask} aria-label='secure-input' value="123456789" />);
+
+        expect(input.value).toBe('*123-45-6789*');
+
+        renderResult.rerender(<SecureMaskedInput secure={{ getValue }} mask={feinMask} aria-label='secure-input' value="123456789" />);
+        expect(input.value).toBe('*12-3456789*');
     });
 
 });

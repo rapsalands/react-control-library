@@ -30,15 +30,15 @@ const SecureMaskedInput: React.FC<ICustomInputProps & ISecureInputProps> = ({ se
     const [realMask, setRealMask] = React.useState<any[]>(mask);
     const [secureMask, setSecureMask] = React.useState<any[]>([]);
 
+    // Supports dynamic masking if user changes mask dynamically.
+    React.useEffect(() => { setRealMask(mask) }, [mask]);
+
     React.useEffect(() => {
-
         if (secureValue === value) return;
-
         setSecureValue(getSecureValue(value));
-
         const pureValue = maskUtility.extractPureValue(value, mask);
         setRealValue(pureValue);
-    }, [value]);
+    }, [value, mask]);
 
     function focusEvent(e) {
 

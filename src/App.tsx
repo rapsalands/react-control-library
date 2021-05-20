@@ -23,6 +23,14 @@ function App() {
   const [ssn, setSsn] = React.useState();
   const [temp, setTemp] = React.useState(98798);
   const [gender, setGender] = React.useState('male');
+  const [isInternational, setIsInternational] = React.useState(false);
+
+  function getPhoneMask() {
+    const n = /^[0-9]*$/;
+    return isInternational
+      ? ["+", n, n, n, n, n, n, n, n, n, n]
+      : ["(", n, n, n, ")", " ", n, n, n, "-", n, n, n, n];
+  }
 
   function changeEvent(e) {
     console.log(e.detail);
@@ -97,9 +105,18 @@ function App() {
       <div>
         SSN Input <SecureMaskedInput secure={{
           getValue: (detail, data) => {
-            return 'HIDDEN';
+            if (detail.value.length < 10) {
+              return data;
+            }
+            return isInternational
+              ? `+******${detail.value.substring(6, 10)}`
+              : `(***) ***-${detail.value.substring(6, 10)}`;
           }
-        }} value={ssn} mask={Regex.paymentCard()} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e) }} onBlur={changeEvent} />
+        }} value={ssn} mask={getPhoneMask()} onChange={(e: any) => { setSsn(e.target.value); changeEvent(e) }} onBlur={changeEvent} />
+        <br />
+        <button onClick={() => setIsInternational(!isInternational)}>Toggle Mask</button>
+        <br />
+        Value: {ssn}, Mask: {isInternational ? 'Internaltional' : 'Normal'}
       </div>
       <div>
         Gender
