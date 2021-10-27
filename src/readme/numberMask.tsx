@@ -5,6 +5,8 @@ const App = () => {
 
     const [data, setData] = React.useState('');
 
+
+
     
     function getNumberMask() {
         return {
